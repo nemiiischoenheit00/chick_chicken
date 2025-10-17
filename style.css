@@ -93,3 +93,79 @@ nav ul li a {
     height: 500px;
     object-fit: cover;
 }
+
+
+/* MENU STYLING */
+.menu {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start;    
+  padding: 40px;
+  text-align: center;
+  margin-left: 10%;
+}
+
+.menu h1 {
+    padding-bottom: 1%;
+}
+
+.menulist {
+  display: flex;
+  justify-content: flex-start; 
+  gap: 20px; 
+  flex-wrap: wrap; 
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5%;
+  gap: 20px;
+  flex-direction: column;
+  overflow: hidden;
+  width: 260px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
+  transition: 0.3s ease;
+}
+
+.menu-container:hover {
+  transform: scale(1.05);
+  background-color: #FFA9A9;
+
+}
+
+.menu-image {
+  width: 100%;
+  height: 180px;
+  background: #f4f7f8;
+  border-radius: 0px;
+  overflow: hidden;
+}
+
+
+.menu-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  object-position: center top; 
+  transition: transform 0.4s ease;
+}
+
+.menu-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  width: 100%;
+  padding: 15px;
+}
+
+.menu-description h3, .menu-description h2 {
+    margin-top: -5%;
+}
+
+.menu-description h2 {
+ font-weight: bold;
+}
