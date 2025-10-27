@@ -169,7 +169,7 @@ nav ul li a {
 .tranding-slide .tranding-slide-img img {
   width: 70rem;
   height: 30rem;
-  border-radius: 2rem;
+  border-radius: 0rem;
   object-fit: cover;
 }
 
@@ -180,8 +180,6 @@ nav ul li a {
   right: 0;
   bottom: 0;
 }
-
-
 
 .swiper-slide-shadow-left,
 .swiper-slide-shadow-right {
@@ -194,6 +192,10 @@ nav ul li a {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.tranding-slider-control .swiper-button-prev, .swiper-button-next {
+  z-index: 1000;
 }
 
 .tranding-slider-control .swiper-button-next {
@@ -251,7 +253,8 @@ nav ul li a {
 .tranding-slider-control .swiper-pagination {
   position: relative;
   width: 15rem;
-  bottom: 1rem;
+  bottom: 0rem;
+  z-index: 10;
 }
 
 .tranding-slider-control .swiper-pagination .swiper-pagination-bullet {

@@ -19,3 +19,25 @@ var TrandingSlider = new Swiper('.tranding-slider', {
     prevEl: '.swiper-button-prev',
   }
 });
+
+/* auto play carousel */
+let slideInterval;
+const startSlideShow = () => {
+  slideInterval = setInterval(() => {
+    TrandingSlider.slideNext();
+  }, 4000);
+};
+const stopSlideShow = () => {
+  clearInterval(slideInterval);
+};
+
+startSlideShow();
+TrandingSlider.el.addEventListener('mouseover', stopSlideShow);
+TrandingSlider.el.addEventListener('mouseout', startSlideShow);
+TrandingSlider.nextEl.addEventListener('mouseover', stopSlideShow);
+TrandingSlider.nextEl.addEventListener('mouseout', startSlideShow);
+TrandingSlider.prevEl.addEventListener('mouseover', stopSlideShow);
+TrandingSlider.prevEl.addEventListener('mouseout', startSlideShow);
+TrandingSlider.pagination.addEventListener('mouseover', stopSlideShow);
+TrandingSlider.pagination.addEventListener('mouseout', startSlideShow);
+/* end auto play carousel */
