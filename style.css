@@ -1,4 +1,4 @@
-*
+
 *::before,
 *::after {
   margin: 0;
@@ -138,7 +138,7 @@ nav ul li a {
 }
 
 #tranding .tranding-slider {
-  height: 35rem;
+  height: 50rem;
   padding: 1rem 0;
   position: relative;
 }
@@ -188,7 +188,7 @@ nav ul li a {
 
 .tranding-slider-control {
   position: relative;
-  bottom: 2rem;
+  bottom: 15rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,6 +265,25 @@ nav ul li a {
   background: var(--mustard);
 }
 
+.menubutton {
+  display: inline-block;
+  position: absolute; /* position over slider */
+  bottom: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: red;
+  margin-top: -50px;
+  color: white;
+  padding: 15px 40px;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
 
 /* MENU STYLING */
 .menu {
@@ -273,7 +292,7 @@ nav ul li a {
   align-items: flex-start;    
   padding: 40px;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .menu h1 {
@@ -299,6 +318,8 @@ nav ul li a {
   border-radius: 15px;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
   transition: 0.3s ease;
+  pointer-events: auto !important;
+  z-index: 10;
 }
 
 .menu-container:hover {
@@ -342,6 +363,199 @@ nav ul li a {
  font-weight: bold;
  margin-top: -5%;
 }
+
+/* Overlay setup */
+.popup-overlay {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Popup container */
+.popup {
+  display: flex;
+  background: #fff;
+  width: 70%;
+  max-width: 1000px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Image section */
+.popup img {
+  width: 35%;
+  height: auto;
+  object-fit: cover;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+/* Right-side content */
+.popup > div {
+  flex: 1;
+  padding: 25px 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.popup h1 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.section {
+  margin-bottom: 10px;
+}
+
+.section h3 {
+  margin: 5px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Options layout */
+.options, .flavors, .mix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.extra-flavor {
+  display: flex;
+  flex-direction: row; 
+  flex-wrap: nowrap;   
+  gap: 10px;           
+  align-items: center; 
+}
+
+
+.extra-flavor .option {
+  width: 140px; 
+  padding: 10px 15px; 
+  font-weight: bold;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button.option {
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button.option:hover {
+  background: #eee;
+}
+
+button.option.selected {
+  background: #ffd8d8;
+  border-color: #ff4a4a;
+}
+
+
+.section.sauce-extra {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+}
+
+.section.sauce-extra > div {
+  flex: 1;
+}
+
+
+.count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: -10px;
+}
+
+.count button {
+  background: none;
+  border: 1px solid #333;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.popup * {
+  font-weight: 600;
+  color: #222; 
+}
+
+.add-cart {
+  margin-top: 20px;
+  background: #b22222;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: background 0.2s ease;
+  width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;         
+  text-align: center;
+}
+
+.add-cart:hover {
+  background: #d93c3c;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+.section.mix-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
 /* END OF MENU STYLING */
 
 
@@ -552,3 +766,4 @@ nav ul li a {
   }
 }
 /*End of footer ngani*/
+
