@@ -1,39 +1,4 @@
-<<<<<<< HEAD
-const left = document.querySelector('.left');
-const right = document.querySelector('.right');
-const slider = document.querySelector('.slider');
-const images = document.querySelectorAll('.image');
-
-let slideNumber = 1;
-const length = images.length;
-
-const nextSlide = () => {
-    slider.style.transform = `translateX(-${slideNumber*800}px)`;
-    slideNumber++;
-};
-
-const prevSlide = () => {
-    slider.style.transform = `translateX(-${(slideNumber-2)*800}px)`;
-    slideNumber--;
-};
-
-const getFirstSlide = () => {
-    slider.style.transform = `translateX(0px)`;
-    slideNumber = 1;
-};
-
-const getLastSlide = () => {
-    slider.style.transform = `translateX(-${(length-1)*800}px)`;
-    slideNumber = length;
-}
-
-right.addEventListener('click', () => {
-    slideNumber < length ? nextSlide() : getFirstSlide();
-});
-left.addEventListener('click', () => {
-    slideNumber > 1 ? prevSlide() : getLastSlide ();
-});
-=======
+// --- Swiper Carousel ---
 var TrandingSlider = new Swiper('.tranding-slider', {
   effect: 'coverflow',
   grabCursor: true,
@@ -56,25 +21,85 @@ var TrandingSlider = new Swiper('.tranding-slider', {
   }
 });
 
-/* auto play carousel */
+/* --- Auto Play Carousel --- */
 let slideInterval;
 const startSlideShow = () => {
   slideInterval = setInterval(() => {
     TrandingSlider.slideNext();
   }, 4000);
 };
+
 const stopSlideShow = () => {
   clearInterval(slideInterval);
 };
 
 startSlideShow();
+
+// Stop autoplay when hovering over slider or controls
 TrandingSlider.el.addEventListener('mouseover', stopSlideShow);
 TrandingSlider.el.addEventListener('mouseout', startSlideShow);
-TrandingSlider.nextEl.addEventListener('mouseover', stopSlideShow);
-TrandingSlider.nextEl.addEventListener('mouseout', startSlideShow);
-TrandingSlider.prevEl.addEventListener('mouseover', stopSlideShow);
-TrandingSlider.prevEl.addEventListener('mouseout', startSlideShow);
-TrandingSlider.pagination.addEventListener('mouseover', stopSlideShow);
-TrandingSlider.pagination.addEventListener('mouseout', startSlideShow);
-/* end auto play carousel */
->>>>>>> main
+
+// Safely handle nav & pagination hover events
+const nextEl = document.querySelector('.swiper-button-next');
+const prevEl = document.querySelector('.swiper-button-prev');
+const paginationEl = document.querySelector('.swiper-pagination');
+
+[nextEl, prevEl, paginationEl].forEach(el => {
+  if (el) {
+    el.addEventListener('mouseover', stopSlideShow);
+    el.addEventListener('mouseout', startSlideShow);
+  }
+});
+/* --- End Auto Play Carousel --- */
+
+// --- Popup Logic ---
+document.addEventListener("DOMContentLoaded", () => {
+  const menuItems = document.querySelectorAll(".menu-container");
+  const popups = document.querySelectorAll(".popup-overlay");
+
+  menuItems.forEach((menuItem, index) => {
+    const popup = popups[index];
+    if (!popup) return; // Safety check if mismatch
+
+    const closeBtn = popup.querySelector(".close-btn");
+    const countValue = popup.querySelector("#countValue");
+    const plusBtn = popup.querySelector("#plus");
+    const minusBtn = popup.querySelector("#minus");
+
+    // Open popup
+    menuItem.addEventListener("click", () => {
+      popup.style.display = "flex";
+    });
+
+    // Close popup
+    closeBtn?.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+
+    // Close when clicking outside content
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) popup.style.display = "none";
+    });
+
+    // Quantity controls
+    let count = 1;
+    plusBtn?.addEventListener("click", () => {
+      count++;
+      if (countValue) countValue.textContent = count;
+    });
+
+    minusBtn?.addEventListener("click", () => {
+      if (count > 1) count--;
+      if (countValue) countValue.textContent = count;
+    });
+
+    // Option button selection (sauce, mix, etc.)
+    popup.querySelectorAll(".option").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const siblings = btn.parentElement.querySelectorAll(".option");
+        siblings.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+      });
+    });
+  });
+});
