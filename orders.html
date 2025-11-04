@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +11,7 @@
   </head>
 
 
-<header>
+  <header>
     <div class="logo">
       <h1>
         <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
@@ -20,13 +19,13 @@
     </div>
     <nav>
       <ul>
-          <li><a href="#about-us" class="header_button">About Us</a></li>
+          <li><a href="aboutus.html" class="header_button">About Us</a></li>
           <li><a href="#FAQS" class="header_button">FAQs</a></li>
-          <li><a href="branchloc.html" class="header_button">Branch Locator</a></li>
-        <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
+          <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+          <li><a href="orders.html" class="ordernow_button"><img src="assets/cart.png" class="my_cart">My Cart</a></li>
       </ul>
     </nav>
-</header>
+  </header>
 
 <body>
 <section id="menu" class="menu">
@@ -547,7 +546,7 @@
 <!--END OF TENDERS SECTION-->
 
 <!--Extra Sauces Section-->
-<section id="menu" class="menu">
+<section id="menu" class="sauce">
     <h1>Sauces</h1>
     <div class="menulist">
         <div class="menu-container">
@@ -572,13 +571,13 @@
 </section>
 
 <!-- Cart Button -->
-<button id="cart-btn" class="cart-btn">🛒</button>
+<button id="cart-btn" class="cart-btn"><img src="assets/cart.png" alt="my_cart"></button>
 
 <!-- Cart Overlay -->
 <div id="cart-overlay" class="cart-overlay">
   <div id="cart-panel" class="cart-panel">
     <button id="close-cart" class="close-cart">&times;</button>
-    <h2>Your Cart</h2>
+    <h2>My Cart</h2>
     
     <!-- Cart Items Container -->
     <div id="cart-items" class="cart-items"></div>
