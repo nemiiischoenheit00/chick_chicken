@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" type="Image" href="assets/Logo.png"/>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="orders.css">
     <title>Chick Chicken</title>
   </head>
 
-  <header>
+
+<header>
     <div class="logo">
       <h1>
         <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
@@ -24,84 +26,9 @@
         <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
       </ul>
     </nav>
-  </header>
+</header>
 
 <body>
-  <section id="tranding">
-      <div class="container">
-        <div class="swiper tranding-slider">
-          <div class="swiper-wrapper">
-            <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary3.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="menuassets\Chick_Fries.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary3.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end --> 
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary4.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary2.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             
-          </div>
-
-          <div class="tranding-slider-control">
-            <div class="swiper-button-prev slider-arrow">
-              <ion-icon name="arrow-back-outline"></ion-icon>
-            </div>
-            <div class="swiper-button-next slider-arrow">
-              <ion-icon name="arrow-forward-outline"></ion-icon>
-            </div>
-            <div class="swiper-pagination"></div>
-          </div>
-
-          <a class="menubutton" href="#menu">See Our Menu</a>
-          
-        </div>
-      </div>
-    </section>
-
-
-
-<!-- Mains Section -->
 <section id="menu" class="menu">
     <h1>Mains</h1>
     <div class="menulist">
@@ -643,48 +570,26 @@
         </div>
     </div>
 </section>
-<!--End of Extra Sauces-->
 
+<!-- Cart Button -->
+<button id="cart-btn" class="cart-btn">🛒</button>
 
-<!--FAQ Section-->
-  <div class="faq">
-    <div class="faq_container">
-      <div class="faq_content">
-          <h1>Frequently Asked Questions</h1>
-            <!--First FAQ-->
-                <div class="wrapper">
-                    <div class="collapsible">
-                      <input type="checkbox" id="collapsible-head" />
-                        <label for="collapsible-head">Where are you located?</label>
-                        <div class="collapsible-text">
-                          <div class="separator" aria-hidden="true"></div>
-                          <p>
-                            Chick Chicken is currently located in Metro Manila, serving
-                            customers across the area, to find your nearest branch of
-                            chick chicken click here or the “Branch locator” at the top
-                          </p>
-                        </div>
-                    </div>
-                  </div>
-          </div>
-      </div>
-    </div>
-<!--End of FAQ Section-->
-
-<button class="cart-btn">
-  <span class="cart-count">0</span>
-</button>
-
-<!-- Cart Popup -->
-<div class="cart-overlay" id="cartOverlay">
-  <div class="cart-content">
-    <span class="close-cart">&times;</span>
+<!-- Cart Overlay -->
+<div id="cart-overlay" class="cart-overlay">
+  <div id="cart-panel" class="cart-panel">
+    <button id="close-cart" class="close-cart">&times;</button>
     <h2>Your Cart</h2>
-    <ul id="cartItems"></ul>
-    <button class="checkout-all">Checkout All</button>
+    
+    <!-- Cart Items Container -->
+    <div id="cart-items" class="cart-items"></div>
+
+    <!-- Cart Footer -->
+    <div id="cart-footer" class="cart-footer">
+      <span id="cart-total" class="cart-total">Total: ₱0</span>
+      <button id="checkout-btn" class="checkout-btn">Checkout</button>
+    </div>
   </div>
 </div>
-
 
 <!-- footer ngani -->
 <footer class="footer">
@@ -730,10 +635,9 @@
 </footer>
 <!-- end of footer ngani -->
 
-<script type="module" src="script.js"></script>
+<script src="orders.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-<script src="script.js"></script>
 </body>
 </html>
