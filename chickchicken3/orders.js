@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Option selection handlers ---
   popups.forEach((popup) => {
-    popup.querySelectorAll(".options, .flavors, .mix").forEach((group) => {
+    popup.querySelectorAll(".options, .flavors, .flavorssauce, .mix").forEach((group) => {
       group.addEventListener("click", (ev) => {
         const btn = ev.target.closest(".option");
         if (!btn) return;
@@ -97,7 +97,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const title = popup.querySelector("h1")?.textContent?.trim() || "Item";
       const quantity = parseInt(popup.querySelector("#countValue")?.textContent || "1");
       const size = popup.querySelector(".options .selected")?.textContent?.trim() || "";
-      const sauce = popup.querySelector(".flavors .selected")?.textContent?.trim() || "";
+      const sauce =
+        popup.querySelector(".flavors .selected")?.textContent?.trim() ||
+        popup.querySelector(".flavorssauce .selected")?.textContent?.trim() ||
+          "";
+
       const mix = popup.querySelector(".mix .selected")?.textContent?.trim() || "";
 
       const extraBtn = popup.querySelector(".extra-flavor .selected");
@@ -217,4 +221,12 @@ document.addEventListener("DOMContentLoaded", () => {
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#47;', '`': '&#96;', '=': '&#61;'
     }[s]));
   }
+
+  const checkoutBtn = document.getElementById("checkout-btn");
+  checkoutBtn?.addEventListener("click", () => {
+    if (cartOverlay.classList.contains("active")) {
+      cartOverlay.classList.remove("active");
+    }
+  });
+
 });
