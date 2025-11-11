@@ -978,3 +978,73 @@ hr {
   align-items: center;
   flex-direction: column;
 }
+
+/*Disclaimer Overlay*/
+.disclaimer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 9999;
+}
+
+.disclaimer.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.disclaimer h1 {
+  font-family: 'Oswald', sans-serif;
+  margin-top: 2.5rem;
+}
+
+.disclaimer p {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-size: 1.2rem;
+}
+
+.overlay {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.overlay-logo {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 0px;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 2rem;
+  border: none;
+  background: #ff4d4d;
+  color: white;
+  border-radius: 3rem;
+  cursor: pointer;
+  font-family: 'Alegreya Sans', sans-serif;
+  font-size: 1.2rem;
+}
+
+button:hover {
+  background: #e23c3c;
+}

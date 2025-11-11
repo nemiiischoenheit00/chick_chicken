@@ -32,9 +32,10 @@ const stopSlideShow = () => clearInterval(slideInterval);
 startSlideShow();
 
 // Pause autoplay when hovering over Swiper container
-TrandingSlider.el.addEventListener('mouseover', stopSlideShow);
-TrandingSlider.el.addEventListener('mouseout', startSlideShow);
-
+if (TrandingSlider && TrandingSlider.el && typeof TrandingSlider.el.addEventListener === 'function') {
+  TrandingSlider.el.addEventListener('mouseover', stopSlideShow);
+  TrandingSlider.el.addEventListener('mouseout', startSlideShow);
+}
 
 // --- Popup Logic ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -104,3 +105,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+/*Chekout Disclaimer*/
+window.addEventListener("load", () => {
+  const disclaimer = document.getElementById("disclaimer");
+  const closeBtn = document.getElementById("closeBtn");
+
+  if (!disclaimer) {
+    console.error("❌ Disclaimer element not found!");
+    return;
+  }
+
+  disclaimer.classList.add("active");
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      disclaimer.classList.remove("active");
+    });
+  } else {
+    console.error("❌ Close button not found!");
+  }
+});
+
