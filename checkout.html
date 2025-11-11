@@ -42,7 +42,8 @@
       </div>
     </section>
 
-    <form class="checkout-form">
+    <form class="checkout-form"
+    action="feedback.html" method="get">
       <h3>Your Details</h3>
 
       <label>Name<span>*</span></label>
@@ -68,6 +69,12 @@
           <p><strong>CASH ON DELIVERY</strong><br>Pay with cash upon arrival</p>
         </div>
       </div>
+      <label for="cardnumber">Card Number</label>
+      <input type="text" id="cardnumber" name="cardnumber" placeholder="1234 5678 9012 3456"
+      pattern="\d{13,19}"
+      inputmode="numeric"
+      required>
+      <button type="submit" class="place-order-button">Confirm Order</button>
     </form>
   </main>
 <!-- End of Checkout -->
