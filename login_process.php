@@ -34,10 +34,8 @@ if ($result->num_rows == 0) {
 $passrow = $result->fetch_assoc();
 $hashed_password_db = $passrow['password'];
 
-$admincheck = "SELECT * FROM users WHERE email = 'admin@gmail.com' AND password='admin'";
-$adminresult = $conn->query($admincheck);
 
-if ($adminresult->num_rows == 1) {
+if ($email == "admin@gmail.com" && $password == "admin") {
     header("Location: admin.html");
     exit;
 }
