@@ -7,9 +7,10 @@
     <link rel="icon" type="Image" href="assets/Logo.png"/>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="orders.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
     <title>Chick Chicken</title>
   </head>
-
 
   <header>
     <div class="logo">
@@ -20,7 +21,7 @@
     <nav>
       <ul>
           <li><a href="aboutus.html" class="header_button">About Us</a></li>
-          <li><a href="#FAQS" class="header_button">FAQs</a></li>
+          <li><a href="index.html#FAQS" class="header_button">FAQs</a></li>
           <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
           <li><a href="orders.html" class="ordernow_button"><img src="assets/cart.png" class="my_cart">My Cart</a></li>
       </ul>
@@ -557,7 +558,35 @@
                 <h3>Extra Sauce</h3>
                 <h2>₱40</h2>
             </div>
-        </div>  
+        </div>
+
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Sauce2.png" alt="Chick Rice">
+    <div>
+      <h1>Extra Suace</h1>
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavorssauce">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>  
         <div class="menu-container">
             <div class="menu-image">
                 <img src="menuassets\Sauce16.png">
@@ -568,10 +597,39 @@
             </div>
         </div>
     </div>
+
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Sauce16.png" alt="Chick Rice">
+    <div>
+      <h1>Jumbo Sauce</h1>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavorssauce">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
 </section>
 
 <!-- Cart Button -->
-<button id="cart-btn" class="cart-btn"><img src="assets/cart.png" alt="my_cart"></button>
+<button id="cart-btn" class="cart-btn"><img src="assets/cart.png"></button>
 
 <!-- Cart Overlay -->
 <div id="cart-overlay" class="cart-overlay">
@@ -585,34 +643,33 @@
     <!-- Cart Footer -->
     <div id="cart-footer" class="cart-footer">
       <span id="cart-total" class="cart-total">Total: ₱0</span>
-      <button id="checkout-btn" class="checkout-btn">Checkout</button>
+      <a href="checkout.html" class="checkout-btn" id="checkout-btn">CHECKOUT</a>
     </div>
   </div>
 </div>
 
-<!-- footer ngani -->
+  <!-- footer ngani -->
 <footer class="footer">
   <div class="footer-container">
 
-  <div class="footer-section logo-section">
-      <img src="assets\Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
+  <div class="footer-logo">
+      <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
     </div>
 
-    <div class="footer-section">
+    <div class="footer-links">
       <h4>Quick Links</h4>
       <ul>
-        <li><a href="#">Menu</a></li>
-        <li><a href="#">Deals</a></li>
-        <li><a href="#">Order Now</a></li>
+        <li><a href="orders.html">Menu</a></li>
+        <li><a href="orders.html">Order Now</a></li>
       </ul>
     </div>
 
-    <div class="footer-section">
+    <div class="footer-info">
       <h4>Information</h4>
       <ul>
-                <li><a href="#about-us">About Us</a></li> 
-                <li><a href="#FAQS">FAQs</a></li>
-                <li><a href="branchloc.html">Branch Locator</a></li>
+                <li><a href="aboutus.html">About Us</a></li> 
+                <li><a href="index.html#FAQS">FAQs</a></li>
+                <li><a href="branch-locator.html">Branch Locator</a></li>
       </ul>
     </div>
 
@@ -620,9 +677,9 @@
       <h4>Need help?</h4>
       <p>Contact us on:</p>
       <div class="social-icons">
-        <a href="https://www.facebook.com/chickchickenph/"><img src="assets\facebook-icon.png" alt="Facebook"></a>
-        <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets\instagram-icon.png" alt="Instagram"></a>
-        <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets\tiktok-icon.png" alt="TikTok"></a>
+        <a href="https://www.facebook.com/chickchickenph/"><img src="assets/facebook-icon.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets/instagram-icon.png" alt="Instagram"></a>
+        <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
       </div>
     </div>
 
