@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="Image" href="assets/Logo.png"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="orders.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
+    <title>Chick Chicken</title>
+  </head>
+
+  <header>
+    <div class="logo">
+      <h1>
+        <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+          <li><a href="aboutus.html" class="header_button">About Us</a></li>
+          <li><a href="index.html#FAQS" class="header_button">FAQs</a></li>
+          <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+          <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<body>
+<section id="menu" class="menu">
+    <h1>Mains</h1>
+    <div class="menulist">
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Chick_Rice.png">
+            </div>
+            <div class="menu-description">
+                <h3>Chick Rice</h3>
+                <h2>₱169+</h2>
+            </div>
+        </div>
+
+<div class="popup-overlay" id="menuPopup1">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets/Chick_Rice.png" alt="Chick Rice">
+    <div>
+      <h1>Chick Rice</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+        
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Chick_Fries.png">
+            </div>
+            <div class="menu-description">
+                <h3>Chick Fries</h3>
+                <h2>₱169+</h2>
+            </div>
+        </div>
+
+<div class="popup-overlay" id="menuPopup2">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Chick_Fries.png" alt="Chick Rice">
+    <div>
+      <h1>Chick fries</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>        
+
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Mac_Chick.png">
+            </div>
+            <div class="menu-description">
+                <h3>Mac & Chick</h3>
+                <h2>₱189+</h2>
+            </div>
+        </div>
+      
+<div class="popup-overlay" id="menuPopup3">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Mac_Chick.png" alt="Chick Rice">
+    <div>
+      <h1>Mac & Chick</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>  
+
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\AddChickTender.png">
+            </div>
+            <div class="menu-description">
+                <h3>Additional Chicken Tender</h3>
+                <h2>₱289+</h2>
+            </div>
+        </div>
+    </div>
+
+<div class="popup-overlay" id="menuPopup4">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\AddChickTender.png" alt="Chick Rice">
+    <div>
+      <h1>Additional Chicken Tender</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>  
+</section>
+    <!-- End of Menu Section -->
+
+<!--COMBO TENDERS SECTION-->
+<section id="menu" class="menu">
+    <h1>Combo Tenders</h1>
+    <div class="menulist">
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\SuperChick.png">
+            </div>
+            <div class="menu-description">
+                <h3>Super Chick</h3>
+                <h2>₱339</h2>
+            </div>
+        </div>
+      
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\SuperChick.png" alt="Chick Rice">
+    <div>
+      <h1>Super Chick</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+        
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Chick_One.png">
+            </div>
+            <div class="menu-description">
+                <h3>Chick One</h3>
+                <h2>₱289</h2>
+            </div>
+        </div>
+
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Chick_One.png" alt="Chick Rice">
+    <div>
+      <h1>CChick One</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Chick_Two.png">
+            </div>
+            <div class="menu-description">
+                <h3>Chick Two</h3>
+                <h2>₱299</h2>
+            </div>
+        </div>        
+
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Chick_Two.png" alt="Chick Rice">
+    <div>
+      <h1>Chick Two</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Chick_Five.png">
+            </div>
+            <div class="menu-description">
+                <h3>Chick Five</h3>
+                <h2>₱319</h2>
+            </div>
+        </div>
+    </div>
+
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Chick_Five.png" alt="Chick Rice">
+    <div>
+      <h1>Chick Five</h1>
+
+      <div class="section">
+        <h3>Which option would you like?</h3>
+        <div class="options">
+          <button class="option">Solo (good for one, 600ml packaging)</button>
+          <button class="option">Double (can be good for two, 1000ml packaging)</button>
+        </div>
+      </div>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+        <div>
+          <h3>Extra Flavor</h3>
+          <div class="extra-flavor">
+            <button class="option">Hot Buffalo ₱20</button>
+            <button class="option">Salted Egg ₱20</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section mix-section">
+        <h3>Mix or separate sauce?</h3>
+        <div class="mix">
+          <button class="option">Mixed</button>
+          <button class="option">Separate</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<!--END OF TENDERS SECTION-->
+
+<!--Extra Sauces Section-->
+<section id="menu" class="menu">
+    <h1>Sauces</h1>
+    <div class="menulist">
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Sauce2.png">
+            </div>
+            <div class="menu-description">
+                <h3>Extra Sauce</h3>
+                <h2>₱40</h2>
+            </div>
+        </div>  
+
+<div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Sauce2.png" alt="Chick Rice">
+    <div>
+      <h1>Extra Sauce</h1>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <div class="menu-container">
+            <div class="menu-image">
+                <img src="menuassets\Sauce16.png">
+            </div>
+            <div class="menu-description">
+                <h3>Jumbo Sauce (16oz)</h3>
+                <h2>₱179</h2>
+            </div>
+        </div>
+    </div>
+
+  <div class="popup-overlay" id="menuPopup">
+  <div class="popup">
+    <button class="close-btn">&times;</button>
+    <img src="menuassets\Sauce16.png" alt="Chick Rice">
+    <div>
+      <h1>Jumbo Sauce</h1>
+
+      <div class="section sauce-extra">
+        <div>
+          <h3>Sauce</h3>
+          <div class="flavors">
+            <button class="option">Garlic Mayo</button>
+            <button class="option">Chick Sauce</button>
+            <button class="option">Cheese Sauce</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="count">
+          <button id="minus">−</button>
+          <span id="countValue">1</span>
+          <button id="plus">+</button>
+        </div>
+        <button class="add-cart">ADD TO CART</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Cart Button -->
+<button id="cart-btn" class="cart-btn"><img src="assets/cart.png"></button>
+
+<!-- Cart Overlay -->
+<div id="cart-overlay" class="cart-overlay">
+  <div id="cart-panel" class="cart-panel">
+    <button id="close-cart" class="close-cart">&times;</button>
+    <h2>My Cart</h2>
+    
+    <!-- Cart Items Container -->
+    <div id="cart-items" class="cart-items"></div>
+
+    <!-- Cart Footer -->
+    <div id="cart-footer" class="cart-footer">
+      <span id="cart-total" class="cart-total">Total: ₱0</span>
+      <a href="checkout.html" id="checkout-btn" class="checkout-btn">CHECKOUT</a>
+    </div>
+  </div>
+</div>
+
+  <!-- footer ngani -->
+<footer class="footer">
+  <div class="footer-container">
+
+  <div class="footer-logo">
+      <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
+    </div>
+
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="orders.html">Menu</a></li>
+        <li><a href="orders.html">Order Now</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-info">
+      <h4>Information</h4>
+      <ul>
+                <li><a href="aboutus.html">About Us</a></li> 
+                <li><a href="index.html#FAQS">FAQs</a></li>
+                <li><a href="branch-locator.html">Branch Locator</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Need help?</h4>
+      <p>Contact us on:</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/chickchickenph/"><img src="assets/facebook-icon.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets/instagram-icon.png" alt="Instagram"></a>
+        <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Chick Chicken. All rights reserved.
+  </div>
+</footer>
+<!-- end of footer ngani -->
+
+<script src="orders.js"></script>
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+</body>
+</html>
