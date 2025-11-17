@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="Image" href="assets/Logo.png"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="checkoutA.css">
+    <title>Chick Chicken</title>
+  </head>
+
+  <header>
+    <div class="logo">
+      <h1>
+        <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+          <li><a href="aboutus.html" class="header_button">About Us</a></li>
+          <li><a href="#FAQS" class="header_button">FAQs</a></li>
+          <li><a href="branchloc.html" class="header_button">Branch Locator</a></li>
+        <li><a href="placeholder" class="ordernow_button">Order Now</a></li>
+      </ul>
+    </nav>
+  </header>
+
+ <div class="cons">
+
+    <h2>CHECKOUT</h2>
+
+    <h4>Order Summary</h4>
+    <div class="order-box">
+        <img src="assets/chickfries.png" alt="fries">
+        <div class="details">
+            <p><strong>Chick Rice (Solo)</strong></p>
+            <p>Garlic Mayo, Hot Buffalo Mixed</p>
+        </div>
+        <div class="price">₱169</div>
+    </div>
+
+    <h3 class="total-price">
+      <span class="total-label">Total Amount:</span>
+      <span class="total-amount">₱169</span>
+    </h3>
+
+
+    <h4>When do you want your order?</h4>
+
+    <form action="checkoutB.html" method="GET">
+
+        <div class="dates">
+
+            <label class="date-item">
+                <input type="radio" name="date" value="2025-11-18" required>
+                <span>TODAY<br><b>18</b><br>NOV</span>
+            </label>
+
+            <label class="date-item">
+                <input type="radio" name="date" value="2025-11-19">
+                <span>WED<br><b>19</b><br>NOV</span>
+            </label>
+
+            <label class="date-item">
+                <input type="radio" name="date" value="2025-11-20">
+                <span>THU<br><b>20</b><br>NOV</span>
+            </label>
+
+            <label class="date-item">
+                <input type="radio" name="date" value="2025-11-21">
+                <span>FRI<br><b>21</b><br>NOV</span> 
+            </label>
+
+            <label class="date-item">
+                <input type="radio" name="date" value="2025-11-22">
+                <span>SAT<br><b>22</b><br>NOV</span>
+            </label>
+
+        </div>
+        </details>
+
+
+        <details class = dropdown>
+            <summary>Choose a time</summary>
+        <label>Pick a time</label>
+        <select name="time" required class="time-select">
+            <option value="">-- Select Time --</option>
+            <option>06:00 PM</option>
+            <option>06:30 PM</option>
+            <option>07:00 PM</option>
+            <option>07:30 PM</option>
+        </select>
+
+        <button type="submit" class="submit-btn">Continue</button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
