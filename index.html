@@ -10,6 +10,7 @@
     <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
     <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
     <title>Chick Chicken</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
 
   <header>
@@ -194,19 +195,99 @@
 
 
 
-<section style="height: 85vh;">
-  <div class="position-relative w-100" style="height: 30%; background-image: url('assets/red.jpg'); background-size: cover; background-position: center;">
-    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
-      <h1 class="mb-2" style="font-size: 2.5rem; font-weight: 700;">WE’VE GOT YOU COVERED</h1>
-      <p style="font-size: 1.5rem; font-weight: 500;">A Delicious Treat For Any Hungry Day!</p>
+<section style="height: 85vh; background-color: white;">
+  <!-- Overlay Image & Text -->
+  <div style="height: 30vh; position: relative; width: 100%; background: url('assets/red.jpg') center/cover no-repeat;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
+      <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem;">WE’VE GOT YOU COVERED</h1>
+      <p style="font-size: 1.5rem; font-weight: 500; margin: 0;">A Delicious Treat For Any Hungry Day!</p>
     </div>
   </div>
 
-  <!-- The rest of your section content (cards, etc.) goes below -->
-  <div class="container mt-3" style="height: 55%;">
-    <!-- Example content -->
+  <!-- Reviews Section -->
+  <div class="container mt-4 d-flex flex-wrap justify-content-between gap-4">
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">John Doe</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐⭐</h6>
+        <p class="card-text">"Amazing service! The food was delicious and arrived on time. Highly recommend to anyone!"</p>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">Jane Smith</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐</h6>
+        <p class="card-text">"Very tasty meals and friendly staff. Will definitely order again."</p>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">Alex Johnson</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐⭐</h6>
+        <p class="card-text">"The best experience I've had in a long time. Great flavors and presentation."</p>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">Emily Davis</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐</h6>
+        <p class="card-text">"Good food, quick delivery, and excellent customer service. Very satisfied!"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button to trigger modal -->
+<div class="text-center d-flex align-items-center justify-content-center" style="margin-top: 60px;">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal" style="background-color:#FF4C61; color:white; padding:1rem 2rem; font-size:1.25rem; border-radius:50px; border:none; display: flex; align-items: center; justify-content: center;">
+    Submit Your Review 
+    <img src="assets/Pencil.png" alt="icon" style="width:24px; height:24px; margin-left: 10px;">
+  </button>
+</div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reviewModalLabel">Submit Your Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="reviewerName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="reviewerName" placeholder="Your name">
+            </div>
+            <div class="mb-3">
+              <label for="reviewText" class="form-label">Review</label>
+              <textarea class="form-control" id="reviewText" rows="4" placeholder="Write your review here"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="reviewRating" class="form-label">Rating</label>
+              <select class="form-select" id="reviewRating">
+                <option selected>⭐⭐⭐⭐⭐</option>
+                <option>⭐⭐⭐⭐</option>
+                <option>⭐⭐⭐</option>
+                <option>⭐⭐</option>
+                <option>⭐</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Submit Review</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+
 
     
 
@@ -252,7 +333,7 @@
 </footer>
 <!-- end of footer ngani -->
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
