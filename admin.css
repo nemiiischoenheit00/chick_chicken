@@ -1,6 +1,5 @@
 * {
     margin: 0;
-    padding-right: 20px;
     box-sizing: border-box;
     list-style-type: none;
     text-decoration: none;
@@ -142,36 +141,94 @@ nav ul li {
 
 /*orders section*/
 
-.header--orders {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; 
-    width: 100%; 
-    margin-bottom: 20px;
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+  text-align: center;
+  margin-left: 10%;
 }
 
-.header--orders h1 {
-    margin: 0;
+.menu h1 {
+  padding-bottom: 1%;
+  font-family: "Oswald", sans-serif;
 }
 
-.header--orders img {
-    margin-left: 15px;
+.menulist {
+  display: flex;
+  justify-content: flex-start;
+  gap: 40px;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  gap: 20px;
+  flex-direction: column;
+  overflow: hidden;
+  width: 260px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.25);
+  transition: 0.3s ease;
+  pointer-events: auto !important;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.menu-container:hover {
+  transform: scale(1.05);
+  background-color: #FFA9A9;
+}
+
+.menu-image {
+  width: 100%;
+  height: 180px;
+  background: #f4f7f8;
+  border-radius: 0px;
+  overflow: hidden;
+}
+
+.menu-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.4s ease;
+}
+
+.menu-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  width: 90%;
+  padding: 15px;
+}
+
+.menu-description h3 {
+  margin-top: -5%;
+  text-align: left;
+  font-family: "Oswald", sans-serif;
+}
+
+.menu-description h2 {
+  font-weight: bold;
+  margin-top: -5%;font-family: "Oswald", sans-serif;
+}
+
+.sauce{
+   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+  text-align: center;
+  margin-left: 10%;
+  margin-bottom: 25%;
 }
 
 
-
-
-
-/*TABLE STYLE*/
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-    padding: 60px;
-    box-shadow: 0 0 4px var(--black);
-    margin-top: 8rem;
-}
-
-
-.order--track {
-    border: var(--black);
-}

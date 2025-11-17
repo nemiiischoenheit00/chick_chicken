@@ -1,0 +1,223 @@
+/* ======= GLOBAL RESET ======= */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+
+:root {
+  --mustard: #FFDE59;
+  --red: #FF0000;
+  --black: #000;
+  --wine-red: #9A0404;
+  --oswald: 'Oswald', sans-serif;
+  --primary: #ec994b;
+  --white: #ffffff;
+}
+
+html, body {
+  display: block;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  overflow-x: hidden;
+  font-family: var(--oswald);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 1rem;
+  background: #797979;
+  transition: all 0.5s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #222224;
+}
+
+::-webkit-scrollbar-track {
+  background: #f9f9f9;
+}
+
+/* ======= MENU STYLING ======= */
+.menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+  text-align: center;
+  margin-left: 10%;
+}
+
+.menu h1 {
+  padding-bottom: 1%;
+  font-family: var(--oswald);
+}
+
+.menulist {
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 260px;
+  padding-bottom: 5px;
+  gap: 20px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 10px rgba(0,0,0,0.25);
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-container:hover {
+  transform: scale(1.05);
+  background-color: #FFA9A9;
+}
+
+.menu-image {
+  width: 100%;
+  height: 180px;
+  background: #f4f7f8;
+  overflow: hidden;
+}
+
+.menu-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.4s ease;
+}
+
+.menu-description {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  padding: 15px;
+}
+
+.menu-description h3 {
+  margin-top: -5%;
+  text-align: left;
+  font-family: var(--oswald);
+}
+
+.menu-description h2 {
+  font-weight: bold;
+  margin-top: -5%;
+  font-family: var(--oswald);
+}
+
+/* ======= SAUCE SECTION ======= */
+.sauce {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+  text-align: center;
+  margin-left: 10%;
+  margin-bottom: 100px;
+}
+
+.section.sauce-extra {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 25px;
+}
+
+.section.sauce-extra > div {
+  flex: 1;
+}
+
+.count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: -10px;
+}
+
+.count button {
+  background: none;
+  border: 1px solid #333;
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+button.option {
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+button.option:hover {
+  background: #eee;
+}
+
+button.option.selected {
+  background: #ffd8d8;
+  border-color: #ff4a4a;
+}
+
+.section.mix-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 30px;
+}
+
+/* ======= TABLE / INVENTORY ======= */
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  font-family: var(--oswald);
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: var(--mustard);
+  color: var(--black);
+  font-weight: bold;
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tr:hover {
+  background-color: #ffa9a9;
+}

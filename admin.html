@@ -13,6 +13,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Chick Chicken - Admin</title>
 </head>
 
@@ -78,11 +79,6 @@
         <section id="orders--admin" class="page-content">
             <div class="header--orders">
             <h1>Order Details</h1>
-                <div class="icons--admin">
-                    <img src="assets\bell.png" alt="bell">
-                    <img src="assets\profile.png" alt="profile">
-                    <img src="assets\cog.png" alt="settings">
-                </div>
             </div>
 
             <table class="order--track">
@@ -103,11 +99,6 @@
                 <td>Preparing</td>
             </tr>
             </table> 
-
-
-
-
-
             </section>
 
 
@@ -117,24 +108,374 @@
 
 
 
-        <section id="menus--admin" class="page-content">
-            <h1>Menus</h1>
-            <p>Manage your menu items here...</p>
-        </section>
+<section id="menus--admin" class="page-content">
+
+  <div class="header--orders">
+    <h1>Menu</h1>
+  </div>
+
+  <section id="menus-mains" style="margin-bottom: 30px;">
+    <h1>Mains</h1>
+    <div class="menulist">
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Chick_Rice.png" alt="Chick Rice">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Chick Rice</h3>
+          <h2>₱169+</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Chick_Fries.png" alt="Chick Fries">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Chick Fries</h3>
+          <h2>₱169+</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Mac_Chick.png" alt="Mac & Chick">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Mac & Chick</h3>
+          <h2>₱189+</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/AddChickTender.png" alt="Additional Chicken Tender">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Chicken Tender</h3>
+          <h2>₱289+</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container d-flex flex-column justify-content-center align-items-center" style="gap: 15px; cursor: pointer;">
+        <button type="button" class="btn p-0 border-0" data-bs-toggle="modal" data-bs-target="#menuModal">
+          <img src="assets/plus-button (3).png" alt="Add Item" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px;">
+        </button>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 5px;">
+          <span style="font-weight: 600; font-size: 16px;">Add menu</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="menus-combo" style="margin-bottom: 30px;">
+    <h1>Combo Tenders</h1>
+    <div class="menulist">
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/SuperChick.png" alt="Super Chick">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Super Chick</h3>
+          <h2>₱339</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Chick_One.png" alt="Chick One">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Chick One</h3>
+          <h2>₱289</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Chick_Two.png" alt="Chick Two">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Chick Two</h3>
+          <h2>₱299</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Chick_Five.png" alt="Chick Five">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Chick Five</h3>
+          <h2>₱319</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container d-flex flex-column justify-content-center align-items-center" style="gap: 15px; cursor: pointer;">
+        <button type="button" class="btn p-0 border-0" data-bs-toggle="modal" data-bs-target="#menuModal">
+          <img src="assets/plus-button (3).png" alt="Add Item" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px;">
+        </button>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 5px;">
+          <span style="font-weight: 600; font-size: 16px;">Add menu</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="menus-sauces">
+    <h1>Sauces</h1>
+    <div class="menulist">
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Sauce2.png" alt="Extra Sauce">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Extra Sauce</h3>
+          <h2>₱40</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container">
+        <div class="menu-image">
+          <img src="menuassets/Sauce16.png" alt="Jumbo Sauce (16oz)">
+        </div>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 10px;">
+          <h3>Jumbo Sauce</h3>
+          <h2>₱179</h2>
+          <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#menuModal">MODIFY</button>
+        </div>
+      </div>
+
+      <div class="menu-container d-flex flex-column justify-content-center align-items-center" style="gap: 15px; cursor: pointer;">
+        <button type="button" class="btn p-0 border-0" data-bs-toggle="modal" data-bs-target="#menuModal">
+          <img src="assets/plus-button (3).png" alt="Add Item" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px;">
+        </button>
+        <div class="menu-description d-flex flex-column align-items-center" style="gap: 5px;">
+          <span style="font-weight: 600; font-size: 16px;">Add menu</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="menuModalLabel">Modify Menu Item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form class="p-2">
+            <div class="mb-3">
+              <label for="menu-title" class="form-label">Menu Title</label>
+              <input type="text" class="form-control" id="menu-title" placeholder="Enter menu name">
+            </div>
+
+            <div class="mb-3">
+              <label for="menu-image" class="form-label">Menu Image</label>
+              <input class="form-control" type="file" id="menu-image">
+            </div>
+
+            <div class="row mb-3 g-2">
+              <div class="col">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" placeholder="₱">
+              </div>
+              <div class="col">
+                <label for="double-price" class="form-label">Double</label>
+                <input type="number" class="form-control" id="double-price" placeholder="₱">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label class="form-label">Sauce</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="option1-1">
+                  <label class="form-check-label" for="option1-1">Garlic Mayo</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="option1-2">
+                  <label class="form-check-label" for="option1-2">Chick Sauce</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="option1-3">
+                  <label class="form-check-label" for="option1-3">Cheese Sauce</label>
+                </div>
+              </div>
+
+              <div class="col">
+                <label class="form-label">Flavor</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="option2-1">
+                  <label class="form-check-label" for="option2-1">Hot Buffalo</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="option2-2">
+                  <label class="form-check-label" for="option2-2">Salted Egg</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
 
 
 
+<section id="inventory--admin" class="page-content">
+<div class="header--orders">
+<h1>Inventory</h1>
+</div>
 
+  <div class="d-flex justify-content-center mb-3 gap-2">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inventoryModal">Add</button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#inventoryModal">Modify</button>
+    <button type="button" class="btn btn-danger">Remove</button>
+  </div>
 
+<table class="table table-striped text-center shadow-none">
+    <thead>
+        <tr >
+        <th scope="col">#</th>
+        <th scope="col">Item/s</th>
+        <th scope="col">Initial Stock</th>
+        <th scope="col">Remaining</th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider ">
+        <tr>
+        <th scope="row">1</th>
+        <td>Chick Rice</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <tr>
+        <th scope="row">2</th>
+        <td>Chick Fries</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <tr>
+        <th scope="row">3</th>
+        <td>Mac & Chick</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">4</th>
+        <td>Fully Loaded Chick</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">5</th>
+        <td>Super Chick</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">6</th>
+        <td>Chick One</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">7</th>
+        <td>Chick Two</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">8</th>
+        <td>Chick Five</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">9</th>
+        <td>Additional Chicken Tender</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">10</th>
+        <td>Additional Brioche Toast</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+        <th scope="row">11</th>
+        <td>Extra Sauce</td>
+        <td>50</td>
+        <td>25</td>
+        </tr>
+    </tbody>
+</table>
 
-        <section id="inventory--admin" class="page-content">
-            <h1>Inventory</h1>
-            <p>Manage your stock levels here...</p>
-        </section>
+<div class="modal fade" id="inventoryModal" tabindex="-1" aria-labelledby="inventoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
 
+      <div class="modal-header">
+        <h5 class="modal-title" id="inventoryModalLabel">Modify Inventory Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
 
+      <div class="modal-body">
+        <form class="p-2">
+          <div class="mb-3">
+            <label for="item-id" class="form-label">ID Number</label>
+            <input type="number" class="form-control" id="item-id" placeholder="Enter ID number">
+          </div>
 
+          <div class="mb-3">
+            <label for="item-name" class="form-label">Item Name</label>
+            <input type="text" class="form-control" id="item-name" placeholder="Enter item name">
+          </div>
 
+          <div class="row mb-3 g-2">
+            <div class="col">
+              <label for="initial-stock" class="form-label">Stock</label>
+              <input type="number" class="form-control" id="initial-stock" placeholder="Initial Stock">
+            </div>
+            <div class="col">
+              <label for="remaining-stock" class="form-label">Remaining</label>
+              <input type="number" class="form-control" id="remaining-stock" placeholder="Remaining">
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
 
 
         <section id="analytics--admin" class="page-content">
@@ -144,6 +485,7 @@
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
