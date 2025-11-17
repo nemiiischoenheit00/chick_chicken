@@ -80,6 +80,7 @@ header {
 
 .logo {
   justify-content: center;
+  padding-top: 20px;
 }
 
 nav ul li {
@@ -232,12 +233,14 @@ padding-right: 5px;
 }
 
 .btn-directions, .btn-order-now {
-  padding: 10px 20px;
+  padding: 10px 1px;
   border-radius: 20px; 
   cursor: pointer;
   font-size: large;
   font-weight: bold;
   width: 250px; 
+  text-decoration: none;
+  text-align: center;
 }
 
 .btn-directions {
@@ -258,6 +261,43 @@ padding-right: 5px;
 }
 
 
+
+
+.back-btn {
+  flex-direction: column;
+  display: flex;
+  gap: 10px; 
+  align-items: center;
+  margin: 20px;
+}
+
+.btn-directions, .btn-order-now {
+  padding: 10px 1px;
+  border-radius: 20px; 
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  width: 250px; 
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-directions {
+  background-color: var(--white);
+  border: 2px solid var(--black);
+  color: var(--black);
+  text-decoration: none;
+}
+
+.btn-directions:hover {
+  border-color: var(--wine-red);
+}
+
+.btn-order-now {
+  background-color: var(--wine-red);
+  border: none;
+  color: var(--white);
+}
 
 
 /*slider ngani imma fix the names latur para di magmix mix mga names ng codes naten stay muna itech*/
@@ -411,7 +451,7 @@ padding-right: 5px;
   display: flex;
   align-items: center;
   background-color: var(--red);
-  color: var(--white);
+  color: white;
   margin-top: 40px;
   margin-bottom: 40px;
 }
@@ -429,15 +469,18 @@ padding-right: 5px;
 .text-welcome-box {
   font-size: x-large;
   padding-right: 80px;
-
+  color: var(--white);
 }
 
 .text-welcome-box h1 {
   font-weight: 600;
+  color: #ffffff;
+  font-size: x-large;
 }
 
 .text-welcome-box p {
   font-family: "Alegreya Sans", sans-serif;
+  color: #ffffff;
 }
 
 /* END OF WELCOME BOX STYLING */
@@ -523,7 +566,6 @@ padding-right: 5px;
   background-color: #FFD733;
   color: #000;
   padding: 50px 0 20px;
-  font-family: Arial, sans-serif;
   font-size: 18px;
   width: 100%;
 }
@@ -561,6 +603,7 @@ padding-right: 5px;
   font-weight: bold;
   margin-bottom: 14px;
   line-height: 1.2;
+  font-family: "Oswald", sans-serif;
 }
 
 .footer-logo {
@@ -574,6 +617,7 @@ padding-right: 5px;
   list-style: none;
   padding: 0;
   margin: 0;
+  font-family: "Alegreya Sans", sans-serif;
 }
 
 .footer-info ul li,
@@ -595,6 +639,7 @@ padding-right: 5px;
 
 .footer-section p {
   margin: 0 0 10px 0;
+  font-family: "Alegreya Sans", sans-serif;
 }
 .social-icons {
   display: flex;
@@ -619,6 +664,7 @@ padding-right: 5px;
   font-size: 14px;
   border-top: 1px solid rgba(0,0,0,0.2);
   padding-top: 15px;
+  font-family: "Oswald", sans-serif;
 }
 
 /* End of footer ngani */
@@ -743,6 +789,8 @@ hr {
   flex-direction: column;
 }
 
+
+
 /* MAIN CHECKOUT */
 .checkout-container {
   width: 80%;
@@ -819,6 +867,15 @@ hr {
   cursor: pointer;
   transition: 0.3s;
 }
+
+.card_pay {
+  text-decoration: none;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+
 .method:hover {
   border-color: #ffcc00;
   background-color: #fff7d1;
@@ -826,5 +883,147 @@ hr {
 .method img {
   height: 40px;
   margin-bottom: 10px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  outline: none;
 }
 /* End of Cheykout */
+
+
+/*Disclaimer Overlay*/
+.disclaimer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 9999;
+}
+
+.disclaimer.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.disclaimer h1 {
+  font-family: 'Oswald', sans-serif;
+  margin-top: 2.5rem;
+}
+
+.disclaimer p {
+  font-family: 'Alegreya Sans', sans-serif;
+  font-size: 1.2rem;
+}
+
+.overlay {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.overlay-logo {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 0px;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.5rem 2rem;
+  border: none;
+  background: #ff4d4d;
+  color: white;
+  border-radius: 3rem;
+  cursor: pointer;
+  font-family: 'Alegreya Sans', sans-serif;
+  font-size: 1.2rem;
+}
+
+button:hover {
+  background: #e23c3c;
+}
+/*disclaimer*/
+
+
+/* Start of feederback */
+.containerfeedback {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #ffcc00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  background: white;
+  border: 2px solid #ffcc00;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  width: 500px;
+  height: 350px;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.star-rating {
+  direction: rtl;
+  display: inline-flex;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 35px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: red;
+}
+
+.star-rating input:checked ~ label {
+  color: red;
+}
+/* End of feederback */

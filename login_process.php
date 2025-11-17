@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
@@ -33,7 +36,6 @@ if ($result->num_rows == 0) {
 
 $passrow = $result->fetch_assoc();
 $hashed_password_db = $passrow['password'];
-
 
 if ($email == "admin@gmail.com" && $password == "admin") {
     header("Location: admin.html");

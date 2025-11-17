@@ -16,7 +16,7 @@
 
         <div class="login-form">
             <div class="form-box">
-                <img src="logo.png" alt="Chick Chicken Logo" class="logo">
+                <img src="assets\Logo2.png" alt="Chick Chicken Logo" class="logo">
                 <h2>User Login</h2>
                 <form action="login_process.php" method="POST">
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
