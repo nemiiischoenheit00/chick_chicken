@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="icon" type="Image" href="assets/Logo.png"/>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="payment.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
@@ -44,11 +44,41 @@
             <button id="closeBtn">Close</button>
         </div>
      </div>
+    
+    <div class="checkout">
+      <h1>CHECKOUT</h1>
+      <hr>
+      <h2>Proof of Payment</h2>
+
+      <div class="qr-container">
+    
+        <div class="qrcode">
+            <img src="assets/qrcode.png" alt="QR Code" class="qr-img">
+            <p class="qr-caption">Scan this QR Code to pay</p>
+        </div>
+
+        <div class="upload-box">
+          <div class="upload-inner">
+            <ion-icon name="cloud-upload-outline"></ion-icon>
+            <button class="browse-btn">Browse</button>
+            <p class="drop-text">drop a file here</p>
+          </div>
+          <p class="upload-caption">Upload Proof of Payment Here</p>
+        </div>
+
+      </div>
+      <div style="text-align:center;">
+        <button class="proceed-btn">PROCEED</button>
+      </div>
+
+    </div>
+    
+    
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="payment.js"></script>
   </body>
 
 </html>
