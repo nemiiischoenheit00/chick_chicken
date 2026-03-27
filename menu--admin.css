@@ -122,9 +122,19 @@ nav ul li {
     padding: 40px;
 }
 
-.page-content {
-    display: none !important;
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
 }
+
+
+
+.page-content {
+    margin-left: 250px;
+    /* same as sidebar width */
+    padding: 20px;
+}
+
 
 .page-content.active {
     display: block !important;
@@ -171,6 +181,7 @@ nav ul li {
     pointer-events: auto !important;
     cursor: pointer;
     z-index: 10;
+
 }
 
 .menu-container:hover {

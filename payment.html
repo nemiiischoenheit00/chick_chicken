@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="Image" href="assets/Logo.png" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="payment.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap"
+        rel="stylesheet">
+    <title>Chick Chicken</title>
+</head>
+
+<header>
+    <div class="logo">
+        <h1>
+            <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px" /></a>
+        </h1>
+    </div>
+
+    <div class="navi--header">
+        <nav>
+            <ul>
+                <li><a href="aboutus.html" class="header_button">About Us</a></li>
+                <li><a href="#FAQS" class="header_button">FAQs</a></li>
+                <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+
+                <li><a href="signup.php" class="header_button">Sign In</a></li>
+
+                <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<body>
+    <div class="disclaimer" id="disclaimer">
+        <div class="overlay">
+            <img src="assets/Logo3.png" alt="ChickChicken Logo" class="overlay-logo">
+            <h1>Disclaimer!</h1>
+            <p>
+                The time slot you choose serves as your confirmed booking and pick-up time. Please note that deliveries
+                are self-arranged via Lalamove, so you'll need to book your own rider accordingly. Website orders are
+                accepted only from 10:30 AM to 7:00 PM; after 7:00 PM, only walk-in customers will be
+                accommodated in-store. If a time slot appears as unavailable, it means that slot is already full.
+            </p>
+            <button id="closeBtn">Close</button>
+        </div>
+    </div>
+
+    <div class="checkout">
+        <h1>CHECKOUT</h1>
+        <hr>
+        <h2>Proof of Payment</h2>
+
+        <div class="qr-container">
+
+            <div class="qrcode">
+                <img src="assets/qrcode.png" alt="QR Code" class="qr-img">
+                <p class="qr-caption">Scan this QR Code to pay</p>
+            </div>
+
+            <div class="upload-box">
+                <div class="upload-inner">
+                    <ion-icon name="cloud-upload-outline"></ion-icon>
+                    <button class="browse-btn">Browse</button>
+                    <p class="drop-text">drop a file here</p>
+                </div>
+                <p class="upload-caption">Upload Proof of Payment Here</p>
+            </div>
+
+        </div>
+        <div style="text-align:center;">
+            <a href="feedback.html" class="feedback-btn">PROCEED</a>
+        </div> 
+
+    </div>
+
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    
+    
+    <script src="payment.js"></script>
+</body>
+
+</html>

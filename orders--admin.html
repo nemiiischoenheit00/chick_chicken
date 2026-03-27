@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="Image" href="assets/Logo.png" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="orders--admin.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+    </style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');
+    </style>
+    <title>Chick Chicken - Admin</title>
+</head>
+
+<body>
+    <header>
+        <div class="sidebar">
+            <div class="logo">
+                <h1>
+                    <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken"
+                            style="width: auto; height: 55px" /></a>
+                </h1>
+            </div>
+            <div class="navigation--admin">
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="admin.html#dashboard--admin" class="header_button">
+                                <ion-icon name="grid-outline"></ion-icon>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="orders--admin.html" class="header_button active">
+                                <ion-icon name="bag-handle-outline"></ion-icon>
+                                <span>Orders</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="menu--admin.html" class="header_button">
+                                <ion-icon name="book-outline"></ion-icon>
+                                <span>Menus</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="inventory.html" class="header_button">
+                                <ion-icon name="clipboard-outline"></ion-icon>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+    <div class="header--orders">
+        <h1>Order Details</h1>
+    </div>
+
+
+ 
+        <div class="orders">
+            <table class="table table-striped text-center shadow-none">
+                <thead>
+                    <tr>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Order Status</th>
+                    </tr>
+
+
+                </thead>
+                <tbody class="table-group-divider ">
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>12:58 pm</td>
+                        <td>Avionah Eserjorse</td>
+                        <td>19 J.P. Rizal Ext, West Rembo</td>
+                        <td>₱670.55</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="1"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>12:58 pm</td>
+                        <td>Danielle Cruz</td>
+                        <td>120 L.P. Leviste St, Salcedo Village</td>
+                        <td>₱1000.75</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="2"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>12:51 pm</td>
+                        <td>Bernadette Abrina</td>
+                        <td>24 Daffodil St, South Cembo</td>
+                        <td>₱167.30</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="3"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>12:00 pm</td>
+                        <td>Junior Pasamba</td>
+                        <td>35 Mckinley Ave, Pembo</td>
+                        <td>₱560.98</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="4"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>11:55 am</td>
+                        <td>Pepito Manaloto</td>
+                        <td>C-5 Road, Post Proper Southside</td>
+                        <td>₱157.50</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="5"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>11:51 am</td>
+                        <td>Elsa Manaloto</td>
+                        <td>67 E. Dela Costa St, Urdaneta</td>
+                        <td>₱367.30</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="6"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>11:18 am</td>
+                        <td>James Ganongan</td>
+                        <td>170 Caimito St, Comembo</td>
+                        <td>₱178</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="7"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">20251011</th>
+                        <td>10:58 am</td>
+                        <td>Jerwin Bayud</td>
+                        <td>75 P. Domingo Street, Carmona</td>
+                        <td>₱490.89</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" data-order-id="8"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Pending
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="statusButton">
+                                    <a class="dropdown-item status-item" href="#">Pending</a>
+                                    <a class="dropdown-item status-item" href="#">Accepted</a>
+                                    <a class="dropdown-item status-item" href="#">Denied</a>
+                                    <a class="dropdown-item status-item" href="#">Canceled</a>
+                                    <a class="dropdown-item status-item" href="#">Delivered</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   console.log("orders.js loaded");
 
   // Elements
@@ -218,3 +218,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }[s]));
   }
 });
+*/

@@ -1,4 +1,4 @@
-/*Chekout Disclaimer*/
+/*Chekout Disclaimer
 window.addEventListener("load", () => {
   const disclaimer = document.getElementById("disclaimer");
   const closeBtn = document.getElementById("closeBtn");
@@ -18,3 +18,5 @@ window.addEventListener("load", () => {
     console.error("❌ Close button not found!");
   }
 });
+
+*/

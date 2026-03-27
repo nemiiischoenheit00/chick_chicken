@@ -7,97 +7,43 @@
     <link rel="icon" type="Image" href="assets/Logo.png"/>
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
     <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
     <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Chick Chicken</title>
   </head>
 
-  <header>
-    <div class="logo">
-      <h1>
-        <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
-      </h1>
-    </div>
+<header>
+  <div class="logo">
+    <h1>
+      <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px" /></a>
+    </h1>
+  </div>
+
+  <div class="navi--header">
     <nav>
       <ul>
-          <li><a href="aboutus.html" class="header_button">About Us</a></li>
-          <li><a href="#FAQS" class="header_button">FAQs</a></li>
-          <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
-          <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
+        <li><a href="aboutus.html" class="header_button">About Us</a></li>
+        <li><a href="#FAQS" class="header_button">FAQs</a></li>
+        <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+
+        <li><a href="login.php" class="header_button">Sign In</a></li>
+
+        <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
       </ul>
     </nav>
-  </header>
+  </div>
+</header>
 
 <body>
-  <section id="tranding">
-      <div class="container">
-        <div class="swiper tranding-slider">
-          <div class="swiper-wrapper">
-            <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="menuassets\Chick_Fries.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end --> 
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             <!-- Slide-start -->
-            <div class="swiper-slide tranding-slide">
-              <div class="tranding-slide-img">
-                <img src="assets\temporary1.png" alt="Tranding">
-              </div>
-            </div>
-            <!-- Slide-end -->
-             
-          </div>
 
-          <div class="tranding-slider-control">
-            <div class="swiper-button-prev slider-arrow">
-              <ion-icon name="arrow-back-outline"></ion-icon>
-            </div>
-            <div class="swiper-button-next slider-arrow">
-              <ion-icon name="arrow-forward-outline"></ion-icon>
-            </div>
-            <div class="swiper-pagination"></div>
-          </div>
-
-        </div>
-      </div>
-    </section>
+  <div class="welcomepicture">
+    <img src="assets\pamilya.png">
+  </div>
 
 
 <!--WELCOME BOX-->
@@ -193,7 +139,109 @@
     
 <!--End of FAQ Section-->
 
-    
+  <!--FEEDBACK-->  
+<section style="height: 140vh; background-color: white;">
+  <div class="position-relative w-100"
+    style="height: 30vh; background: url('assets/BIG CHICKEN.png') center/cover no-repeat;">
+    <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
+      <h1 class="fw-bold mb-2" style="font-size: 2.5rem;">WE’VE GOT YOU COVERED</h1>
+      <p class="fw-medium mb-0" style="font-size: 1.5rem;">A Delicious Treat For Any Hungry Day!</p>
+    </div>
+
+    <img src="assets/eeping chimcken.png" alt="Sleeping Chicken" class="position-absolute start-50 translate-middle-x"
+      style="bottom: -50px; width: auto; max-width: 200px; height: auto;">
+  </div>
+
+  <div class="d-flex flex-column align-items-center justify-content-center mt-5">
+    <h2 class="fw-bold mb-1 text-danger">💛 4.8/5</h2>
+    <p class="mb-0 fw-medium">10 reviews</p>
+  </div>
+
+  <div class="container mt-4 d-flex flex-wrap justify-content-between gap-4">
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">John Doe</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐⭐</h6>
+        <p class="card-text">"Amazing service! The food was delicious and arrived on time. Highly recommend to anyone!"
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">Jane Smith</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐</h6>
+        <p class="card-text">"Very tasty meals and friendly staff. Will definitely order again."</p>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">Alex Johnson</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐⭐</h6>
+        <p class="card-text">"The best experience I've had in a long time. Great flavors and presentation."</p>
+      </div>
+    </div>
+
+    <div class="card" style="flex: 1 1 45%; min-width: 300px;">
+      <div class="card-body">
+        <h5 class="card-title">Emily Davis</h5>
+        <h6 class="card-subtitle mb-2 text-muted">⭐⭐⭐⭐</h6>
+        <p class="card-text">"Good food, quick delivery, and excellent customer service. Very satisfied!"</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center d-flex align-items-center justify-content-center" style="margin-top: 60px;">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reviewModal"
+      style="background-color:#FF4C61; color:white; padding:1rem 2rem; font-size:1.25rem; border-radius:50px; border:none; display: flex; align-items: center; justify-content: center;">
+      Submit Your Review
+      <img src="assets/PINCIL.png" alt="icon" style="width:24px; height:24px; margin-left: 10px;">
+    </button>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reviewModalLabel">Submit Your Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="reviewerName" class="form-label">Name</label>
+              <input type="text" class="form-control" id="reviewerName" placeholder="Your name">
+            </div>
+            <div class="mb-3">
+              <label for="reviewText" class="form-label">Review</label>
+              <textarea class="form-control" id="reviewText" rows="4" placeholder="Write your review here"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="reviewRating" class="form-label">Rating</label>
+              <select class="form-select" id="reviewRating">
+                <option selected>⭐⭐⭐⭐⭐</option>
+                <option>⭐⭐⭐⭐</option>
+                <option>⭐⭐⭐</option>
+                <option>⭐⭐</option>
+                <option>⭐</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Submit Review</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
   <!-- footer ngani -->
 <footer class="footer">
@@ -237,7 +285,8 @@
 </footer>
 <!-- end of footer ngani -->
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>

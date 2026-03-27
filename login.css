@@ -1,3 +1,26 @@
+/* Color ": var(___);" */
+:root {
+    --mustard: #FFDE59;
+    --red: #FF0000;
+    --black: #000;
+    --wine-red: #9A0404;
+    --sans: sans-serif;
+    --primary: #ec994b;
+    --white: #ffffff;
+}
+
+.oswald {
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.alegreya-sans-regular {
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -23,18 +46,22 @@ html, body {
     flex-direction: column;
     justify-content: center;
     padding: 60px 50px;
-    color:#FFFFFF;
+    color: #000;
 }
 
 .greetings h1 {
     font-size: 4em;
     font-weight: bold;
     margin-bottom: 20px;
+    font-family: 'Oswald', sans-serif;
+    color: #000;
 }
 
 .greetings p {
     font-size: 2em;
     line-height: 1.8;
+    font-family: "Alegreya Sans", sans-serif;
+    color: #000;
 }
 
 .login-form {
