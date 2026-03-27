@@ -66,73 +66,99 @@ html {
 
 
 /* HEADER STYLING */
+/* HEADER STYLING */
 header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    padding: 10px 50px;
-    position: sticky;
-    top: 0;
-    background-color: var(--mustard);
-    z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* height: 60px;  <-- REMOVED THIS. It was too small and cutting off the button */
+  min-height: 50px;
+  /* Added this instead to ensure enough room */
+  padding: 2px 30px;
+  position: sticky;
+  top: 0;
+  background-color: var(--mustard);
+  z-index: 1000;
+  font-family: 'Oswald';
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Optional: Adds a nice shadow */
 }
 
-.logo {
-  justify-content: center;
-  padding-top: 20px;
+header a {
+  color: var(--red) !important;
+  text-decoration: none;
+}
+
+/* This fixes the alignment of the list items */
+nav ul {
+  display: flex;
+  /* Uses Flexbox instead of inline-block */
+  align-items: center;
+  /* Vertically centers everything perfectly */
+  gap: 30px;
+  /* Adds space between the words */
+  margin: 0;
+  /* Removes default browser margin */
+  padding: 0;
+  /* Removes default browser padding */
 }
 
 nav ul li {
-    list-style: none;
-    display: inline-block;
+  list-style: none;
+  /* display: inline-block; <-- REMOVED THIS. Flexbox on the UL handles it now */
 }
 
-nav ul li a {
-    text-decoration: none;
-    color: var(--red);
-    font-size: 22px; 
-    padding: 0 15px;
-    font-family: var(--oswald);
+header nav ul li a,
+header .sign--in li a {
+  color: var(--red) !important;
 }
 
+/* Navigation Links Styling */
 .header_button {
-    position: relative;
-    padding-bottom: 5px;
+  position: relative;
+  padding-bottom: 5px;
+  font-size: 22px;
+  transition: color 0.3s ease;
 }
 
 .header_button::after {
-    color: var(--wine-red);
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    height: 3px;
-    width: 100%;
-    left: 0;
-    background-color: var(--red);
-    transition: all 0.3s ease-in-out;
-    transition-timing-function: ease-in-out;
-    transform: scale(0);
+  color: var(--wine-red);
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  height: 3px;
+  width: 100%;
+  left: 0;
+  background-color: var(--red);
+  transition: all 0.3s ease-in-out;
+  transform: scale(0);
 }
 
 .header_button:hover::after {
-    transform: scale(1);
+  transform: scale(1);
 }
 
+/* Order Button Styling */
 .ordernow_button {
-    display: flex;
-    align-items: center;
-    gap: 8px; 
-    background-color: var(--red);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 40px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+  display: inline-block;
+  /* Changed to inline-block so it respects padding */
+  background-color: var(--red);
+  color: #fff !important;
+  padding: 12px 30px;
+  /* Adjusted padding for a better look */
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  z-index: 1000;
+  font-size: 22px;
+  line-height: 1;
+  /* Prevents font height from messing up the button size */
 }
 
-.ordernow_button.glow {
-    box-shadow: 0 0 10px var(--red);
+.ordernow_button:hover {
+  transform: scale(1.05);
+  /* Adds a small pop effect on hover */
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
 }
 
 .my_cart {
@@ -143,306 +169,20 @@ padding-right: 5px;
 
 /* END OF HEADER STYLING */
 
-/*branch locator*/
 
-.branch-locator {
-  margin-left: auto;
-  margin-right: auto;
-}
 
-.header-text-branch {
-  width: 890px; 
-  max-width: 90%; 
-  margin: 40px auto; 
-  padding: auto;
-  border-bottom: 1px solid var(--black);
-  text-align: center;
-  font-weight: bold;
-}
 
-.branch-locator-box {
+
+.welcomepicture {
+  margin-top:40px;
   display: flex;
-  align-items: center; 
-  margin: 0 auto 30px auto;
-  padding: 20px;
-  flex-direction: row; 
-  justify-content: space-between; 
-  width: 850px; 
-  max-width: 90%; 
-  border-radius: 15px;
-  box-shadow: 0 0 4px var(--black);
-  border-style: solid;
-  border-width: 2px;
-  border-color: var(--black);
-  margin-bottom: 30px;
-}
-
-.branch-container {
-  margin: 40px;
-}
-
-.branch-locator-box:hover {
-  border-color: var(--wine-red);
-}
-
-.branch-locator-box img {
-  width: auto;
-  height: 40px;
-}
-
-.branch-locator-text {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  max-width: 70%;
-  margin-top: 0;
-  margin-bottom: 0;
-  color: var(--wine-red);
-}
-
-.branch-locator-text h2 {
-  margin: 0;
-  line-height: 1.2;
-  font-size: 1.7rem;
-  font-weight: bold;
-}
-
-.branch-locator-text h3 {
-  margin-top: 0;
-  line-height: 1.2;
-  font-size: larger;
-  font-weight: normal;
-}
-
-.hours h3 {
-  margin: 0;
-  margin-left: 0; 
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.btn-directions a{
-  text-decoration: none;
-  color: var(--wine-red);
-}
-
-.btn_branch {
-  flex-direction: column;
-  display: flex;
-  gap: 10px; 
-}
-
-.btn-directions, .btn-order-now {
-  padding: 10px 1px;
-  border-radius: 20px; 
-  cursor: pointer;
-  font-size: large;
-  font-weight: bold;
-  width: 250px; 
-  text-decoration: none;
-  text-align: center;
-}
-
-.btn-directions {
-  background-color: var(--white);
-  border: 2px solid var(--black);
-  color: var(--black);
-  text-decoration: none;
-}
-
-.btn-directions:hover {
-  border-color: var(--wine-red);
-}
-
-.btn-order-now {
-  background-color: var(--wine-red);
-  border: none;
-  color: var(--white);
-}
-
-
-
-
-.back-btn {
-  flex-direction: column;
-  display: flex;
-  gap: 10px; 
-  align-items: center;
-  margin: 20px;
-}
-
-.btn-directions, .btn-order-now {
-  padding: 10px 1px;
-  border-radius: 20px; 
-  cursor: pointer;
-  font-size: large;
-  font-weight: bold;
-  width: 250px; 
-  text-decoration: none;
-  text-align: center;
-}
-
-.btn-directions {
-  background-color: var(--white);
-  border: 2px solid var(--black);
-  color: var(--black);
-  text-decoration: none;
-}
-
-.btn-directions:hover {
-  border-color: var(--wine-red);
-}
-
-.btn-order-now {
-  background-color: var(--wine-red);
-  border: none;
-  color: var(--white);
-}
-
-
-/*slider ngani imma fix the names latur para di magmix mix mga names ng codes naten stay muna itech*/
-.container {
-  max-width: 124rem;
-  padding: 0 1rem;
-  margin: 0 auto;
-}
-
-#tranding {
-  padding: 2rem 0;
-}
-
-@media (max-width:1440px) {
-  #tranding {
-    padding: 2rem 0;
-  }
-}
-
-#tranding .tranding-slider {
-  height: 35rem;
-  padding: 1rem 0;
-  position: relative;
-}
-
-@media (max-width:500px) {
-  #tranding .tranding-slider {
-    height: 45rem;
-  }
-}
-
-.tranding-slide {
-  width: 70rem;
-  height: 30rem;
-  position: relative;
-}
-
-@media (max-width:500px) {
-  .tranding-slide {
-    width: 70rem !important;
-    height: 30rem !important;
-  }
-  .tranding-slide .tranding-slide-img img {
-    width: 70rem !important;
-    height: 30rem !important;
-  }
-}
-
-.tranding-slide .tranding-slide-img img {
-  width: 70rem;
-  height: 30rem;
-  border-radius: 0rem;
-  object-fit: cover;
-}
-
-.tranding-slide .tranding-slide-content {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-
-.swiper-slide-shadow-left,
-.swiper-slide-shadow-right {
-  display: none;
-}
-
-.tranding-slider-control {
-  position: relative;
-  bottom: 2rem;
-  display: flex;
-  align-items: center;
   justify-content: center;
 }
 
-.tranding-slider-control .swiper-button-prev, .swiper-button-next {
-  z-index: 1000;
-}
 
-.tranding-slider-control .swiper-button-next {
-  left: 58% !important;
-  transform: translateX(-58%) !important;
-}
-
-@media (max-width:990px) {
-  .tranding-slider-control .swiper-button-next {
-    left: 70% !important;
-    transform: translateX(-70%) !important;
-  }
-}
-
-@media (max-width:450px) {
-  .tranding-slider-control .swiper-button-next {
-    left: 80% !important;
-    transform: translateX(-80%) !important;
-  }
-}
-
-@media (max-width:990px) {
-  .tranding-slider-control .swiper-button-prev {
-    left: 30% !important;
-    transform: translateX(-30%) !important;
-  }
-}
-
-@media (max-width:450px) {
-  .tranding-slider-control .swiper-button-prev {
-    left: 20% !important;
-    transform: translateX(-20%) !important;
-  }
-}
-
-.tranding-slider-control .slider-arrow {
-  background: var(--white);
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  left: 42%;
-  transform: translateX(-42%);
-  filter: drop-shadow(0px 8px 24px rgba(18, 28, 53, 0.1));
-}
-
-.tranding-slider-control .slider-arrow ion-icon {
-  font-size: 2rem;
-  color: #222224;
-}
-
-.tranding-slider-control .slider-arrow::after {
-  content: '';
-}
-
-.tranding-slider-control .swiper-pagination {
-  position: relative;
-  width: 15rem;
-  bottom: 0rem;
-  z-index: 10;
-}
-
-.tranding-slider-control .swiper-pagination .swiper-pagination-bullet {
-  filter: drop-shadow(0px 8px 24px rgba(18, 28, 53, 0.1));
-}
-
-.tranding-slider-control .swiper-pagination .swiper-pagination-bullet-active {
-  background: var(--mustard);
+.welcomepicture img {
+  width: auto;
+  height: 40rem;
 }
 
 /* WELCOME BOX STYLING */
@@ -964,6 +704,66 @@ button:hover {
 
 
 /* Start of feederback */
+.containerfeedback {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #ffcc00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
+.card {
+  background: white;
+  border: 2px solid #ffcc00;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  width: 500px;
+  height: 350px;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.star-rating {
+  direction: rtl;
+  display: inline-flex;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 35px;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  color: red;
+}
+
+.star-rating input:checked ~ label {
+  color: red;
+}
 /* End of feederback */
-

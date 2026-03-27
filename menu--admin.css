@@ -90,7 +90,7 @@ nav ul li {
     padding: 12px 20px 12px 20px;
     border-radius: 20px 0 0 20px;
 
-    color: var(--black);
+    color: var(--gray);
     background-color: transparent;
     font-size: 22px;
     font-family: "Oswald", sans-serif;
@@ -106,7 +106,7 @@ nav ul li {
 .header_button:hover,
 .header_button.active {
     background-color: var(--white);
-    color: var(--black);
+    color: var(--mustard);
     border-radius: 20px 0 0 20px;
 }
 
@@ -122,9 +122,19 @@ nav ul li {
     padding: 40px;
 }
 
-.page-content {
-    display: none !important;
+.main-content {
+    margin-left: 220px;
+    padding: 40px;
 }
+
+
+
+.page-content {
+    margin-left: 250px;
+    /* same as sidebar width */
+    padding: 20px;
+}
+
 
 .page-content.active {
     display: block !important;
@@ -171,6 +181,7 @@ nav ul li {
     pointer-events: auto !important;
     cursor: pointer;
     z-index: 10;
+
 }
 
 .menu-container:hover {
