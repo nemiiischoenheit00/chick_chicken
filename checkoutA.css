@@ -1,3 +1,12 @@
+* *::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+}
+
 :root {
     --mustard: #FFDE59;
     --red: #FF0000;
@@ -6,6 +15,52 @@
     --oswald: 'Oswald', sans-serif;
     --primary: #ec994b;
     --white: #ffffff;
+}
+
+html,
+body {
+    display: block;
+    padding: 0;
+    margin: 20;
+    height: auto;
+    overflow-x: hidden;
+    font: var(--oswald);
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: "Oswald", sans-serif;
+}
+
+.oswald {
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.alegreya-sans-regular {
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+::-webkit-scrollbar {
+    width: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    background: #797979;
+    transition: all 0.5s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #222224;
+}
+
+::-webkit-scrollbar-track {
+    background: #f9f9f9;
 }
 
 header {
@@ -18,10 +73,11 @@ header {
     top: 0;
     background-color: var(--mustard);
     z-index: 1000;
+    
 }
 
 .logo {
-  justify-content: center;
+    justify-content: center;
 }
 
 nav ul li {
@@ -32,7 +88,7 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     color: var(--red);
-    font-size: 22px; 
+    font-size: 22px;
     padding: 0 15px;
     font-family: var(--oswald);
 }
@@ -72,23 +128,37 @@ nav ul li a {
 .ordernow_button.glow {
     box-shadow: 0 0 10px var(--red);
 }
+
 /* END OF HEADER STYLING */
 
 /* CHECKOUT A STYLING */
 .cons {
     width: 90%;
-    max-width: 900px;
-    margin: 20px auto;
+    max-width: 1300px;
+    margin: auto;    
     background: white;
     padding: 20px;
     border-radius: 6px;
 }
 
-h2, h3, h4 {
-    margin-bottom: 10px;
+h2,
+h3,
+h4 {
+    margin: auto;
+}
+
+.details {
+    margin : auto;
+    display: flex;
+}
+
+.dates {
+    margin : auto;
+    display: flex;
 }
 
 .order-box {
+    margin : auto;
     display: flex;
     align-items: center;
     background: #fafafa;
@@ -122,7 +192,7 @@ h2, h3, h4 {
     width: 100%;
     font-size: 20px;
     font-weight: bold;
-    
+
 }
 
 .dates {
@@ -159,7 +229,7 @@ h2, h3, h4 {
     font-size: 22px;
 }
 
-.date-item input:checked + span {
+.date-item input:checked+span {
     background: #f7d24c;
     color: #000;
     border-radius: 6px;
@@ -167,27 +237,28 @@ h2, h3, h4 {
 }
 
 .time-select {
-    width: 100%;
+    width: 99%;
     padding: 12px;
-    margin: 10px 0 20px 0;
+    margin: 10px 10px 20px 5px;
     border: 1px solid #bbb;
     border-radius: 6px;
     font-size: 16px;
 }
 
 .submit-btn {
-  display: block;
-  width: 60%;
-  margin: 30px auto 0 auto;
-  margin-top: 30px;
-  padding: 12px;
-  color : #fff;
-  background-color: #ff0000;
-  border: none;
-  border-radius: 12px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    display: block;
+    width: 60%;
+    margin: 30px auto 0 auto;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding: 12px;
+    color: #fff;
+    background-color: #ff0000;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .submit-btn:hover {
@@ -232,6 +303,7 @@ details[open] summary:after {
 .dropdown-content label {
     font-size: 15px;
 }
-/* END OF CHECKOUT A STYLING */
 
-
+.picktime{
+    margin-left: 13px;
+}
