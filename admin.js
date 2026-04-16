@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+/*document.addEventListener("DOMContentLoaded", function () {
 
     const navLinks = document.querySelectorAll(".header_button");
     const contentSections = document.querySelectorAll(".page-content");
@@ -110,3 +110,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+*/

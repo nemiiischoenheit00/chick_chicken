@@ -90,7 +90,7 @@ nav ul li {
     padding: 12px 20px 12px 20px;
     border-radius: 20px 0 0 20px;
 
-    color: var(--black);
+    color: var(--white);
     background-color: transparent;
     font-size: 22px;
     font-family: "Oswald", sans-serif;
@@ -106,7 +106,7 @@ nav ul li {
 .header_button:hover,
 .header_button.active {
     background-color: var(--white);
-    color: var(--black);
+    color: var(--mustard);
     border-radius: 20px 0 0 20px;
 }
 

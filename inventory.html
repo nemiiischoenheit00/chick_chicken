@@ -72,75 +72,98 @@
 </div>
 </div>
 
-<div style="margin-left: 200px; margin-right: 20px; display: flex; gap: 20px; align-items: flex-start;">
 
-  <div style="flex: 2;">
-    <div class="d-flex justify-content-center mb-3" style="gap: 10px;">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#inventoryModal">Add</button>
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#inventoryModal">Modify</button>
-        <button type="button" class="btn btn-danger">Remove</button>
-    </div>
+<div class="d-flex justify-content-center mb-3"  style="gap: 5px; margin-left: 140px;">
+    <button type="button" class="btn btn-success me-2" data-bs-toggle="modal"
+        data-bs-target="#inventoryModal">Add</button>
+    <button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal"
+        data-bs-target="#inventoryModal">Modify</button>
+    <button type="button" class="btn btn-danger">Remove</button>
+</div>
 
-    <div style="overflow-x: auto; max-width: 100%;">
-      <table class="table table-striped text-center shadow-none" style="margin-left: auto; margin-right: auto; width: 90%;">
+
+<div class="container" style="padding-left: 200px;">
+    <table class="table table-striped text-center shadow-none">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Item/s</th>
-                <th>Initial Stock</th>
-                <th>Remaining</th>
+                <th scope="col">#</th>
+                <th scope="col">Item/s</th>
+                <th scope="col">Initial Stock</th>
+                <th scope="col">Remaining</th>
             </tr>
         </thead>
+
         <tbody class="table-group-divider">
-            <tr><th>1</th><td>Chick Rice</td><td>50</td><td>25</td></tr>
-            <tr><th>2</th><td>Chick Fries</td><td>50</td><td>25</td></tr>
-            <tr><th>3</th><td>Mac & Chick</td><td>50</td><td>25</td></tr>
-            <tr><th>4</th><td>Fully Loaded Chick</td><td>50</td><td>25</td></tr>
-            <tr><th>5</th><td>Super Chick</td><td>50</td><td>25</td></tr>
-            <tr><th>6</th><td>Chick One</td><td>50</td><td>25</td></tr>
-            <tr><th>7</th><td>Chick Two</td><td>50</td><td>25</td></tr>
-            <tr><th>8</th><td>Chick Five</td><td>50</td><td>25</td></tr>
-            <tr><th>9</th><td>Additional Chicken Tender</td><td>50</td><td>25</td></tr>
-            <tr><th>10</th><td>Additional Brioche Toast</td><td>50</td><td>25</td></tr>
-            <tr><th>11</th><td>Extra Sauce</td><td>50</td><td>25</td></tr>
+            <tr>
+                <th scope="row">1</th>
+                <td>Chick Rice</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Chick Fries</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Mac & Chick</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">4</th>
+                <td>Fully Loaded Chick</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">5</th>
+                <td>Super Chick</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">6</th>
+                <td>Chick One</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">7</th>
+                <td>Chick Two</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">8</th>
+                <td>Chick Five</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">9</th>
+                <td>Additional Chicken Tender</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">10</th>
+                <td>Additional Brioche Toast</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <th scope="row">11</th>
+                <td>Extra Sauce</td>
+                <td>50</td>
+                <td>25</td>
+            </tr>
         </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
+</div>
 
-  <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
-
-    <div class="dash-box">
-      <h3>Incoming Deliveries</h3>
-      <ul class="recent-orders">
-          <li><span>#INV101</span> · 50 pcs · Expected Today</li>
-          <li><span>#INV102</span> · 30 pcs · Expected Tomorrow</li>
-          <li><span>#INV103</span> · 20 pcs · Delayed</li>
-          <li><span>#INV104</span> · 60 pcs · Preparing</li>
-      </ul>
-    </div>
-
-    <div class="small-dash-row">
-    <div class="small-dash-box">
-        <h5>Almost Out of Stock</h5>
-        <ul class="recent-orders">
-            <li><span>Chick Rice</span> · 5 pcs</li>
-            <li><span>Chick Fries</span> · 2 pcs</li>
-            <li><span>Mac & Chick</span> · 3 pcs</li>
-        </ul>
-    </div>
-
-    <div class="small-dash-box">
-        <h5>Out of Stock</h5>
-        <ul class="recent-orders">
-            <li><span>Extra Sauce</span> · 0 pcs</li>
-            <li><span>Chick Five</span> · 0 pcs</li>
-        </ul>
-    </div>
-    </div>
-
-  </div>
-</div>  
 
 <div class="modal fade" id="inventoryModal" tabindex="-1" aria-labelledby="inventoryModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

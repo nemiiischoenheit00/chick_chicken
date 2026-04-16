@@ -1,3 +1,4 @@
+/*
 
 document.addEventListener("DOMContentLoaded", () => {
   const menuItems = document.querySelectorAll(".menu-container");
@@ -87,3 +88,4 @@ window.addEventListener("load", () => {
     console.error("❌ Close button not found!");
   }
 });
+*/

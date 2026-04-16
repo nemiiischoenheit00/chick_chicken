@@ -44,10 +44,11 @@ if ($email == "admin@gmail.com" && $password == "admin") {
 
 
 if (password_verify($password, $hashed_password_db)) {
-    header("Location: index.html");
-    exit;
-} else {
-    header("Location: login.php");
+    $_SESSION['username'] = $passrow['name'];
+    $_SESSION['email'] = $passrow['email'];
+    $_SESSION['user_id'] = $passrow['id'];
+
+    header("Location: index.php"); 
     exit;
 }
 
