@@ -50,7 +50,7 @@ session_start();
           <?php endif; ?>
         </li>
 
-        <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
+        <li><a href="orders.php" class="ordernow_button">Order Now</a></li>
       </ul>
     </nav>
   </div>
