@@ -218,43 +218,72 @@ session_start();
   </div>
 
 
-  <!-- Modal -->
-  <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="reviewModalLabel">Submit Your Review</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form>
-            <div class="mb-3">
-              <label for="reviewerName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="reviewerName" placeholder="Your name">
-            </div>
-            <div class="mb-3">
-              <label for="reviewText" class="form-label">Review</label>
-              <textarea class="form-control" id="reviewText" rows="4" placeholder="Write your review here"></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="reviewRating" class="form-label">Rating</label>
-              <select class="form-select" id="reviewRating">
-                <option selected>⭐⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐⭐</option>
-                <option>⭐⭐⭐</option>
-                <option>⭐⭐</option>
-                <option>⭐</option>
-              </select>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit Review</button>
-        </div>
+  <!-- MODAL -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    
+    <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+      
+      <!-- HEADER -->
+      <div class="modal-header" style="background: #D85A30; border: none; padding: 1.1rem 1.5rem;">
+        <h5 class="modal-title" style="color: #fff; font-weight: 600; letter-spacing: 0.04em;">
+          Submit your review
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
+
+      <!-- FORM BODY -->
+      <div class="modal-body" id="review-form-body" style="padding: 1.5rem;">
+        
+        <div class="mb-3">
+          <label class="form-label" style="font-size:12px; color:#888;">Your name</label>
+          <input type="text" class="form-control" id="reviewerName" placeholder="Juan dela Cruz">
+        </div>
+
+        <div class="mb-1">
+          <label class="form-label" style="font-size:12px; color:#888;">Your rating</label>
+          
+          <div id="star-row" style="display:flex; gap:8px; font-size:32px; cursor:pointer;">
+            <span class="rev-star" data-val="1">★</span>
+            <span class="rev-star" data-val="2">★</span>
+            <span class="rev-star" data-val="3">★</span>
+            <span class="rev-star" data-val="4">★</span>
+            <span class="rev-star" data-val="5">★</span>
+          </div>
+
+          <p id="rev-star-label" style="font-size:13px; color:#888; margin-bottom:1rem;">
+            Tap a star to rate
+          </p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" style="font-size:12px; color:#888;">Your review</label>
+          <textarea class="form-control" id="reviewText" rows="4"
+            placeholder="Tell us about your experience..."></textarea>
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer" style="border:none; padding: 0 1.5rem 1.5rem;">
+        <button id="rev-submit-btn" class="btn w-100"
+          style="background:#D85A30; color:#fff; border-radius:8px; font-weight:600;">
+          Submit review
+        </button>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div id="review-success-body"
+        style="display:none; text-align:center; padding:2rem;">
+        <div style="font-size:48px;">🎉</div>
+        <h5>Thanks for your review!</h5>
+        <p style="color:#888;">Your feedback helps us serve you better.</p>
+      </div>
+
     </div>
+
   </div>
+</div>
 </section>
 
 
@@ -307,6 +336,69 @@ session_start();
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script>
+(function () {
+  const labels  = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'];
+  let selected  = 0;
+  const stars   = document.querySelectorAll('.rev-star');
+  const lbl     = document.getElementById('rev-star-label');
+
+  function highlight(val) {
+    stars.forEach(s => s.style.color = +s.dataset.val <= val ? '#F5A623' : '#ddd');
+  }
+
+  stars.forEach(s => {
+    s.addEventListener('mouseenter', () => highlight(+s.dataset.val));
+    s.addEventListener('mouseleave', () => highlight(selected));
+    s.addEventListener('click', () => {
+      selected = +s.dataset.val;
+      highlight(selected);
+      lbl.textContent = labels[selected];
+    });
+  });
+
+  document.getElementById('rev-submit-btn').addEventListener('click', async () => {
+    const name   = document.getElementById('reviewerName').value.trim();
+    const review = document.getElementById('reviewText').value.trim();
+
+    if (!name || !selected || !review) {
+      alert('Please fill in all fields and select a rating.');
+      return;
+    }
+
+    try {
+      const res  = await fetch('submit-review.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ name, rating: selected, review })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById('review-form-body').style.display = 'none';
+        document.querySelector('.modal-footer').style.display      = 'none';
+        document.getElementById('review-success-body').style.display = 'block';
+      } else {
+        alert('Something went wrong: ' + data.error);
+      }
+    } catch (err) {
+      alert('Network error. Please try again.');
+    }
+  });
+
+  // reset form when modal is closed
+  document.getElementById('reviewModal').addEventListener('hidden.bs.modal', () => {
+    selected = 0;
+    highlight(0);
+    lbl.textContent = 'Tap a star to rate';
+    document.getElementById('reviewerName').value = '';
+    document.getElementById('reviewText').value   = '';
+    document.getElementById('review-form-body').style.display      = 'block';
+    document.querySelector('.modal-footer').style.display           = '';
+    document.getElementById('review-success-body').style.display   = 'none';
+  });
+})();
+</script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -1,91 +1,62 @@
-/*
 
-document.addEventListener("DOMContentLoaded", () => {
-  const menuItems = document.querySelectorAll(".menu-container");
-  const popups = document.querySelectorAll(".popup-overlay");
+(function () {
+  const labels  = ['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent!'];
+  let selected  = 0;
+  const stars   = document.querySelectorAll('.rev-star');
+  const lbl     = document.getElementById('rev-star-label');
 
-  menuItems.forEach((menuItem, index) => {
-    const popup = popups[index];
-    if (!popup) return; // Safety check if mismatch
+  function highlight(val) {
+    stars.forEach(s => s.style.color = +s.dataset.val <= val ? '#F5A623' : '#ddd');
+  }
 
-    const closeBtn = popup.querySelector(".close-btn");
-    const countValue = popup.querySelector("#countValue");
-    const plusBtn = popup.querySelector("#plus");
-    const minusBtn = popup.querySelector("#minus");
-
-    // Open popup
-    menuItem.addEventListener("click", () => {
-      popup.style.display = "flex";
-    });
-
-    // Close popup
-    closeBtn?.addEventListener("click", () => {
-      popup.style.display = "none";
-    });
-
-    // Close when clicking outside content
-    popup.addEventListener("click", (e) => {
-      if (e.target === popup) popup.style.display = "none";
-    });
-
-    // Quantity controls
-    let count = 1;
-    plusBtn?.addEventListener("click", () => {
-      count++;
-      if (countValue) countValue.textContent = count;
-    });
-
-    minusBtn?.addEventListener("click", () => {
-      if (count > 1) count--;
-      if (countValue) countValue.textContent = count;
-    });
-
-    // Option button selection (sauce, mix, etc.)
-    popup.querySelectorAll(".option").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const siblings = btn.parentElement.querySelectorAll(".option");
-        siblings.forEach(b => b.classList.remove("selected"));
-        btn.classList.add("selected");
-      });
+  stars.forEach(s => {
+    s.addEventListener('mouseenter', () => highlight(+s.dataset.val));
+    s.addEventListener('mouseleave', () => highlight(selected));
+    s.addEventListener('click', () => {
+      selected = +s.dataset.val;
+      highlight(selected);
+      lbl.textContent = labels[selected];
     });
   });
-});
 
+  document.getElementById('rev-submit-btn').addEventListener('click', async () => {
+    const name   = document.getElementById('reviewerName').value.trim();
+    const review = document.getElementById('reviewText').value.trim();
 
-document.addEventListener("DOMContentLoaded", () => {
-    const faqs = document.querySelectorAll(".faq");
+    if (!name || !selected || !review) {
+      alert('Please fill in all fields and select a rating.');
+      return;
+    }
 
-    console.log("FAQs found:", faqs.length);
+    try {
+      const res  = await fetch('submit-review.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ name, rating: selected, review })
+      });
+      const data = await res.json();
 
-    faqs.forEach((faq) => {
-        const question = faq.querySelector(".question");
-        if (question) {
-            question.addEventListener("click", () => {
-                console.log("Clicked:", question.textContent.trim());
-                faq.classList.toggle("active");
-            });
-        }
-    });
-});
+      if (data.success) {
+        document.getElementById('review-form-body').style.display = 'none';
+        document.querySelector('.modal-footer').style.display      = 'none';
+        document.getElementById('review-success-body').style.display = 'block';
+      } else {
+        alert('Something went wrong: ' + data.error);
+      }
+    } catch (err) {
+      alert('Network error. Please try again.');
+    }
+  });
 
-
-window.addEventListener("load", () => {
-  const disclaimer = document.getElementById("disclaimer");
-  const closeBtn = document.getElementById("closeBtn");
-
-  if (!disclaimer) {
-    console.error("❌ Disclaimer element not found!");
-    return;
-  }
-
-  disclaimer.classList.add("active");
-
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      disclaimer.classList.remove("active");
-    });
-  } else {
-    console.error("❌ Close button not found!");
-  }
-});
-*/
+  // reset form when modal is closed
+  document.getElementById('reviewModal').addEventListener('hidden.bs.modal', () => {
+    selected = 0;
+    highlight(0);
+    lbl.textContent = 'Tap a star to rate';
+    document.getElementById('reviewerName').value = '';
+    document.getElementById('reviewText').value   = '';
+    document.getElementById('review-form-body').style.display      = 'block';
+    document.querySelector('.modal-footer').style.display           = '';
+    document.getElementById('review-success-body').style.display   = 'none';
+  });
+})();

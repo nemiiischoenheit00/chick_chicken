@@ -12,6 +12,7 @@ require 'db.php';
   <link rel="stylesheet" href="orders.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
   <style>
     /* ═══════════════════════════════════════════
        TOKENS & RESET
@@ -34,6 +35,7 @@ require 'db.php';
       --oswald:    'Oswald', sans-serif;
       --barlow:    'Barlow', sans-serif;
       --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+      --wine-red: #9A0404;
     }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -49,6 +51,88 @@ require 'db.php';
     ::-webkit-scrollbar-track { background: #f0f0f0; }
     ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+    /* ═══════════════════════════════════════════
+       HEADER (matching index.php / style.css)
+    ═══════════════════════════════════════════ */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 50px;
+      height: 65px;
+      background-color: var(--mustard);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      justify-content: center;
+    }
+
+    nav ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      list-style: none;
+      display: inline-block;
+      padding-top: 15px;
+      padding-bottom: 2px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--red);
+      font-size: 22px;
+      padding: 0 15px;
+      font-family: var(--oswald);
+    }
+
+    .header_button {
+      position: relative;
+      padding-bottom: 5px;
+    }
+
+    .header_button::after {
+      color: var(--wine-red);
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      height: 3px;
+      width: 100%;
+      left: 0;
+      background-color: var(--red);
+      transition: all 0.3s ease-in-out;
+      transform: scale(0);
+    }
+
+    .header_button:hover::after {
+      transform: scale(1);
+    }
+
+    .ordernow_button {
+      background-color: var(--red);
+      color: #fff !important;
+      padding: 10px 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .ordernow_button:hover {
+      box-shadow: 0 0 10px var(--red);
+    }
+
+    #userDropdown {
+      font-family: var(--oswald);
+      font-size: 22px;
+      color: var(--red);
+      padding: 0 15px;
+      left: -6px;
+    }
 
     /* ═══════════════════════════════════════════
        PAGE HERO STRIP
@@ -75,7 +159,7 @@ require 'db.php';
     .shop-layout {
       display: grid;
       grid-template-columns: 220px 1fr;
-      min-height: calc(100vh - 64px - 120px);
+      min-height: calc(100vh - 65px - 120px);
     }
 
     /* sidebar */
@@ -83,8 +167,8 @@ require 'db.php';
       background: #fff;
       border-right: 2px solid var(--border);
       padding: 32px 0;
-      position: sticky; top: 64px; align-self: start;
-      height: calc(100vh - 64px);
+      position: sticky; top: 65px; align-self: start;
+      height: calc(100vh - 65px);
       overflow-y: auto;
     }
     .sidebar-label {
@@ -115,20 +199,6 @@ require 'db.php';
     /* main */
     .main-content { padding: 48px 52px; }
 
-    /* ═══════════════════════════════════════════
-       SECTION HEADER
-    ═══════════════════════════════════════════ */
-    .section-head {
-      display: flex; align-items: baseline; gap: 16px;
-      margin-bottom: 28px;
-    }
-    .section-head h2 {
-      font-family: var(--oswald); font-size: 32px; font-weight:700;
-      letter-spacing: -0.5px;
-    }
-    .section-head .line {
-      flex:1; height:2px; background: var(--border); margin-bottom:4px;
-    }
 
     /* ═══════════════════════════════════════════
        MENU GRID
@@ -441,6 +511,113 @@ require 'db.php';
     @keyframes toastIn { from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)} }
 
     /* ═══════════════════════════════════════════
+       FOOTER (matching style.css)
+    ═══════════════════════════════════════════ */
+    .footer {
+      background-color: #FFD733;
+      color: #000;
+      padding: 50px 0 20px;
+      font-size: 18px;
+      width: 100%;
+    }
+
+    .footer-container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      text-align: left;
+    }
+
+    .footer-logo {
+      display: block;
+      margin-bottom: 10px;
+      margin-right: 60px;
+    }
+
+    .footer-info,
+    .footer-links,
+    .footer-section,
+    .footer-logo {
+      flex: 1 1 250px;
+      min-width: 200px;
+    }
+
+    .footer-info h4,
+    .footer-links h4,
+    .footer-section h4 {
+      font-size: 22px !important;
+      font-weight: bold;
+      margin-bottom: 14px;
+      line-height: 1.2;
+      font-family: "Oswald", sans-serif;
+    }
+
+    .footer-logo-img {
+      display: block;
+    }
+
+    .footer-info ul,
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-family: "Alegreya Sans", sans-serif;
+    }
+
+    .footer-info ul li,
+    .footer-links ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-info ul li a,
+    .footer-links ul li a {
+      color: #000;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-info ul li a:hover,
+    .footer-links ul li a:hover {
+      color: #E53935;
+    }
+
+    .footer-section p {
+      margin: 0 0 10px 0;
+      font-family: "Alegreya Sans", sans-serif;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .social-icons img {
+      width: 30px;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.15);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
+      border-top: 1px solid rgba(0,0,0,0.2);
+      padding-top: 15px;
+      font-family: "Oswald", sans-serif;
+    }
+
+    /* ═══════════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════════ */
     @media (max-width:900px) {
@@ -450,48 +627,54 @@ require 'db.php';
       .popup-modal { flex-direction:column; }
       .popup-img { width:100%; height:220px; }
       .popup-row { flex-direction:column; gap:16px; }
-      .footer-grid { grid-template-columns:1fr 1fr; }
+      .footer-container { grid-template-columns:1fr 1fr; }
       .page-hero { padding:28px 24px; }
-      .site-header { padding:0 20px; }
+      header { padding:10px 20px; }
     }
     @media (max-width:580px) {
       .cart-drawer { width:100%; right:-100%; }
       .menu-grid { grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:14px; }
-      .footer-grid { grid-template-columns:1fr; }
+      .footer-container { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
 
 <!-- ═══════════════════════════════════════
-     HEADER
+     HEADER (matching index.php)
 ══════════════════════════════════════════ -->
-<header class="site-header">
+<header>
   <div class="logo">
-    <a href="index.php"><img src="assets/Logo2.png" alt="Chick Chicken"/></a>
+    <h1>
+      <a href="index.php"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
+    </h1>
   </div>
-  <nav>
-    <ul>
-      <li><a href="aboutus.html">About Us</a></li>
-      <li><a href="index.html#FAQS">FAQs</a></li>
-      <li><a href="branch-locator.html">Branch Locator</a></li>
-      <li class="nav-item dropdown" style="list-style:none;">
-        <?php if (isset($_SESSION['username'])): ?>
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false"
-             style="font-family:var(--oswald);font-size:17px;color:var(--black);text-decoration:none;">
-            <?= htmlspecialchars($_SESSION['username']) ?>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
-          </ul>
-        <?php else: ?>
-          <a href="login.php" style="font-family:var(--oswald);font-size:17px;color:var(--black);text-decoration:none;padding:6px 14px;">Sign In</a>
-        <?php endif; ?>
-      </li>
-      <li><a href="orders.php" class="btn-order">Order Now</a></li>
-    </ul>
-  </nav>
+
+  <div class="navi--header">
+    <nav>
+      <ul>
+        <li><a href="aboutus.html" class="header_button">About Us</a></li>
+        <li><a href="index.html#FAQS" class="header_button">FAQs</a></li>
+        <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+
+        <li class="nav-item dropdown" style="list-style: none;">
+          <?php if (isset($_SESSION['username'])): ?>
+            <a class="header_button dropdown-toggle" href="#" id="userDropdown" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <?= htmlspecialchars($_SESSION['username']) ?>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+            </ul>
+          <?php else: ?>
+            <a href="login.php" class="header_button">Sign In</a>
+          <?php endif; ?>
+        </li>
+
+        <li><a href="orders.php" class="ordernow_button">Order Now</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
 
 <!-- ═══════════════════════════════════════
@@ -758,26 +941,29 @@ foreach ($products as $p):
 <!-- Toast container -->
 <div class="toast-wrap" id="toast-wrap"></div>
 
+<!-- ═══════════════════════════════════════
+     FOOTER (matching index.php)
+══════════════════════════════════════════ -->
 <footer class="footer">
   <div class="footer-container">
 
-  <div class="footer-logo">
+    <div class="footer-logo">
       <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
     </div>
 
     <div class="footer-links">
       <h4>Quick Links</h4>
       <ul>
-        <li><a href="orders.html">Menu</a></li>
+        <li><a href="orders.php">Menu</a></li>
       </ul>
     </div>
 
     <div class="footer-info">
       <h4>Information</h4>
       <ul>
-                <li><a href="aboutus.html">About Us</a></li> 
-                <li><a href="index.html#FAQS">FAQs</a></li>
-                <li><a href="branch-locator.html">Branch Locator</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="index.html#FAQS">FAQs</a></li>
+        <li><a href="branch-locator.html">Branch Locator</a></li>
       </ul>
     </div>
 
@@ -793,9 +979,10 @@ foreach ($products as $p):
 
   </div>
 
-    <div class="footer-bottom">
+  <div class="footer-bottom">
     © 2025 Chick Chicken. All rights reserved.
   </div>
+</footer>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,56 +1,63 @@
 <?php
-
 session_start();
-
-$email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
-
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header("Location: login.php");
-    exit;
-}
 
 $host = "localhost";
 $dbUser = "root";
 $dbPass = "";
 $dbName = "chickchicken";
 
-if (empty($email) || empty($password)) {
-        header("Location: login.php"); 
-        exit;
-}
-
 $conn = new mysqli($host, $dbUser, $dbPass, $dbName);
 if ($conn->connect_error) {
-    header("Location: login.php"); 
+    die("DB connection failed");
+}
+
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
+
+if (empty($email) || empty($password)) {
+    header("Location: login.php");
     exit;
 }
 
-$query = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($query);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    header("Location: login.php");
+    exit;
+}
+
+$query = "SELECT * FROM users WHERE email = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows == 0) {
-    header("Location: login.php"); 
+    header("Location: login.php");
     exit;
 }
 
-$passrow = $result->fetch_assoc();
-$hashed_password_db = $passrow['password'];
+$user = $result->fetch_assoc();
 
-if ($email == "admin@gmail.com" && $password == "admin") {
+/* ADMIN CHECK FIRST (but still set session) */
+if ($email === "admin@gmail.com" && $password === "admin") {
+    $_SESSION['username'] = "Admin";
+    $_SESSION['email'] = $email;
+    $_SESSION['user_id'] = 0;
+
     header("Location: admin.html");
     exit;
 }
 
+/* NORMAL USER LOGIN */
+if (password_verify($password, $user['password'])) {
+    $_SESSION['username'] = $user['name'];
+    $_SESSION['email'] = $user['email'];
+    $_SESSION['user_id'] = $user['id'];
 
-if (password_verify($password, $hashed_password_db)) {
-    $_SESSION['username'] = $passrow['name'];
-    $_SESSION['email'] = $passrow['email'];
-    $_SESSION['user_id'] = $passrow['id'];
-
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
-$conn->close();
+/* WRONG PASSWORD */
+header("Location: login.php");
+exit;
 ?>
