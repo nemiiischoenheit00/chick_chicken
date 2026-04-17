@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     }
   });
+  loadOrderSummary();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -100,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadOrderSummary() {
   try {
-    const res = await fetch("get-cart.php");
+    const res = await fetch("get_cart.php");
     const items = await res.json();
 
     const container = document.getElementById("summary-items");
