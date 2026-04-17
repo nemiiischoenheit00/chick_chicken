@@ -1,11 +1,13 @@
 <?php
-$host = "localhost";
+$host = "127.0.0.1";
 $db   = "chickchicken";
 $user = "root";
 $pass = "";
 
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-  die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die(json_encode(["error" => "Connection failed: " . $e->getMessage()]));
 }
 ?>
