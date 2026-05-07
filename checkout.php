@@ -100,8 +100,7 @@ require 'db.php';
     </section>
 
 
-    <form class="checkout-form"
-    action="feedback.html" method="get">
+    <form class="checkout-form">
       <h3>Your Details</h3>
 
       <label>Name<span>*</span></label>
@@ -139,6 +138,8 @@ require 'db.php';
         inputmode="numeric"
         maxlength="19">
     </div>
+
+    <div class="checkout-divider"></div>
 
       <button type="submit" class="place-order-button">Confirm Order</button>
     </form>

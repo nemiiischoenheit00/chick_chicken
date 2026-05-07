@@ -931,3 +931,9 @@ p {
   margin-left: 8px;
   vertical-align: middle;
 }
+
+.checkout-divider{
+    margin: 35px 0 25px;
+    border-top: 2px solid #e5e5e5;
+    position: relative;
+}

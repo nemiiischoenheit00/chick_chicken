@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Card number formatting ---
   const cardInput = document.getElementById("cardnumber");
-  const cardField = document.getElementById("card-field"); // ← targets the div directly, no closest()
+  const cardField = document.getElementById("card-field");
 
   if (cardInput) {
     cardInput.addEventListener("input", () => {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   paymentRadios.forEach(r => r.addEventListener("change", toggleCard));
-  toggleCard(); // hides card field on load until Online Payment is selected
+  toggleCard();
 
   // --- Form submit ---
   const form = document.querySelector(".checkout-form");
@@ -79,23 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     }
   });
+
+  // ← moved inside DOMContentLoaded so DOM is ready
   loadOrderSummary();
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("userToggle");
-  const popup = document.getElementById("userPopup");
-
-  if (toggle && popup) {
-    toggle.addEventListener("click", (e) => {
-      e.stopPropagation();
-      popup.style.display = popup.style.display === "block" ? "none" : "block";
-    });
-
-    document.addEventListener("click", () => {
-      popup.style.display = "none";
-    });
-  }
 });
 
 
@@ -113,12 +99,11 @@ async function loadOrderSummary() {
       return;
     }
 
-    // badge showing item count
-    const totalQty = items.reduce((sum, i) => sum + i.quantity, 0);
+    const totalQty = items.reduce((sum, i) => sum + parseInt(i.quantity), 0);
     heading.innerHTML += `<span class="summary-item-count">${totalQty} item${totalQty !== 1 ? 's' : ''}</span>`;
 
     items.forEach(item => {
-      const lineTotal = item.price * item.quantity;
+      const lineTotal = parseFloat(item.price) * parseInt(item.quantity);
       subtotal += lineTotal;
 
       const meta = [item.option_selected, item.sauce, item.extra_flavor, item.mix_preference]
