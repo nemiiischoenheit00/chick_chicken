@@ -9,21 +9,23 @@ if (!$data) {
   exit;
 }
 
-$name   = $conn->real_escape_string(trim($data['name']));
+$name   = trim($data['name']);
 $rating = intval($data['rating']);
-$review = $conn->real_escape_string(trim($data['review']));
+$review = trim($data['review']);
 
 if (!$name || $rating < 1 || $rating > 5 || !$review) {
   echo json_encode(["error" => "Invalid input"]);
   exit;
 }
 
-$sql = "INSERT INTO reviews (name, rating, review_text, created_at)
-        VALUES ('$name', $rating, '$review', NOW())";
+$stmt = $pdo->prepare("
+  INSERT INTO reviews (name, rating, review_text, created_at)
+  VALUES (?, ?, ?, NOW())
+");
 
-if ($conn->query($sql)) {
+if ($stmt->execute([$name, $rating, $review])) {
   echo json_encode(["success" => true]);
 } else {
-  echo json_encode(["error" => $conn->error]);
+  echo json_encode(["error" => "Insert failed"]);
 }
 ?>
