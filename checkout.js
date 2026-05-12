@@ -8,6 +8,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // --- Branch selector ---
+  const branchSelect   = document.getElementById("branchSelect");
+  const branchInfoCard = document.getElementById("branchInfoCard");
+  const branchAddress  = document.getElementById("branchAddress");
+  const branchPhone    = document.getElementById("branchPhone");
+  const branchHours    = document.getElementById("branchHours");
+
+  if (branchSelect) {
+    branchSelect.addEventListener("change", () => {
+      const selected = branchSelect.options[branchSelect.selectedIndex];
+      const address  = selected.dataset.address;
+      const phone    = selected.dataset.phone;
+      const hours    = selected.dataset.hours;
+
+      if (address) {
+        branchAddress.textContent = "📍 " + address;
+        branchPhone.textContent   = "📞 " + phone;
+        branchHours.textContent   = "🕐 " + hours;
+        branchInfoCard.classList.add("visible");
+      } else {
+        branchInfoCard.classList.remove("visible");
+      }
+    });
+  }
+
+  // --- Phone number auto-format (Philippine: +63 XXX XXX XXXX) ---
+  const phoneInput = document.getElementById("phoneInput");
+
+  if (phoneInput) {
+    phoneInput.addEventListener("input", (e) => {
+      // Strip everything except digits and leading +
+      let raw = phoneInput.value.replace(/[^\d]/g, "");
+
+      // If user starts with 0 (local), convert to +63
+      if (raw.startsWith("0")) {
+        raw = "63" + raw.slice(1);
+      }
+
+      // Remove country code prefix if present so we format just the digits
+      if (raw.startsWith("63")) {
+        raw = raw.slice(2);
+      }
+
+      // Cap to 10 digits (after country code)
+      raw = raw.substring(0, 10);
+
+      // Format: XXX XXX XXXX
+      let formatted = "";
+      if (raw.length > 0) formatted  = raw.substring(0, 3);
+      if (raw.length > 3) formatted += " " + raw.substring(3, 6);
+      if (raw.length > 6) formatted += " " + raw.substring(6, 10);
+
+      phoneInput.value = raw.length > 0 ? "+63 " + formatted : "";
+    });
+
+    // Allow backspace to work cleanly — if user deletes into "+63 ", clear it
+    phoneInput.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && phoneInput.value === "+63 ") {
+        phoneInput.value = "";
+      }
+    });
+  }
+
   // --- Card number formatting ---
   const cardInput = document.getElementById("cardnumber");
   const cardField = document.getElementById("card-field");
@@ -38,6 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // Branch validation
+    const branch = branchSelect?.value;
+    if (!branch) {
+      alert("Please select a branch.");
+      branchSelect?.focus();
+      return;
+    }
+
     const payment = document.querySelector('input[name="payment"]:checked')?.value;
     if (!payment) {
       alert("Please select a payment method.");
@@ -49,13 +120,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Phone: strip formatting before sending, keep +63XXXXXXXXXX
+    const rawPhone = phoneInput?.value.replace(/\s/g, "") ?? "";
+
     const payload = {
       name:           form.querySelector('input[name="name"]')?.value.trim(),
-      phone:          form.querySelector('input[name="phone"]')?.value.trim(),
+      phone:          rawPhone,
       email:          form.querySelector('input[name="email"]')?.value.trim(),
       address:        form.querySelector('input[name="address"]')?.value.trim(),
       payment_method: payment,
-      card_number:    payment === "online" ? cardInput?.value.replace(/\s/g, "") : ""
+      card_number:    payment === "online" ? cardInput?.value.replace(/\s/g, "") : "",
+      branch:         branch
     };
 
     try {
@@ -80,18 +155,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ← moved inside DOMContentLoaded so DOM is ready
   loadOrderSummary();
 });
 
 
 async function loadOrderSummary() {
   try {
-    const res = await fetch("get_cart.php");
+    const res   = await fetch("get_cart.php");
     const items = await res.json();
 
     const container = document.getElementById("summary-items");
-    const heading = document.querySelector(".order-summary h3");
+    const heading   = document.querySelector(".order-summary h3");
     let subtotal = 0;
 
     if (!items.length) {

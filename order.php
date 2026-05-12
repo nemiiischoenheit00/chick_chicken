@@ -55,8 +55,7 @@ function listOrders(): void {
         $params[] = is_numeric($search) ? (int)$search : -1;
     }
 
-    if (in_array($status, ['pending','confirmed','cancelled'])) {
-        $where[]  = "o.status = ?";
+    if (in_array($status, ['pending','confirmed','cooking','in_transit','cancelled'])) {        $where[]  = "o.status = ?";
         $params[] = $status;
     }
 
@@ -168,7 +167,7 @@ function updateStatus(): void {
         return;
     }
 
-    $allowed = ['pending', 'confirmed', 'cancelled'];
+    $allowed = ['pending', 'confirmed', 'cooking', 'in_transit', 'cancelled'];
     if (!in_array($status, $allowed)) {
         respond(["error" => "Invalid status. Must be one of: " . implode(', ', $allowed)], 400);
         return;
