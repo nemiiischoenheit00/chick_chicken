@@ -1,0 +1,142 @@
+document.addEventListener("DOMContentLoaded", () => {
+
+  // --- Disclaimer close ---
+  const closeBtn = document.getElementById("closeBtn");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      document.getElementById("disclaimer").style.display = "none";
+    });
+  }
+
+  // --- Card number formatting ---
+  const cardInput = document.getElementById("cardnumber");
+  const cardField = document.getElementById("card-field");
+
+  if (cardInput) {
+    cardInput.addEventListener("input", () => {
+      let val = cardInput.value.replace(/\D/g, "").substring(0, 16);
+      cardInput.value = val.replace(/(.{4})/g, "$1 ").trim();
+    });
+  }
+
+  // --- Show/hide card field ---
+  const paymentRadios = document.querySelectorAll('input[name="payment"]');
+
+  function toggleCard() {
+    if (!cardField) return;
+    const selected = document.querySelector('input[name="payment"]:checked');
+    cardField.style.display = (selected?.value === "online") ? "block" : "none";
+  }
+
+  paymentRadios.forEach(r => r.addEventListener("change", toggleCard));
+  toggleCard();
+
+  // --- Form submit ---
+  const form = document.querySelector(".checkout-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const payment = document.querySelector('input[name="payment"]:checked')?.value;
+    if (!payment) {
+      alert("Please select a payment method.");
+      return;
+    }
+
+    if (payment === "online" && cardInput?.value.replace(/\s/g, "").length < 16) {
+      alert("Please enter a valid 16-digit card number.");
+      return;
+    }
+
+    const payload = {
+      name:           form.querySelector('input[name="name"]')?.value.trim(),
+      phone:          form.querySelector('input[name="phone"]')?.value.trim(),
+      email:          form.querySelector('input[name="email"]')?.value.trim(),
+      address:        form.querySelector('input[name="address"]')?.value.trim(),
+      payment_method: payment,
+      card_number:    payment === "online" ? cardInput?.value.replace(/\s/g, "") : ""
+    };
+
+    try {
+      const res  = await fetch("place-order.php", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        window.location.href = `feedback.html?order_id=${data.order_id}`;
+      } else if (data.error === "not_logged_in") {
+        // Show login modal instead of alert
+        const modal = document.getElementById("login-required-modal");
+        if (modal) modal.style.display = "flex";
+        else window.location.href = "login.php";
+      } else {
+        alert("Something went wrong: " + data.error);
+      }
+    } catch (err) {
+      alert("Network error. Please try again.");
+      console.error(err);
+    }
+  });
+
+  // ── Auto-fill hint: show notice if name/email were pre-filled ──
+  const nameInput = document.querySelector('input[name="name"]');
+  if (nameInput && nameInput.value.trim() !== "") {
+    const form = document.querySelector(".checkout-form");
+    const hint = document.createElement("p");
+    hint.id = "autofill-hint";
+    hint.style.cssText = "font-size:13px; color:#888; margin-top:6px; margin-bottom:0;";
+    hint.textContent = "ℹ️ Your details have been filled in from your account. Feel free to edit them.";
+    form.insertBefore(hint, form.querySelector("label"));
+  }
+
+  // ← moved inside DOMContentLoaded so DOM is ready
+  loadOrderSummary();
+});
+
+
+async function loadOrderSummary() {
+  try {
+    const res = await fetch("get_cart.php");
+    const items = await res.json();
+
+    const container = document.getElementById("summary-items");
+    const heading = document.querySelector(".order-summary h3");
+    let subtotal = 0;
+
+    if (!items.length) {
+      container.innerHTML = "<p style='color:#888; font-size:14px;'>Your cart is empty.</p>";
+      return;
+    }
+
+    const totalQty = items.reduce((sum, i) => sum + parseInt(i.quantity), 0);
+    heading.innerHTML += `<span class="summary-item-count">${totalQty} item${totalQty !== 1 ? 's' : ''}</span>`;
+
+    items.forEach(item => {
+      const lineTotal = parseFloat(item.price) * parseInt(item.quantity);
+      subtotal += lineTotal;
+
+      const meta = [item.option_selected, item.sauce, item.extra_flavor, item.mix_preference]
+        .filter(Boolean).join(" · ");
+
+      container.innerHTML += `
+        <div class="summary-item">
+          <span class="summary-qty">×${item.quantity}</span>
+          <div class="summary-details">
+            <p class="summary-name">${item.name}</p>
+            ${meta ? `<p class="summary-meta">${meta}</p>` : ""}
+          </div>
+          <span class="summary-price">₱${lineTotal.toFixed(2)}</span>
+        </div>`;
+    });
+
+    document.getElementById("summary-subtotal").textContent = `₱${subtotal.toFixed(2)}`;
+    document.getElementById("summary-total").textContent    = `₱${subtotal.toFixed(2)}`;
+
+  } catch (err) {
+    console.error("Failed to load cart:", err);
+  }
+}

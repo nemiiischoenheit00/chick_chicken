@@ -1,53 +1,53 @@
 <?php
-$email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
+session_start();
+require 'db.php';
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header("Location: login.php");
-    exit;
-}
-
-$host = "localhost";
-$dbUser = "root";
-$dbPass = "";
-$dbName = "chickchicken";
+$email    = trim($_POST['email']    ?? '');
+$password = trim($_POST['password'] ?? '');
 
 if (empty($email) || empty($password)) {
-        header("Location: login.php"); 
-        exit;
-}
-
-$conn = new mysqli($host, $dbUser, $dbPass, $dbName);
-if ($conn->connect_error) {
-    header("Location: login.php"); 
+    header("Location: login.php?error=missing_fields");
     exit;
 }
 
-$query = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($query);
-
-if ($result->num_rows == 0) {
-    header("Location: login.php"); 
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    header("Location: login.php?error=invalid_email");
     exit;
 }
 
-$passrow = $result->fetch_assoc();
-$hashed_password_db = $passrow['password'];
-
-
-if ($email == "admin@gmail.com" && $password == "admin") {
-    header("Location: admin.html");
+/* ── ADMIN SHORTCUT (plain-text, no DB row needed) ── */
+if ($email === 'admin@gmail.com' && $password === 'admin') {
+    $_SESSION['username'] = 'Admin';
+    $_SESSION['email']    = $email;
+    $_SESSION['user_id']  = 0;
+    $_SESSION['is_admin'] = true;
+    header("Location: admin.php");
     exit;
 }
 
+/* ── NORMAL USER ── */
+$stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+$stmt->execute([$email]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (password_verify($password, $hashed_password_db)) {
-    header("Location: index.html");
-    exit;
-} else {
-    header("Location: login.php");
+if (!$user) {
+    header("Location: login.php?error=invalid_credentials");
     exit;
 }
 
-$conn->close();
+if (!password_verify($password, $user['password'])) {
+    header("Location: login.php?error=invalid_credentials");
+    exit;
+}
+
+// Support both "name" (single column) and "fname"/"lname" (split columns)
+$displayName = $user['name'] ?? trim(($user['fname'] ?? '') . ' ' . ($user['lname'] ?? ''));
+
+$_SESSION['username'] = $displayName;
+$_SESSION['email']    = $user['email'];
+$_SESSION['user_id']  = $user['id'];
+$_SESSION['is_admin'] = false;
+
+header("Location: index.php");
+exit;
 ?>
