@@ -10,7 +10,6 @@ require 'db.php';
   <title>Order Now — Chick Chicken</title>
   <link rel="icon" href="assets/Logo.png"/>
   <link rel="stylesheet" href="orders.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
   <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
   <style>
@@ -53,95 +52,16 @@ require 'db.php';
     ::-webkit-scrollbar-thumb:hover { background: #aaa; }
 
     /* ═══════════════════════════════════════════
-       HEADER (matching index.php / style.css)
-    ═══════════════════════════════════════════ */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 50px;
-      height: 65px;
-      background-color: var(--mustard);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-
-    .logo {
-      justify-content: center;
-    }
-
-    nav ul {
-      margin: 0;
-      padding: 0;
-    }
-
-    nav ul li {
-      list-style: none;
-      display: inline-block;
-      padding-top: 15px;
-      padding-bottom: 2px;
-    }
-
-    nav ul li a {
-      text-decoration: none;
-      color: var(--red);
-      font-size: 22px;
-      padding: 0 15px;
-      font-family: var(--oswald);
-    }
-
-    .header_button {
-      position: relative;
-      padding-bottom: 5px;
-    }
-
-    .header_button::after {
-      color: var(--wine-red);
-      content: "";
-      position: absolute;
-      bottom: -3px;
-      height: 3px;
-      width: 100%;
-      left: 0;
-      background-color: var(--red);
-      transition: all 0.3s ease-in-out;
-      transform: scale(0);
-    }
-
-    .header_button:hover::after {
-      transform: scale(1);
-    }
-
-    .ordernow_button {
-      background-color: var(--red);
-      color: #fff !important;
-      padding: 10px 20px;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .ordernow_button:hover {
-      box-shadow: 0 0 10px var(--red);
-    }
-
-    #userDropdown {
-      font-family: var(--oswald);
-      font-size: 22px;
-      color: var(--red);
-      padding: 0 15px;
-      left: -6px;
-    }
-
-    /* ═══════════════════════════════════════════
        PAGE HERO STRIP
     ═══════════════════════════════════════════ */
     .page-hero {
       background: var(--mustard);
       border-bottom: 3px solid var(--black);
-      padding: 36px 60px 32px;
+      padding: 10px 60px 20px;
       display: flex; align-items: flex-end; gap: 20px;
+      position: sticky;
+      top: 65px;
+      z-index: 900;
     }
     .page-hero h1 {
       font-family: var(--oswald); font-weight:700; font-size: clamp(42px, 6vw, 72px);
@@ -154,22 +74,26 @@ require 'db.php';
     }
 
     /* ═══════════════════════════════════════════
-       LAYOUT
+       LAYOUT — hero + sidebar locked, only main scrolls
     ═══════════════════════════════════════════ */
     .shop-layout {
       display: grid;
       grid-template-columns: 220px 1fr;
-      min-height: calc(100vh - 65px - 120px);
+      overflow: hidden;
+      min-height: calc(100vh - 65px - 130px);
+      height: calc(100vh - 65px - 130px);
+      /* height is also refreshed by JS so it matches the viewport */
     }
 
-    /* sidebar */
+    /* sidebar remains fixed inside the layout while only the main column scrolls */
     .sidebar {
       background: #fff;
       border-right: 2px solid var(--border);
       padding: 32px 0;
-      position: sticky; top: 65px; align-self: start;
-      height: calc(100vh - 65px);
       overflow-y: auto;
+      position: sticky;
+      top: 0;
+      height: 100%;
     }
     .sidebar-label {
       font-family: var(--oswald); font-size: 11px; font-weight:600;
@@ -196,8 +120,13 @@ require 'db.php';
     }
     .sidebar a.active .dot { background: var(--red); }
 
-    /* main */
-    .main-content { padding: 48px 52px; }
+    /* main — ONLY this column scrolls */
+    .main-content {
+      padding: 48px 52px;
+      overflow-y: auto;
+      height: 100%;
+      min-height: 0;
+    }
 
 
     /* ═══════════════════════════════════════════
@@ -628,54 +557,22 @@ require 'db.php';
       .popup-img { width:100%; height:220px; }
       .popup-row { flex-direction:column; gap:16px; }
       .footer-container { grid-template-columns:1fr 1fr; }
-      .page-hero { padding:28px 24px; }
-      header { padding:10px 20px; }
+      .page-hero { padding:16px 24px; }
     }
     @media (max-width:580px) {
       .cart-drawer { width:100%; right:-100%; }
       .menu-grid { grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:14px; }
       .footer-container { grid-template-columns:1fr; }
     }
+
+    /* ════════════════════════════════════════════════════════ NAV STYLES ════ */
+
   </style>
 </head>
+
 <body>
+<?php include 'nav.php'; ?>
 
-<!-- ═══════════════════════════════════════
-     HEADER (matching index.php)
-══════════════════════════════════════════ -->
-<header>
-  <div class="logo">
-    <h1>
-      <a href="index.php"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
-    </h1>
-  </div>
-
-  <div class="navi--header">
-    <nav>
-      <ul>
-        <li><a href="aboutus.html" class="header_button">About Us</a></li>
-        <li><a href="index.html#FAQS" class="header_button">FAQs</a></li>
-        <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
-
-        <li class="nav-item dropdown" style="list-style: none;">
-          <?php if (isset($_SESSION['username'])): ?>
-            <a class="header_button dropdown-toggle" href="#" id="userDropdown" role="button"
-               data-bs-toggle="dropdown" aria-expanded="false">
-              <?= htmlspecialchars($_SESSION['username']) ?>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
-            </ul>
-          <?php else: ?>
-            <a href="login.php" class="header_button">Sign In</a>
-          <?php endif; ?>
-        </li>
-
-        <li><a href="orders.php" class="ordernow_button">Order Now</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
 
 <!-- ═══════════════════════════════════════
      PAGE HERO
@@ -961,9 +858,9 @@ foreach ($products as $p):
     <div class="footer-info">
       <h4>Information</h4>
       <ul>
-        <li><a href="aboutus.html">About Us</a></li>
-        <li><a href="index.html#FAQS">FAQs</a></li>
-        <li><a href="branch-locator.html">Branch Locator</a></li>
+        <li><a href="aboutus.php">About Us</a></li>
+        <li><a href="index.php#FAQS">FAQs</a></li>
+        <li><a href="branch-locator.php">Branch Locator</a></li>
       </ul>
     </div>
 
@@ -985,7 +882,6 @@ foreach ($products as $p):
 </footer>
 
 <!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -1202,6 +1098,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ─── INIT ───────────────────────────────── */
   updateBadge();
+
+  /* ─── LOCK LAYOUT HEIGHT (hero + sidebar fixed, only main scrolls) ─── */
+  function lockLayout() {
+    const header = document.querySelector('header');
+    const hero   = document.querySelector('.page-hero');
+    const layout = document.querySelector('.shop-layout');
+    if (!layout) return;
+    const headerH = header ? header.offsetHeight : 65;
+    const heroH   = hero   ? hero.offsetHeight   : 0;
+    layout.style.height = (window.innerHeight - headerH - heroH) + 'px';
+  }
+  lockLayout();
+  window.addEventListener('resize', lockLayout);
 });
 </script>
 

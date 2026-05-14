@@ -41,11 +41,12 @@ if (!password_verify($password, $user['password'])) {
 }
 
 // Support both "name" (single column) and "fname"/"lname" (split columns)
-$displayName = $user['name'] ?? trim(($user['fname'] ?? '') . ' ' . ($user['lname'] ?? ''));
-
-$_SESSION['username'] = $displayName;
-$_SESSION['email']    = $user['email'];
-$_SESSION['user_id']  = $user['id'];
+$_SESSION['username']   = trim($user['first_name'] . ' ' . $user['last_name']);
+$_SESSION['first_name'] = $user['first_name'];
+$_SESSION['last_name']  = $user['last_name'];
+$_SESSION['email']      = $user['email'];
+$_SESSION['phone']      = $user['phone'] ?? '';
+$_SESSION['user_id']    = $user['id'];
 $_SESSION['is_admin'] = false;
 
 header("Location: index.php");

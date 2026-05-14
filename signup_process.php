@@ -70,8 +70,8 @@ try {
 
     // Log the user in immediately after signup
     $_SESSION['user_id']   = $new_id;
-    $_SESSION['username']  = trim("$fname $lname");  // Changed from just $fname
-    $_SESSION['full_name'] = trim("$fname $lname");
+    $_SESSION['username']  = $fname;   // first name only for display
+    $_SESSION['first_name'] = $fname;
     $_SESSION['email']     = $email;
     $_SESSION['phone']     = $phone_formatted;
 
