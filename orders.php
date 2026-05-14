@@ -57,7 +57,7 @@ require 'db.php';
     .page-hero {
       background: var(--mustard);
       border-bottom: 3px solid var(--black);
-      padding: 36px 60px 32px;
+      padding: 10px 60px 20px;
       display: flex; align-items: flex-end; gap: 20px;
       position: sticky;
       top: 65px;
@@ -77,8 +77,7 @@ require 'db.php';
        LAYOUT — hero + sidebar locked, only main scrolls
     ═══════════════════════════════════════════ */
     .shop-layout {
-      display: grid;
-      grid-template-columns: 220px 1fr;
+      display: block;
       overflow: hidden;
       min-height: calc(100vh - 65px - 130px);
       height: calc(100vh - 65px - 130px);
@@ -91,9 +90,12 @@ require 'db.php';
       border-right: 2px solid var(--border);
       padding: 32px 0;
       overflow-y: auto;
-      position: sticky;
-      top: 0;
-      height: 100%;
+      position: fixed;
+      top: 65px;
+      left: 0;
+      width: 220px;
+      max-height: calc(100vh - 65px);
+      z-index: 800;
     }
     .sidebar-label {
       font-family: var(--oswald); font-size: 11px; font-weight:600;
@@ -126,13 +128,25 @@ require 'db.php';
       overflow-y: auto;
       height: 100%;
       min-height: 0;
+      margin-left: 220px;
     }
 
 
     /* ═══════════════════════════════════════════
        MENU GRID
     ═══════════════════════════════════════════ */
-    .menu-section { margin-bottom: 64px; scroll-margin-top: 80px; }
+    .menu-section { margin-bottom: 64px; scroll-margin-top: 130px; }
+    .menu-section:last-child { margin-bottom: 40vh; }
+
+    /* Section headings match "Our Menu" hero — Oswald, bold, large */
+    .section-head h2 {
+      font-family: var(--oswald);
+      font-weight: 700;
+      font-size: clamp(20px, 4vw, 32px);
+      line-height: 1;
+      letter-spacing: -0.5px;
+      color: var(--black);
+    }
 
     .menu-grid {
       display: grid;
@@ -550,15 +564,13 @@ require 'db.php';
        RESPONSIVE
     ═══════════════════════════════════════════ */
     @media (max-width:900px) {
-      .shop-layout { grid-template-columns:1fr; }
       .sidebar { display:none; }
-      .main-content { padding:32px 24px; }
+      .main-content { padding:32px 24px; margin-left:0; }
       .popup-modal { flex-direction:column; }
       .popup-img { width:100%; height:220px; }
       .popup-row { flex-direction:column; gap:16px; }
       .footer-container { grid-template-columns:1fr 1fr; }
-      .page-hero { padding:28px 24px; }
-      header { padding:10px 20px; }
+      .page-hero { padding:16px 24px; }
     }
     @media (max-width:580px) {
       .cart-drawer { width:100%; right:-100%; }
@@ -567,226 +579,17 @@ require 'db.php';
     }
 
     /* ════════════════════════════════════════════════════════ NAV STYLES ════ */
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      height: 65px;
-      background-color: #FFDE59;
-      position: sticky;
-      top: 0;
+    .footer {
+      position: relative;
       z-index: 1000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    header .logo h1 { margin: 0; line-height: 1; }
-    header .logo a  { display: flex; align-items: center; }
-
-    header nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    header nav ul li {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    header nav ul li a.header_button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: #D62828;
-      font-size: 19px;
-      font-family: 'Oswald', sans-serif;
-      font-weight: 500;
-      padding: 8px 16px;
-      position: relative;
-      white-space: nowrap;
-      line-height: 1;
-    }
-
-    header nav ul li a.header_button::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 0;
-      right: 0;
-      margin: 0 14px;
-      height: 2.5px;
-      background: #D62828;
-      border-radius: 2px;
-      transform: scaleX(0);
-      transform-origin: center;
-      transition: transform 0.22s ease;
-    }
-    header nav ul li a.header_button:hover::after { transform: scaleX(1); }
-
-    header nav ul li a.ordernow_button {
-      display: block;
-      background-color: #D62828;
-      color: #fff !important;
-      padding: 9px 24px;
-      border-radius: 40px;
-      font-family: 'Oswald', sans-serif;
-      font-size: 18px;
-      font-weight: 600;
-      text-decoration: none;
-      white-space: nowrap;
-      line-height: 1;
-      margin-left: 6px;
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-    header nav ul li a.ordernow_button:hover {
-      box-shadow: 0 0 14px rgba(214,40,40,0.5);
-      transform: translateY(-1px);
-    }
-
-    .nav-user-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-user-btn {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      color: #D62828;
-      font-size: 19px;
-      font-family: 'Oswald', sans-serif;
-      font-weight: 500;
-      padding: 8px 16px;
-      cursor: pointer;
-      white-space: nowrap;
-      border-radius: 6px;
-      line-height: 1;
-      transition: background 0.15s;
-    }
-    .nav-user-btn:hover { background: rgba(214,40,40,0.07); }
-
-    .nav-chevron {
-      width: 11px;
-      height: 11px;
-      transition: transform 0.2s;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .nav-user-wrap.open .nav-chevron { transform: rotate(180deg); }
-
-    .nav-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: #fff;
-      border: 1.5px solid #eee;
-      border-radius: 10px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-      min-width: 150px;
-      overflow: hidden;
-      z-index: 2000;
-    }
-    .nav-user-wrap.open .nav-dropdown { display: block; }
-
-    .nav-dropdown a {
-      display: block;
-      padding: 11px 18px;
-      font-family: 'Alegreya Sans', sans-serif;
-      font-size: 15px;
-      text-decoration: none;
-      color: #333;
-      transition: background 0.15s;
-    }
-    .nav-dropdown a:hover { background: #fff5f5; }
-    .nav-dropdown a.logout { color: #D62828; font-weight: 700; }
-
-    @media (max-width: 768px) {
-      header { padding: 0 16px; }
-      header nav ul { gap: 0; }
-      header nav ul li a.header_button,
-      .nav-user-btn { font-size: 15px; padding: 8px 10px; }
-      header nav ul li a.header_button::after { left: 10px; right: 10px; }
-      header nav ul li a.ordernow_button { font-size: 14px; padding: 8px 14px; margin-left: 2px; }
-    }
   </style>
 </head>
+
 <body>
+<?php include 'nav.php'; ?>
 
-<header>
-  <div class="logo">
-    <h1>
-      <a href="index.php">
-        <img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:45px;">
-      </a>
-    </h1>
-  </div>
-
-  <nav>
-    <ul>
-      <li><a href="aboutus.php"        class="header_button">About Us</a></li>
-      <li><a href="index.php#FAQS"     class="header_button">FAQs</a></li>
-      <li><a href="branch-locator.php" class="header_button">Branch Locator</a></li>
-
-      <li>
-        <?php if (isset($_SESSION['user_id'])): ?>
-          <div class="nav-user-wrap" id="navUserWrap">
-            <button class="nav-user-btn" id="navUserBtn" aria-expanded="false" aria-haspopup="true">
-              <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['username'] ?? 'Account') ?>
-              <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M1 1L6 7L11 1" stroke="#D62828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="nav-dropdown" role="menu">
-              <a href="logout_process.php" class="logout" role="menuitem">Log Out</a>
-            </div>
-          </div>
-        <?php else: ?>
-          <a href="login.php" class="header_button">Sign In</a>
-        <?php endif; ?>
-      </li>
-
-      <li><a href="orders.php" class="ordernow_button">Order Now</a></li>
-    </ul>
-  </nav>
-</header>
-
-<script>
-(function () {
-  var wrap = document.getElementById('navUserWrap');
-  var btn  = document.getElementById('navUserBtn');
-  if (!wrap || !btn) return;
-
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var isOpen = wrap.classList.toggle('open');
-    btn.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  document.addEventListener('click', function () {
-    if (wrap.classList.contains('open')) {
-      wrap.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      wrap.classList.remove('open');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-})();
-</script>
 
 <!-- ═══════════════════════════════════════
      PAGE HERO
@@ -1307,7 +1110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (link) link.classList.add("active");
       }
     });
-  }, { rootMargin: "-40% 0px -50% 0px" });
+  }, { rootMargin: "-130px 0px -66% 0px" });
   sections.forEach(s => observer.observe(s));
 
   /* ─── INIT ───────────────────────────────── */
@@ -1317,11 +1120,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function lockLayout() {
     const header = document.querySelector('header');
     const hero   = document.querySelector('.page-hero');
+    const sidebar = document.querySelector('.sidebar');
     const layout = document.querySelector('.shop-layout');
     if (!layout) return;
     const headerH = header ? header.offsetHeight : 65;
     const heroH   = hero   ? hero.offsetHeight   : 0;
     layout.style.height = (window.innerHeight - headerH - heroH) + 'px';
+    if (sidebar) {
+      sidebar.style.top = (headerH + heroH) + 'px';
+      sidebar.style.maxHeight = (window.innerHeight - headerH - heroH) + 'px';
+    }
   }
   lockLayout();
   window.addEventListener('resize', lockLayout);

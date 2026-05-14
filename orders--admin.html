@@ -354,6 +354,22 @@
             from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
+        .btn-cooking-order {
+    padding: 8px 20px; background: #f57c00; color: #fff;
+    border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+    font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+}
+.btn-cooking-order:hover { background: #e65100; }
+
+.btn-transit-order {
+    padding: 8px 20px; background: #1565c0; color: #fff;
+    border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+    font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+}
+.btn-transit-order:hover { background: #0d47a1; }
+
+.status-cooking    { background: #fff3e0; color: #e65100; }
+.status-in_transit { background: #e3f2fd; color: #1565c0; }
     </style>
 </head>
 
@@ -728,6 +744,12 @@ function renderModal(o) {
         <div class="status-actions">
             <button class="btn-confirm"       onclick="updateStatus(${o.id}, 'confirmed')">
                 <ion-icon name="checkmark-circle-outline"></ion-icon> Confirm
+            </button>
+            <button class="btn-cooking-order" onclick="updateStatus(${o.id}, 'cooking')">
+                <ion-icon name="flame-outline"></ion-icon> Cooking
+            </button>
+            <button class="btn-transit-order" onclick="updateStatus(${o.id}, 'in_transit')">
+                <ion-icon name="bicycle-outline"></ion-icon> In Transit
             </button>
             <button class="btn-pending-order" onclick="updateStatus(${o.id}, 'pending')">
                 <ion-icon name="time-outline"></ion-icon> Set Pending

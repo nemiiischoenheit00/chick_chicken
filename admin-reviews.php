@@ -64,7 +64,7 @@
         <div class="sidebar">
             <div class="logo">
                 <h1>
-                    <a href="admin.php"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 55px" /></a>
+                    <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 55px" /></a>
                 </h1>
             </div>
             <div class="navigation--admin">

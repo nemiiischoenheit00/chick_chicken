@@ -83,8 +83,8 @@ CREATE TABLE `orders` (
   `phone` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
   `address` text NOT NULL,
-  `payment_method` enum('gcash','cod') NOT NULL,
-  `gcash_proof` varchar(255) DEFAULT NULL,
+  `payment_method` enum('online','cod') NOT NULL,
+  `card_number` varchar(19) DEFAULT NULL,
   `branch` varchar(150) DEFAULT 'Chick Chicken - Amang Rodriguez Pasig',
   `status` enum('pending','confirmed','cooking','in_transit','cancelled') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -94,8 +94,8 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `payment_method`, `gcash_proof`, `branch`, `status`, `created_at`) VALUES
-(5, 9, 'Chester DeltaDarems', '+639922634538', 'blasphemydarem@gmail.com', 'awdasd', 'cod', NULL, 'Chick Chicken - Amang Rodriguez Pasig', 'pending', '2026-05-12 19:54:39');
+INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `payment_method`, `card_number`, `branch`, `status`, `created_at`) VALUES
+(5, 9, 'Chester DeltaDarems', '+639922634538', 'blasphemydarem@gmail.com', 'awdasd', 'cod', '', 'Chick Chicken - Amang Rodriguez Pasig', 'pending', '2026-05-12 19:54:39');
 
 -- --------------------------------------------------------
 

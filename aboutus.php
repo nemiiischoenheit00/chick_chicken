@@ -1,3 +1,8 @@
+<?php
+session_start();
+require 'db.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,23 +20,39 @@
 <header>
   <div class="logo">
     <h1>
-      <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px" /></a>
+      <a href="index.php">
+        <img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:45px;">
+      </a>
     </h1>
   </div>
 
-  <div class="navi--header">
-    <nav>
-      <ul>
-        <li><a href="aboutus.html" class="header_button">About Us</a></li>
-        <li><a href="index.html#FAQS" class="header_button">FAQs</a></li>
-        <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+  <nav>
+    <ul>
+      <li><a href="aboutus.php"        class="header_button">About Us</a></li>
+      <li><a href="index.php#FAQS"     class="header_button">FAQs</a></li>
+      <li><a href="branch-locator.php" class="header_button">Branch Locator</a></li>
 
-        <li><a href="signup.php" class="header_button">Sign In</a></li>
+      <li>
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <div class="nav-user-wrap" id="navUserWrap">
+            <button class="nav-user-btn" id="navUserBtn" aria-expanded="false" aria-haspopup="true">
+              <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['username'] ?? 'Account') ?>
+              <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M1 1L6 7L11 1" stroke="#D62828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="nav-dropdown" role="menu">
+              <a href="logout_process.php" class="logout" role="menuitem">Log Out</a>
+            </div>
+          </div>
+        <?php else: ?>
+          <a href="login.php" class="header_button">Sign In</a>
+        <?php endif; ?>
+      </li>
 
-        <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
-      </ul>
-    </nav>
-  </div>
+      <li><a href="orders.php" class="ordernow_button">Order Now</a></li>
+    </ul>
+  </nav>
 </header>
 
 <!-- About Us Section -->
