@@ -334,3 +334,25 @@ hr {
     background: #e23c3c;
     transition: background 0.3s ease;
 }
+
+.feedback-btn {
+    display: column;
+    max-width: 70px;
+    align-items: center;
+    font-size: 20px;
+    border: none;
+    gap: 8px;
+    background-color: var(--red);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-weight: 500;
+    text-decoration: none;
+    /*bale binold ko lang yung order now hehe*/
+}
+
+.feedback-btn.glow {
+    box-shadow: 0 0 10px var(--red);
+}

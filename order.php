@@ -55,7 +55,9 @@ function listOrders(): void {
         $params[] = is_numeric($search) ? (int)$search : -1;
     }
 
-    if (in_array($status, ['pending','confirmed','cooking','in_transit','cancelled'])) {        $where[]  = "o.status = ?";
+    // FIX 1: Added 'completed' to the status allowlist here
+    if (in_array($status, ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'])) {
+        $where[]  = "o.status = ?";
         $params[] = $status;
     }
 
@@ -104,11 +106,11 @@ function listOrders(): void {
     }
 
     respond([
-        "orders"     => $orders,
-        "total"      => $total,
-        "page"       => $page,
-        "limit"      => $limit,
-        "total_pages"=> (int)ceil($total / $limit),
+        "orders"      => $orders,
+        "total"       => $total,
+        "page"        => $page,
+        "limit"       => $limit,
+        "total_pages" => (int)ceil($total / $limit),
     ]);
 }
 
@@ -167,7 +169,9 @@ function updateStatus(): void {
         return;
     }
 
-    $allowed = ['pending', 'confirmed', 'cooking', 'in_transit', 'cancelled'];
+    // FIX 2: Added 'completed' to the status allowlist here — this was the
+    // root cause of the Complete button silently failing on your groupmate's end
+    $allowed = ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'];
     if (!in_array($status, $allowed)) {
         respond(["error" => "Invalid status. Must be one of: " . implode(', ', $allowed)], 400);
         return;
@@ -217,4 +221,3 @@ function respond(array $data, int $code = 200): void {
     exit;
 }
 ?>
-  
