@@ -13,6 +13,7 @@
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Chart.js for Sales Overview -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <title>Chick Chicken - Admin</title>
 
@@ -31,11 +32,24 @@
             0%   { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
-        .change-badge          { font-size: 13px; font-weight: 600; }
-        .change-badge.up       { color: #2e7d32; }
-        .change-badge.down     { color: #c62828; }
-        .change-badge.flat     { color: #888; }
-        .chart-wrapper         { position: relative; height: 200px; width: 100%; }
+
+        /* ── Change badge ── */
+        .change-badge {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .change-badge.up   { color: #2e7d32; }
+        .change-badge.down { color: #c62828; }
+        .change-badge.flat { color: #888; }
+
+        /* ── Chart wrapper ── */
+        .chart-wrapper {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+
+        /* ── Recent orders list ── */
         .recent-orders li {
             display: flex;
             align-items: center;
@@ -45,39 +59,38 @@
             font-size: 14px;
         }
         .recent-orders li:last-child { border-bottom: none; }
-        .recent-orders .order-id     { font-weight: 700; color: #333; }
+        .recent-orders .order-id { font-weight: 700; color: #333; }
         .order-status {
-            font-size: 11px; font-weight: 800;
-            padding: 3px 9px; border-radius: 20px; text-transform: capitalize;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 20px;
+            text-transform: capitalize;
         }
         .status-pending   { background: #fff8e1; color: #e65c00; }
         .status-confirmed { background: #e8f5e9; color: #2e7d32; }
         .status-cancelled { background: #fce4ec; color: #c62828; }
+
+        /* ── Error state ── */
         .db-error {
-            background: #fff3cd; border: 1px solid #ffc107;
-            border-radius: 8px; padding: 12px 16px;
-            font-size: 13px; color: #856404;
-            margin-bottom: 18px; display: none;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #856404;
+            margin-bottom: 18px;
+            display: none;
         }
     </style>
 </head>
 
 <body>
-
-<?php
-// ── Session guard ──────────────────────────────────────────────────────────
-session_start();
-if (empty($_SESSION['is_admin'])) {
-    header("Location: login.php");
-    exit;
-}
-?>
-
     <header>
         <div class="sidebar">
             <div class="logo">
                 <h1>
-                    <a href="admin.php"><img src="assets/Logo2.png" alt="ChickChicken"
+                    <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken"
                             style="width: auto; height: 55px" /></a>
                 </h1>
             </div>
@@ -108,12 +121,6 @@ if (empty($_SESSION['is_admin'])) {
                                 <span>Inventory</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="logout_process.php" class="header_button">
-                                <ion-icon name="log-out-outline"></ion-icon>
-                                <span>Logout</span>
-                            </a>
-                        </li>
                     </ul>
                 </nav>
             </div>
@@ -124,11 +131,12 @@ if (empty($_SESSION['is_admin'])) {
         <section id="dashboard--admin" class="page-content active">
             <h1 style="margin-bottom: 25px;">Dashboard</h1>
 
+            <!-- DB error banner (shown if API fails) -->
             <div class="db-error" id="dbError">
                 ⚠️ Could not connect to the database. Make sure XAMPP is running and <code>db.php</code> is configured.
             </div>
 
-            <!-- STAT CARDS -->
+            <!-- ── STAT CARDS ── -->
             <div class="dashboard-cards">
 
                 <div class="dash-card">
@@ -177,7 +185,7 @@ if (empty($_SESSION['is_admin'])) {
 
             </div>
 
-            <!-- BOTTOM ROW -->
+            <!-- ── BOTTOM ROW ── -->
             <div class="dashboard-bottom">
 
                 <div class="dash-box">
@@ -207,32 +215,14 @@ if (empty($_SESSION['is_admin'])) {
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="admin.js"></script>
 
     <script>
-    // ── Nav: SPA-style section switching ─────────────────────────────────────
-    document.addEventListener("DOMContentLoaded", function () {
-        const navLinks       = document.querySelectorAll(".header_button");
-        const contentSections = document.querySelectorAll(".page-content");
-
-        navLinks.forEach(link => {
-            link.addEventListener("click", function (e) {
-                const target = this.getAttribute("href");
-                if (target && target.startsWith("#")) {
-                    e.preventDefault();
-                    navLinks.forEach(n => n.classList.remove("active"));
-                    this.classList.add("active");
-                    contentSections.forEach(s => s.classList.remove("active"));
-                    const section = document.querySelector(target);
-                    if (section) section.classList.add("active");
-                }
-            });
-        });
-    });
-
-    // ── Dashboard data ────────────────────────────────────────────────────────
+    // ── CONFIG ──────────────────────────────────────────────
     const API = 'dashboard.php';
     let salesChartInstance = null;
 
+    // ── HELPERS ─────────────────────────────────────────────
     function changeBadge(pct, elId) {
         const el = document.getElementById(elId);
         if (pct === 0) {
@@ -257,6 +247,7 @@ if (empty($_SESSION['is_admin'])) {
         return res.json();
     }
 
+    // ── LOAD STAT CARDS ─────────────────────────────────────
     async function loadStats() {
         try {
             const [orders, customers, revenue, pending] = await Promise.all([
@@ -265,20 +256,24 @@ if (empty($_SESSION['is_admin'])) {
                 apiFetch('revenue'),
                 apiFetch('pending_orders'),
             ]);
+
             document.getElementById('statOrders').textContent    = Number(orders.total).toLocaleString();
             document.getElementById('statCustomers').textContent = Number(customers.total).toLocaleString();
             document.getElementById('statRevenue').textContent   = '₱' + Number(revenue.total).toLocaleString('en-PH', {minimumFractionDigits: 2});
             document.getElementById('statPending').textContent   = Number(pending.total).toLocaleString();
+
             changeBadge(orders.change,    'statOrdersChange');
             changeBadge(customers.change, 'statCustomersChange');
             changeBadge(revenue.change,   'statRevenueChange');
             changeBadge(pending.change,   'statPendingChange');
+
         } catch (e) {
             console.error('Stats error:', e);
             showError();
         }
     }
 
+    // ── RECENT ORDERS ────────────────────────────────────────
     async function loadRecentOrders() {
         try {
             const orders = await apiFetch('recent_orders');
@@ -293,7 +288,7 @@ if (empty($_SESSION['is_admin'])) {
                         <span class="order-id">#${String(o.id).padStart(7, '0')}</span>
                         &nbsp;· ₱${Number(o.total).toLocaleString('en-PH', {minimumFractionDigits: 2})}
                     </span>
-                    <span class="order-status status-${(o.status||'').toLowerCase()}">${o.status}</span>
+                    <span class="order-status status-${o.status}">${o.status}</span>
                 </li>
             `).join('');
         } catch (e) {
@@ -301,10 +296,14 @@ if (empty($_SESSION['is_admin'])) {
         }
     }
 
+    // ── SALES CHART ──────────────────────────────────────────
     async function loadSalesChart() {
         try {
             const data = await apiFetch('sales_overview');
-            const days = [], revenues = [];
+
+            // Fill in missing days in the last 7 days
+            const days = [];
+            const revenues = [];
             for (let i = 6; i >= 0; i--) {
                 const d = new Date();
                 d.setDate(d.getDate() - i);
@@ -313,8 +312,10 @@ if (empty($_SESSION['is_admin'])) {
                 days.push(d.toLocaleDateString('en-PH', { weekday: 'short', month: 'short', day: 'numeric' }));
                 revenues.push(found ? parseFloat(found.revenue) : 0);
             }
+
             const ctx = document.getElementById('salesChart').getContext('2d');
             if (salesChartInstance) salesChartInstance.destroy();
+
             salesChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -333,10 +334,20 @@ if (empty($_SESSION['is_admin'])) {
                     maintainAspectRatio: false,
                     plugins: {
                         legend: { display: false },
-                        tooltip: { callbacks: { label: ctx => '₱' + ctx.parsed.y.toLocaleString('en-PH', { minimumFractionDigits: 2 }) } }
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => '₱' + ctx.parsed.y.toLocaleString('en-PH', { minimumFractionDigits: 2 })
+                            }
+                        }
                     },
                     scales: {
-                        y: { beginAtZero: true, ticks: { callback: v => '₱' + v.toLocaleString() }, grid: { color: '#f0f0f0' } },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: v => '₱' + v.toLocaleString()
+                            },
+                            grid: { color: '#f0f0f0' }
+                        },
                         x: { grid: { display: false } }
                     }
                 }
@@ -346,10 +357,17 @@ if (empty($_SESSION['is_admin'])) {
         }
     }
 
+    // ── INIT ─────────────────────────────────────────────────
     loadStats();
     loadRecentOrders();
     loadSalesChart();
-    setInterval(() => { loadStats(); loadRecentOrders(); loadSalesChart(); }, 60000);
+
+    // Auto-refresh every 60 seconds
+    setInterval(() => {
+        loadStats();
+        loadRecentOrders();
+        loadSalesChart();
+    }, 60000);
     </script>
 
 </body>

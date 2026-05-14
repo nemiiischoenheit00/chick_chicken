@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="Image" href="assets/Logo.png"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
+    <title>Chick Chicken</title>
+  </head>
+
+  <header>
+    <div class="logo">
+      <h1>
+        <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+          <li><a href="#about-us" class="header_button">About Us</a></li>
+          <li><a href="#FAQS" class="header_button">FAQs</a></li>
+          <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+          <li><a href="placeholder" class="ordernow_button"><img src="assets/cart.png" class="my_cart">My Cart</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+<body>
+    <section id="contact" class="section contact">
+    <h2>Please input your details</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="number" placeholder="Your Number" required>
+      <input type="text" placeholder="Your Address" required>
+    <button type="submit" formaction="ordered.html">Go To Startpage</button>
+    </form>
+  </section>
+</body>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
