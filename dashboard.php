@@ -59,14 +59,14 @@ switch ($action) {
             SELECT COALESCE(SUM(oi.price * oi.quantity), 0) as total
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id
-            WHERE o.status != 'cancelled'
+            WHERE o.status = 'completed'
         ")->fetch()['total'];
 
         $thisWeek = $pdo->query("
             SELECT COALESCE(SUM(oi.price * oi.quantity), 0) as total
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id
-            WHERE o.status != 'cancelled'
+            WHERE o.status = 'completed'
               AND o.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
         ")->fetch()['total'];
 
@@ -74,13 +74,13 @@ switch ($action) {
             SELECT COALESCE(SUM(oi.price * oi.quantity), 0) as total
             FROM order_items oi
             JOIN orders o ON o.id = oi.order_id
-            WHERE o.status != 'cancelled'
+            WHERE o.status = 'completed'
               AND o.created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)
               AND o.created_at < DATE_SUB(NOW(), INTERVAL 7 DAY)
         ")->fetch()['total'];
 
         $change = $lastWeek > 0 ? round((($thisWeek - $lastWeek) / $lastWeek) * 100) : 0;
-        echo json_encode(['total' => number_format($total, 2), 'change' => $change]);
+        echo json_encode(['total' => round((float)$total, 2), 'change' => $change]);
         break;
 
     // ── PENDING ORDERS ──────────────────────────────────────
@@ -124,16 +124,23 @@ switch ($action) {
     case 'sales_overview':
         $stmt = $pdo->query("
             SELECT DATE(o.created_at) as day,
-                   COALESCE(SUM(oi.price * oi.quantity), 0) as revenue,
+                   CAST(COALESCE(SUM(oi.price * oi.quantity), 0) AS DECIMAL(10,2)) as revenue,
                    COUNT(DISTINCT o.id) as orders
             FROM orders o
             LEFT JOIN order_items oi ON oi.order_id = o.id
-            WHERE o.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-              AND o.status != 'cancelled'
+            WHERE DATE(o.created_at) >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+              AND o.status = 'completed'
             GROUP BY DATE(o.created_at)
             ORDER BY day ASC
         ");
-        echo json_encode($stmt->fetchAll());
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Ensure revenue is always a float, never a string
+        $rows = array_map(function($r) {
+            $r['revenue'] = (float) $r['revenue'];
+            $r['orders']  = (int)   $r['orders'];
+            return $r;
+        }, $rows);
+        echo json_encode($rows);
         break;
 
     default:
