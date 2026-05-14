@@ -86,7 +86,7 @@ if (isset($_SESSION['user_id'])) {
 
     /* ── Payment section spacing ── */
     .checkout-form h3.payment-heading { margin-top: 36px; }
-    #card-field { margin-top: 16px; }
+    #gcash-field { margin-top: 16px; }
   </style>
 </head>
   
@@ -160,7 +160,7 @@ if (isset($_SESSION['user_id'])) {
       </div>
     </section>
 
-    <form class="checkout-form">
+    <form class="checkout-form" enctype="multipart/form-data">
       <h3>Your Details</h3>
 
       <label>Name<span>*</span></label>
@@ -184,9 +184,9 @@ if (isset($_SESSION['user_id'])) {
       <h3 class="payment-heading">Payment Method</h3>
       <div class="payment-methods">
         <label class="method">
-          <input type="radio" name="payment" value="online" hidden>
-          <img src="assets/card.png" alt="Card Icon">
-          <p><strong>ONLINE PAYMENT</strong><br>Debit, Credit, E-Wallet</p>
+          <input type="radio" name="payment" value="gcash" hidden>
+          <img src="assets/card.png" alt="GCash Icon">
+          <p><strong>GCASH</strong><br>Pay via GCash e-wallet</p>
         </label>
         <label class="method">
           <input type="radio" name="payment" value="cod" hidden>
@@ -195,10 +195,41 @@ if (isset($_SESSION['user_id'])) {
         </label>
       </div>
 
-      <div id="card-field">
-        <label for="cardnumber">Card Number</label>
-        <input type="text" id="cardnumber" name="cardnumber"
-          placeholder="1234 5678 9012 3456" inputmode="numeric" maxlength="19">
+      <div id="gcash-field" style="display:none; margin-top:16px;">
+        <div style="
+          background:#fffbea; border:1.5px solid #f5c800; border-radius:10px;
+          padding:16px; margin-bottom:14px;
+          font-family:'Alegreya Sans',sans-serif; font-size:14px; color:#555; line-height:1.6;
+        ">
+          <p style="margin:0 0 14px 0;">Scan the QR code below or send your GCash payment to <strong style="color:#1a1a1a;">09XX XXX XXXX</strong>, then upload a screenshot of your receipt.</p>
+          <div style="text-align:center;">
+            <p style="
+              font-family:'Oswald',sans-serif; font-size:13px; font-weight:600;
+              letter-spacing:0.5px; color:#1a1a1a; text-transform:uppercase;
+              margin:0 0 10px 0;
+            ">QR Code</p>
+            <img src="assets/gcash.png" alt="GCash QR Code"
+              style="
+                width:200px; height:200px; object-fit:contain;
+                border:2px solid #f5c800; border-radius:12px;
+                background:#fff; padding:8px; box-sizing:border-box;
+              ">
+          </div>
+        </div>
+        <label for="gcash-proof">Proof of Payment<span>*</span></label>
+        <input type="file" id="gcash-proof" name="gcash_proof"
+          accept="image/png, image/jpeg, image/jpg, image/webp"
+          style="
+            display:block; width:100%; padding:14px 16px; box-sizing:border-box;
+            border:2px dashed #f5c800; border-radius:10px; background:#fffbea;
+            font-family:'Alegreya Sans',sans-serif; font-size:14px; color:#555;
+            cursor:pointer; transition:border-color 0.2s;
+          ">
+        <div id="gcash-preview" style="margin-top:12px; display:none;">
+          <img id="gcash-preview-img"
+            style="max-width:100%; border-radius:10px; border:2px solid #f5c800; max-height:220px; object-fit:contain; display:block;"
+            alt="Payment proof preview">
+        </div>
       </div>
 
       <div class="checkout-divider"></div>
@@ -242,6 +273,31 @@ if (isset($_SESSION['user_id'])) {
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
   <script src="checkout.js"></script>
+  <script>
+    // Show/hide GCash proof of payment field
+    document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        var gcashField = document.getElementById('gcash-field');
+        gcashField.style.display = this.value === 'gcash' ? 'block' : 'none';
+        if (this.value !== 'gcash') {
+          document.getElementById('gcash-proof').value = '';
+          document.getElementById('gcash-preview').style.display = 'none';
+        }
+      });
+    });
+
+    // Live preview of uploaded screenshot
+    document.getElementById('gcash-proof').addEventListener('change', function() {
+      var preview = document.getElementById('gcash-preview');
+      var img = document.getElementById('gcash-preview-img');
+      if (this.files && this.files[0]) {
+        img.src = URL.createObjectURL(this.files[0]);
+        preview.style.display = 'block';
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+  </script>
   
   <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Alegreya+Sans:wght@400;700&display=swap');

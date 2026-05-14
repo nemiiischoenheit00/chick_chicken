@@ -123,23 +123,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // Phone: strip formatting before sending, keep +63XXXXXXXXXX
     const rawPhone = phoneInput?.value.replace(/\s/g, "") ?? "";
 
-    const payload = {
-      name:           form.querySelector('input[name="name"]')?.value.trim(),
-      phone:          rawPhone,
-      email:          form.querySelector('input[name="email"]')?.value.trim(),
-      address:        form.querySelector('input[name="address"]')?.value.trim(),
-      payment_method: payment,
-      card_number:    payment === "online" ? cardInput?.value.replace(/\s/g, "") : "",
-      branch:         branch
-    };
+// Replace the payload block and fetch call in your submit handler:
 
-    try {
-      const res  = await fetch("place-order.php", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(payload)
-      });
-      const data = await res.json();
+const formData = new FormData();
+formData.append("name",           form.querySelector('input[name="name"]')?.value.trim());
+formData.append("phone",          rawPhone);
+formData.append("email",          form.querySelector('input[name="email"]')?.value.trim());
+formData.append("address",        form.querySelector('input[name="address"]')?.value.trim());
+formData.append("payment_method", payment);
+formData.append("branch",         branch);
+
+if (payment === "gcash") {
+  const proof = document.getElementById("gcash-proof");
+  if (proof.files.length) formData.append("gcash_proof", proof.files[0]);
+}
+
+try {
+  const res  = await fetch("place-order.php", {
+    method: "POST",
+    body:   formData   // ← No Content-Type header; browser sets it with boundary automatically
+  });
+  const data = await res.json();  
 
       if (data.success) {
         window.location.href = `feedback.html?order_id=${data.order_id}`;
@@ -163,6 +167,12 @@ async function loadOrderSummary() {
   try {
     const res   = await fetch("get_cart.php");
     const items = await res.json();
+
+        // Add this guard:
+    if (!Array.isArray(items)) {
+      console.error("Cart response is not an array:", items);
+      return;
+    }
 
     const container = document.getElementById("summary-items");
     const heading   = document.querySelector(".order-summary h3");
