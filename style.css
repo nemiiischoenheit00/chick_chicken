@@ -1,5 +1,4 @@
-*
-*::before,
+* *::before,
 *::after {
   margin: 0;
   padding: 0;
@@ -10,22 +9,23 @@
 
 /* Color ": var(___);" */
 :root {
-    --mustard: #FFDE59;
-    --red: #FF0000;
-    --black: #000;
-    --wine-red: #9A0404;
-    --sans: sans-serif;
-    --primary: #ec994b;
-    --white: #ffffff;
+  --mustard: #FFDE59;
+  --red: #FF0000;
+  --black: #000;
+  --wine-red: #9A0404;
+  --sans: sans-serif;
+  --primary: #ec994b;
+  --white: #ffffff;
 }
 
-html, body {
-    display: block;
-    padding: 0;
-    margin: 0;
-    height: auto; 
-    overflow-x: hidden;
-    font: var(--oswald);
+html,
+body {
+  display: block;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  overflow-x: hidden;
+  font: var(--oswald);
 }
 
 html {
@@ -162,9 +162,9 @@ header .sign--in li a {
 }
 
 .my_cart {
-width: 20px; 
-height: 20px;
-padding-right: 5px;
+  width: 20px;
+  height: 20px;
+  padding-right: 5px;
 }
 
 /* END OF HEADER STYLING */
@@ -174,7 +174,7 @@ padding-right: 5px;
 
 
 .welcomepicture {
-  margin-top:40px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
 }
@@ -228,10 +228,10 @@ padding-right: 5px;
 
 /*START OF FAQ SECTION*/
 .FAQS {
-    width: 100%;
-    max-width: 1130px;
-    margin: 5rem auto;
-    padding: 0 2rem;
+  width: 100%;
+  max-width: 1130px;
+  margin: 5rem auto;
+  padding: 0 2rem;
 }
 
 .title {
@@ -243,14 +243,14 @@ padding-right: 5px;
 }
 
 .faq {
-    border-bottom: 2px solid black;
-    padding: 1rem 0;
-    cursor: pointer;
-    transition: background 0.2s ease;
+  border-bottom: 2px solid black;
+  padding: 1rem 0;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .faq:hover {
-    background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .question {
@@ -381,6 +381,7 @@ padding-right: 5px;
   margin: 0 0 10px 0;
   font-family: "Alegreya Sans", sans-serif;
 }
+
 .social-icons {
   display: flex;
   gap: 10px;
@@ -402,7 +403,7 @@ padding-right: 5px;
   text-align: center;
   margin-top: 30px;
   font-size: 14px;
-  border-top: 1px solid rgba(0,0,0,0.2);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
   padding-top: 15px;
   font-family: "Oswald", sans-serif;
 }
@@ -536,6 +537,7 @@ hr {
   width: 80%;
   margin: 40px auto;
 }
+
 .checkout-container h1 {
   text-align: center;
   font-size: 24px;
@@ -550,7 +552,9 @@ hr {
   border-bottom: 1px solid #ddd;
   padding-bottom: 15px;
 }
-.branch-info h3, .branch-info h4 {
+
+.branch-info h3,
+.branch-info h4 {
   margin-bottom: 5px;
 }
 
@@ -559,6 +563,7 @@ hr {
   width: 80%;
   margin: 40px auto;
 }
+
 .checkout-container h1 {
   text-align: center;
   font-size: 24px;
@@ -571,7 +576,9 @@ hr {
   border-bottom: 1px solid #ddd;
   padding-bottom: 15px;
 }
-.branch-info h3, .branch-info h4 {
+
+.branch-info h3,
+.branch-info h4 {
   margin-bottom: 5px;
 }
 
@@ -580,15 +587,18 @@ hr {
   display: flex;
   flex-direction: column;
 }
+
 .checkout-form label {
   font-weight: bold;
   margin-top: 10px;
 }
+
 .checkout-form input {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .checkout-form span {
   color: red;
 }
@@ -598,6 +608,7 @@ hr {
   gap: 20px;
   margin-top: 20px;
 }
+
 .method {
   flex: 1;
   text-align: center;
@@ -620,6 +631,7 @@ hr {
   border-color: #ffcc00;
   background-color: #fff7d1;
 }
+
 .method img {
   height: 40px;
   margin-bottom: 10px;
@@ -628,6 +640,7 @@ hr {
   border: none;
   outline: none;
 }
+
 /* End of Cheykout */
 
 
@@ -700,6 +713,7 @@ hr {
 button:hover {
   background: #e23c3c;
 }
+
 /*disclaimer*/
 
 
@@ -720,7 +734,7 @@ button:hover {
   border-radius: 12px;
   padding: 40px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 500px;
   height: 350px;
 }
@@ -759,13 +773,14 @@ p {
 }
 
 .star-rating label:hover,
-.star-rating label:hover ~ label {
+.star-rating label:hover~label {
   color: red;
 }
 
-.star-rating input:checked ~ label {
+.star-rating input:checked~label {
   color: red;
 }
+
 /* End of feederback */
 
 .method {
@@ -784,8 +799,8 @@ p {
 }
 
 /* NEW: selected state */
-.method input:checked + img,
-.method input:checked + img + p {
+.method input:checked+img,
+.method input:checked+img+p {
   pointer-events: none;
 }
 
@@ -810,7 +825,7 @@ p {
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
   z-index: 999;
 }
 
@@ -932,9 +947,8 @@ p {
   vertical-align: middle;
 }
 
-.checkout-divider{
-    margin: 35px 0 25px;
-    border-top: 2px solid #e5e5e5;
-    position: relative;
+.checkout-divider {
+  margin: 35px 0 25px;
+  border-top: 2px solid #e5e5e5;
+  position: relative;
 }
-
