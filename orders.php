@@ -1459,28 +1459,33 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     async function fetchOrders() {
-        try {
-            var res  = await fetch('order_tracker.php?action=active_orders');
-            var data = await res.json();
+      try {
+          var res  = await fetch('order_tracker.php?action=active_orders');
+          var data = await res.json();
 
-            if (data.error === 'not_logged_in') {
-                document.getElementById('ot-toggle').style.display = 'none';
-                return;
-            }
+          if (data.error === 'not_logged_in') {
+              document.getElementById('ot-toggle').style.display = 'none';
+              return;
+          }
 
-            var orders = data.orders || [];
-            var toggle = document.getElementById('ot-toggle');
+          var orders = data.orders || [];
 
-            if (orders.length === 0) {
-                toggle.style.display = 'none';
-                return;
-            }
+          // 🔥 FILTER OUT COMPLETED ORDERS
+          orders = orders.filter(order => order.status !== 'completed');
 
-            toggle.style.display = 'flex';
-            renderCard(orders[0]);
-        } catch (e) {
-            console.error('Order tracker error:', e);
-        }
+          var toggle = document.getElementById('ot-toggle');
+
+          if (orders.length === 0) {
+              toggle.style.display = 'none';
+              return;
+          }
+
+          toggle.style.display = 'flex';
+          renderCard(orders[0]);
+
+      } catch (e) {
+          console.error('Order tracker error:', e);
+      }
     }
 
     function renderCard(o) {
