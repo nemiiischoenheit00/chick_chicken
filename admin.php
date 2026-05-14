@@ -90,7 +90,7 @@
         <div class="sidebar">
             <div class="logo">
                 <h1>
-                    <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken"
+                    <a href="admin.php"><img src="assets/Logo2.png" alt="ChickChicken"
                             style="width: auto; height: 55px" /></a>
                 </h1>
             </div>
@@ -104,19 +104,19 @@
                             </a>
                         </li>
                         <li>
-                            <a href="orders--admin.html" class="header_button">
+                            <a href="orders--admin.php" class="header_button">
                                 <ion-icon name="bag-handle-outline"></ion-icon>
                                 <span>Orders</span>
                             </a>
                         </li>
                         <li>
-                            <a href="menu--admin.html" class="header_button">
+                            <a href="menu--admin.php" class="header_button">
                                 <ion-icon name="book-outline"></ion-icon>
                                 <span>Menus</span>
                             </a>
                         </li>
                         <li>
-                            <a href="inventory.html" class="header_button">
+                            <a href="inventory.php" class="header_button">
                                 <ion-icon name="clipboard-outline"></ion-icon>
                                 <span>Inventory</span>
                             </a>
