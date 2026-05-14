@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 06:56 PM
+-- Generation Time: May 14, 2026 at 09:38 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,6 +37,23 @@ CREATE TABLE `cart` (
   `extra_flavor` varchar(100) DEFAULT NULL,
   `mix_preference` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `discount_applications`
+--
+
+CREATE TABLE `discount_applications` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `type` varchar(50) NOT NULL COMMENT 'e.g. Senior, PWD, Student',
+  `id_image_path` varchar(500) NOT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -224,16 +241,17 @@ CREATE TABLE `users` (
   `last_name` varchar(100) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `discount_status` enum('none','pending','approved','rejected') NOT NULL DEFAULT 'none'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`) VALUES
-(10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm'),
-(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `discount_status`) VALUES
+(10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm', 'none'),
+(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq', 'none');
 
 --
 -- Indexes for dumped tables
@@ -246,6 +264,13 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `discount_applications`
+--
+ALTER TABLE `discount_applications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `inventory`
@@ -305,6 +330,12 @@ ALTER TABLE `cart`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
+-- AUTO_INCREMENT for table `discount_applications`
+--
+ALTER TABLE `discount_applications`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
@@ -356,6 +387,12 @@ ALTER TABLE `users`
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `discount_applications`
+--
+ALTER TABLE `discount_applications`
+  ADD CONSTRAINT `discount_applications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `inventory`
