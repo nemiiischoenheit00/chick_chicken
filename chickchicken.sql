@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 06:31 PM
+-- Generation Time: May 15, 2026 at 10:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,6 +42,30 @@ CREATE TABLE `cart` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `discount_applications`
+--
+
+CREATE TABLE `discount_applications` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `id_image_path` varchar(500) NOT NULL,
+  `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `discount_applications`
+--
+
+INSERT INTO `discount_applications` (`id`, `user_id`, `type`, `id_image_path`, `status`, `notes`, `created_at`, `updated_at`) VALUES
+(5, 10, 'PWD', 'uploads/discount_ids/discount_10_1778832683.png', 'approved', '', '2026-05-15 08:11:23', '2026-05-15 08:11:31');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `inventory`
 --
 
@@ -51,6 +75,7 @@ CREATE TABLE `inventory` (
   `initial_stock` int(11) NOT NULL DEFAULT 0,
   `remaining` int(11) NOT NULL DEFAULT 0,
   `low_stock_threshold` int(11) NOT NULL DEFAULT 10,
+  `unit` varchar(30) NOT NULL DEFAULT 'pcs',
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -58,17 +83,17 @@ CREATE TABLE `inventory` (
 -- Dumping data for table `inventory`
 --
 
-INSERT INTO `inventory` (`id`, `product_id`, `initial_stock`, `remaining`, `low_stock_threshold`, `updated_at`) VALUES
-(1, 1, 50, 50, 10, '2026-05-08 03:16:58'),
-(2, 2, 50, 50, 10, '2026-05-08 03:16:58'),
-(3, 3, 50, 50, 10, '2026-05-08 03:16:58'),
-(4, 4, 50, 50, 10, '2026-05-08 03:16:58'),
-(5, 5, 50, 50, 10, '2026-05-08 03:16:58'),
-(6, 6, 50, 50, 10, '2026-05-08 03:16:58'),
-(7, 7, 50, 50, 10, '2026-05-08 03:16:58'),
-(8, 8, 50, 50, 10, '2026-05-08 03:16:58'),
-(9, 9, 50, 50, 10, '2026-05-08 03:16:58'),
-(10, 10, 50, 50, 10, '2026-05-08 03:16:58');
+INSERT INTO `inventory` (`id`, `product_id`, `initial_stock`, `remaining`, `low_stock_threshold`, `unit`, `updated_at`) VALUES
+(1, 1, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(2, 2, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(3, 3, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(4, 4, 50, 50, 10, 'pcs', '2026-05-14 16:56:31'),
+(5, 5, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(6, 6, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(7, 7, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(8, 8, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(9, 9, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(10, 10, 50, 50, 10, 'pcs', '2026-05-08 03:16:58');
 
 -- --------------------------------------------------------
 
@@ -95,10 +120,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `payment_method`, `gcash_proof`, `branch`, `status`, `created_at`) VALUES
-(5, 9, 'Chester DeltaDarems', '+639922634538', 'blasphemydarem@gmail.com', 'awdasd', 'cod', '', 'Chick Chicken - Amang Rodriguez Pasig', 'completed', '2026-05-12 19:54:39'),
-(6, 9, 'Louis Ganongan', '9922634538', 'blasphemydarem@gmail.com', 'awdasd', 'cod', '', 'Chick Chicken - Amang Rodriguez Pasig', 'completed', '2026-05-14 10:30:19'),
-(7, 9, 'Louis Ganongan', '9922634538', 'blasphemydarem@gmail.com', 'awdasd', 'gcash', 'uploads/gcash/7_1778764646.png', 'Chick Chicken - Pasig', 'completed', '2026-05-14 13:17:26'),
-(8, 10, 'Robert Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '175 P 23rd Ave', 'cod', NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-14 15:02:45');
+(19, 10, 'Robert Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '175 P 23rd Ave', 'cod', NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-15 08:13:19');
 
 -- --------------------------------------------------------
 
@@ -123,10 +145,7 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `option_selected`, `sauce`, `extra_flavor`, `mix_preference`, `price`) VALUES
-(7, 5, 1, 2, 'Double (1000ml)', 'Chick Sauce', '', 'Separate', 169.00),
-(8, 6, 1, 1, 'Double (1000ml)', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 169.00),
-(9, 7, 4, 1, 'Double (1000ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 289.00),
-(10, 8, 1, 1, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Mixed', 169.00);
+(25, 19, 5, 4, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Mixed', 339.00);
 
 -- --------------------------------------------------------
 
@@ -161,6 +180,42 @@ INSERT INTO `products` (`id`, `name`, `price`, `category`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `raw_ingredients`
+--
+
+CREATE TABLE `raw_ingredients` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `category` varchar(100) DEFAULT 'Ingredient',
+  `unit` varchar(50) NOT NULL DEFAULT 'kg',
+  `initial_stock` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `remaining` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `low_stock_threshold` decimal(10,2) NOT NULL DEFAULT 10.00,
+  `supplier` varchar(255) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `stock_status` enum('ok','low','out') GENERATED ALWAYS AS (case when `remaining` <= 0 then 'out' when `remaining` <= `low_stock_threshold` then 'low' else 'ok' end) STORED,
+  `stock_pct` decimal(5,2) GENERATED ALWAYS AS (case when `initial_stock` <= 0 then 0 else `remaining` / `initial_stock` * 100 end) STORED,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `raw_ingredients`
+--
+
+INSERT INTO `raw_ingredients` (`id`, `name`, `category`, `unit`, `initial_stock`, `remaining`, `low_stock_threshold`, `supplier`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 'Chicken Breast', 'Meat', 'kg', 100.00, 100.00, 10.00, 'ABC Farm', 'Keep frozen', '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(2, 'Potatoes', 'Vegetables', 'kg', 50.00, 50.00, 5.00, 'Local Market', 'Store in dry area', '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(3, 'Cooking Oil', 'Oils & Fats', 'liters', 30.00, 30.00, 5.00, 'Golden Oil', 'Avoid sunlight', '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(4, 'Pepper', 'Spices', 'g', 5000.00, 5000.00, 500.00, 'Spice Hub', 'Seal tightly', '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(5, 'Salt', 'Spices', 'g', 3000.00, 3000.00, 300.00, 'Spice Hub', NULL, '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(6, 'Burger Buns', 'Bakery', 'pcs', 200.00, 200.00, 20.00, 'Bread House', NULL, '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(7, 'Cheese Slices', 'Dairy', 'packs', 40.00, 40.00, 5.00, 'Dairy Fresh', 'Refrigerate', '2026-05-14 06:39:38', '2026-05-14 06:39:38'),
+(8, 'Softdrink Cups', 'Packaging', 'pcs', 500.00, 500.00, 50.00, 'PackPro', NULL, '2026-05-14 06:39:38', '2026-05-14 06:39:38');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `reviews`
 --
 
@@ -177,7 +232,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `name`, `rating`, `review_text`, `created_at`) VALUES
-(1, 'Chester Ganongan', 4, 'Very good!', '2026-05-13 02:23:59');
+(7, 'Robert Bayud', 5, 'naisu!', '2026-05-15 16:13:28');
 
 -- --------------------------------------------------------
 
@@ -191,17 +246,17 @@ CREATE TABLE `users` (
   `last_name` varchar(100) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `discount_status` enum('none','pending','approved','rejected') NOT NULL DEFAULT 'none'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`) VALUES
-(3, 'admin', '', '', 'admin@gmail.com', 'admin'),
-(9, 'Louis', 'Ganongan', '9922634538', 'blasphemydarem@gmail.com', '$2y$10$POIOoFpVvrOV6SWXo4le.e7dwwyCJxMAJuDtE4nsoAtiMzsXlqSIi'),
-(10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `discount_status`) VALUES
+(10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm', 'approved'),
+(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq', 'approved');
 
 --
 -- Indexes for dumped tables
@@ -214,6 +269,13 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `discount_applications`
+--
+ALTER TABLE `discount_applications`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `inventory`
@@ -244,6 +306,12 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `raw_ingredients`
+--
+ALTER TABLE `raw_ingredients`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
@@ -264,7 +332,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT for table `discount_applications`
+--
+ALTER TABLE `discount_applications`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -276,31 +350,37 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `raw_ingredients`
+--
+ALTER TABLE `raw_ingredients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

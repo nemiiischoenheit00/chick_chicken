@@ -32,6 +32,17 @@ try {
     respond(["error" => $e->getMessage()], 500);
 }
 
+// ── DISCOUNT PERCENTAGE HELPER ───────────────────────────────────────────────
+// Returns the discount percentage for a given discount type.
+// Adjust these values to match your actual discount policy.
+function getDiscountPercent(string $type): float {
+    return match (strtolower(trim($type))) {
+        'senior', 'senior citizen' => 20.0,
+        'pwd', 'person with disability' => 20.0,
+        default => 0.0,
+    };
+}
+
 // ── LIST ALL ORDERS (with pagination + optional search) ──────────────────────
 function listOrders(): void {
     global $pdo;
@@ -55,7 +66,6 @@ function listOrders(): void {
         $params[] = is_numeric($search) ? (int)$search : -1;
     }
 
-    // FIX 1: Added 'completed' to the status allowlist here
     if (in_array($status, ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'])) {
         $where[]  = "o.status = ?";
         $params[] = $status;
@@ -68,7 +78,7 @@ function listOrders(): void {
     $countStmt->execute($params);
     $total = (int)$countStmt->fetchColumn();
 
-    // Order rows
+    // ── CHANGED: JOIN users + discount_applications to get discount info ──
     $stmt = $pdo->prepare("
         SELECT
             o.id,
@@ -81,16 +91,21 @@ function listOrders(): void {
             o.branch,
             o.status,
             o.created_at,
-            COALESCE(SUM(oi.price * oi.quantity), 0) AS total
+            COALESCE(SUM(oi.price * oi.quantity), 0)          AS raw_total,
+            COALESCE(u.discount_status, 'none')                AS discount_status,
+            COALESCE(da.type, '')                              AS discount_type
         FROM orders o
         LEFT JOIN order_items oi ON oi.order_id = o.id
+        LEFT JOIN users u ON u.id = o.user_id
+        LEFT JOIN discount_applications da
+               ON da.user_id = o.user_id
+              AND da.status = 'approved'
         $whereSql
-        GROUP BY o.id
+        GROUP BY o.id, u.discount_status, da.type
         ORDER BY o.created_at $sort
         LIMIT ? OFFSET ?
     ");
 
-    // Bind LIMIT and OFFSET explicitly as integers (PDO emulation treats ? as strings otherwise)
     $paramIndex = 1;
     foreach ($params as $val) {
         $stmt->bindValue($paramIndex++, $val);
@@ -100,10 +115,23 @@ function listOrders(): void {
     $stmt->execute();
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Format totals
+    // ── CHANGED: Compute discount_amount and final total per order ──
     foreach ($orders as &$row) {
-        $row['total'] = (float)$row['total'];
+        $rawTotal       = (float)$row['raw_total'];
+        $discountType   = $row['discount_type'] ?? '';
+        $discountPct    = ($row['discount_status'] === 'approved' && $discountType !== '')
+                            ? getDiscountPercent($discountType)
+                            : 0.0;
+        $discountAmount = round($rawTotal * ($discountPct / 100), 2);
+
+        $row['original_total']  = $rawTotal;
+        $row['discount_amount'] = $discountAmount;
+        $row['discount_pct']    = $discountPct;
+        $row['total']           = round($rawTotal - $discountAmount, 2);
+
+        unset($row['raw_total']);
     }
+    unset($row);
 
     respond([
         "orders"      => $orders,
@@ -124,7 +152,19 @@ function getOrder(): void {
         return;
     }
 
-    $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ?");
+    // ── CHANGED: Also fetch discount_status and discount_type from users/discount_applications ──
+    $stmt = $pdo->prepare("
+        SELECT
+            o.*,
+            COALESCE(u.discount_status, 'none') AS discount_status,
+            COALESCE(da.type, '')               AS discount_type
+        FROM orders o
+        LEFT JOIN users u ON u.id = o.user_id
+        LEFT JOIN discount_applications da
+               ON da.user_id = o.user_id
+              AND da.status = 'approved'
+        WHERE o.id = ?
+    ");
     $stmt->execute([$id]);
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -146,12 +186,22 @@ function getOrder(): void {
     $itemStmt->execute([$id]);
     $order['items'] = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Compute total
-    $order['total'] = array_reduce(
+    // ── CHANGED: Compute discount and totals ──
+    $rawTotal       = array_reduce(
         $order['items'],
         fn($carry, $item) => $carry + ($item['price'] * $item['quantity']),
         0.0
     );
+    $discountType   = $order['discount_type'] ?? '';
+    $discountPct    = ($order['discount_status'] === 'approved' && $discountType !== '')
+                        ? getDiscountPercent($discountType)
+                        : 0.0;
+    $discountAmount = round($rawTotal * ($discountPct / 100), 2);
+
+    $order['original_total']  = round($rawTotal, 2);
+    $order['discount_amount'] = $discountAmount;
+    $order['discount_pct']    = $discountPct;
+    $order['total']           = round($rawTotal - $discountAmount, 2);
 
     respond($order);
 }
@@ -169,8 +219,6 @@ function updateStatus(): void {
         return;
     }
 
-    // FIX 2: Added 'completed' to the status allowlist here — this was the
-    // root cause of the Complete button silently failing on your groupmate's end
     $allowed = ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'];
     if (!in_array($status, $allowed)) {
         respond(["error" => "Invalid status. Must be one of: " . implode(', ', $allowed)], 400);

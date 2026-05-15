@@ -81,7 +81,8 @@ if ($result) {
 }
 
 // ── Categories used ───────────────────────────────────────
-$categories = ['Mains', 'Combo Tenders', 'Sauces'];
+$catResult = $pdo->query("SELECT DISTINCT category FROM products WHERE category IS NOT NULL AND category != '' ORDER BY category");
+$categories = $catResult ? $catResult->fetchAll(PDO::FETCH_COLUMN) : [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -377,12 +378,12 @@ $categories = ['Mains', 'Combo Tenders', 'Sauces'];
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════ SIDEBAR (matching admin.html) ═══ -->
+<!-- ═══════════════════════════════════════ SIDEBAR ═══ -->
 <header>
   <div class="sidebar">
     <div class="logo">
       <h1>
-        <a href="admin.php"><img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:55px"/></a>
+        <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:55px"/></a>
       </h1>
     </div>
     <div class="navigation--admin">
@@ -400,6 +401,13 @@ $categories = ['Mains', 'Combo Tenders', 'Sauces'];
           <li><a href="inventory.php" class="header_button">
             <ion-icon name="clipboard-outline"></ion-icon><span>Inventory</span>
           </a></li>
+          <li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
+          <li>
+            <a href="admins-review.php" class="header_button">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+              <span>Reviews</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -637,13 +645,11 @@ document.querySelectorAll('.cat-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    const cat = tab.dataset.cat;
+    const cat = tab.dataset.cat.trim().toLowerCase();
     document.querySelectorAll('#productTable tbody tr').forEach(row => {
-      if (cat === 'all' || row.dataset.cat === cat) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
+      if (row.classList.contains('empty-row')) return;
+      const rowCat = (row.dataset.cat ?? '').trim().toLowerCase();
+      row.style.display = (cat === 'all' || rowCat === cat) ? '' : 'none';
     });
   });
 });

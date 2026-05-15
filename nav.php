@@ -43,14 +43,13 @@ header nav ul li a.header_button {
   white-space: nowrap;
 }
 
-/* underline — hugs just the text, not the full padding */
 header nav ul li a.header_button::after {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 50%;
   transform: translateX(-50%) scaleX(0);
-  width: calc(100% - 28px); /* subtract left+right padding */
+  width: calc(100% - 28px);
   height: 3px;
   background: #D62828;
   transform-origin: center;
@@ -61,7 +60,6 @@ header nav ul li a.header_button:hover::after {
   transform: translateX(-50%) scaleX(1);
 }
 
-/* Order Now button */
 header nav ul li a.ordernow_button {
   background-color: #D62828;
   color: #fff;
@@ -98,11 +96,9 @@ header nav ul li a.ordernow_button:hover {
   position: relative;
   -webkit-appearance: none;
   appearance: none;
-  font-size: 20px;  
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
 }
-
 
 .nav-user-btn:hover,
 .nav-user-btn:focus,
@@ -111,7 +107,6 @@ header nav ul li a.ordernow_button:hover {
   background: none;
 }
 
-/* underline — same tight calc trick */
 .nav-user-btn::after {
   content: '';
   position: absolute;
@@ -138,7 +133,6 @@ header nav ul li a.ordernow_button:hover {
 }
 .nav-user-wrap.open .nav-chevron { transform: rotate(180deg); }
 
-/* dropdown */
 .nav-dropdown {
   display: none;
   position: absolute;
@@ -215,7 +209,7 @@ header nav ul li a.ordernow_button:hover {
     <ul>
       <li><a href="aboutus.php" class="header_button">About Us</a></li>
       <li><a href="index.php#FAQS" class="header_button">FAQs</a></li>
-      <li><a href="branch-locator.php" class="header_button">Branch Locator</a></li>
+      <li><a href="branch-locator.php" class="header_button">Our Branches</a></li>
 
       <li>
         <?php if (isset($_SESSION['user_id'])): ?>
@@ -236,12 +230,12 @@ header nav ul li a.ordernow_button:hover {
                 Logged in as
                 <strong><?= htmlspecialchars($fullDisplay) ?></strong>
               </div>
-              <a href="change_profile.php" role="menuitem">
+              <a href="profile.php" role="menuitem">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
                 </svg>
-                Change Profile
+                View Profile
               </a>
               <a href="logout_process.php" class="logout" role="menuitem">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

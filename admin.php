@@ -121,6 +121,13 @@
                                 <span>Inventory</span>
                             </a>
                         </li>
+                        <li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
+                                 <li>
+              <a href="admins-review.php" class="header_button">
+                  <ion-icon name="chatbubbles-outline"></ion-icon>
+                  <span>Reviews</span>
+              </a>
+          </li>
                     </ul>
                 </nav>
             </div>

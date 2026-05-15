@@ -79,17 +79,19 @@
             font-size: 14px;
         }
         .orders-table thead tr {
-            background: #1a1a1a;
-            color: #f5c800;
+            background: #FFDE59;
+            color: #1a1a1a;
         }
         .orders-table thead th {
-            padding: 13px 16px;
+            padding: 14px 18px;
             font-family: 'Oswald', sans-serif;
-            font-weight: 500;
-            letter-spacing: .6px;
+            font-weight: 700;
+            letter-spacing: 1px;
             font-size: 13px;
             text-transform: uppercase;
             white-space: nowrap;
+            color: #111111;
+            border-bottom: 2px solid rgba(0,0,0,.1);
         }
         .orders-table tbody tr {
             border-bottom: 1px solid #f4f4f4;
@@ -137,6 +139,29 @@
         .status-cooking    { background: #fff3e0; color: #e65100; }
         .status-in_transit { background: #e3f2fd; color: #1565c0; }
         .status-completed  { background: #ede7f6; color: #4527a0; }
+
+        /* ── CHANGED: Discount badge in table ── */
+        .discount-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: #e8f5e9;
+            color: #1b5e20;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .total-original {
+            font-size: 11px;
+            color: #bbb;
+            text-decoration: line-through;
+            display: block;
+        }
 
         /* ── Skeleton ── */
         .skeleton {
@@ -257,17 +282,77 @@
         .item-name { font-weight: 700; color: #222; }
         .item-opts { font-size: 11px; color: #999; margin-top: 2px; }
 
+        /* ── CHANGED: Totals block with discount breakdown ── */
+        .order-totals-block {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 10px;
+            margin-bottom: 4px;
+        }
+        .order-subtotal-row,
+        .order-discount-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            padding: 3px 0;
+            font-family: 'Oswald', sans-serif;
+        }
+        .order-subtotal-label,
+        .order-discount-label {
+            font-size: 13px;
+            color: #aaa;
+            letter-spacing: .4px;
+        }
+        .order-subtotal-value {
+            font-size: 14px;
+            color: #bbb;
+            text-decoration: line-through;
+            min-width: 100px;
+            text-align: right;
+        }
+        .order-discount-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2e7d32;
+            min-width: 100px;
+            text-align: right;
+        }
         .order-total-row {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             gap: 12px;
-            padding: 10px 0 0;
-            border-top: 2px solid #f0f0f0;
+            padding: 8px 0 0;
             font-family: 'Oswald', sans-serif;
         }
         .order-total-label { font-size: 14px; color: #888; letter-spacing: .5px; }
         .order-total-value { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+
+        /* ── CHANGED: Discount type badge (modal + table) ── */
+        .discount-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: #e8f5e9;
+            color: #1b5e20;
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .discount-meta-value {
+            color: #2e7d32 !important;
+            font-weight: 700 !important;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
 
         .status-actions {
             display: flex;
@@ -326,7 +411,6 @@
         .btn-transit-order:hover  { background: #0d47a1; }
         .btn-transit-order:active { transform: scale(.97); }
 
-        /* ── NEW: Complete button ── */
         .btn-complete-order {
             padding: 8px 20px; background: #4527a0; color: #fff;
             border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
@@ -524,6 +608,13 @@
                             <span>Inventory</span>
                         </a>
                     </li>
+                    <li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
+                    <li>
+                        <a href="admins-review.php" class="header_button">
+                            <ion-icon name="chatbubbles-outline"></ion-icon>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -714,6 +805,18 @@ function renderRows(orders) {
     tbody.innerHTML = orders.map(o => {
         const payClass = o.payment_method === 'gcash' ? 'pay-gcash' : 'pay-cod';
         const payLabel = o.payment_method === 'gcash' ? 'GCash' : 'COD';
+
+        // ── CHANGED: Show discounted total with strikethrough original in the table ──
+        const hasDiscount = o.discount_amount > 0;
+        const totalCell = hasDiscount
+            ? `<span class="total-original">${php(o.original_total)}</span>
+               <strong style="color:#2e7d32;">${php(o.total)}</strong>
+               <span class="discount-tag">
+                   <ion-icon name="pricetag-outline" style="font-size:9px;"></ion-icon>
+                   ${escHtml(o.discount_type || 'discount')}
+               </span>`
+            : `<strong>${php(o.total)}</strong>`;
+
         return `
         <tr onclick="openOrder(${o.id})">
             <td class="order-id-cell">${padId(o.id)}</td>
@@ -723,7 +826,7 @@ function renderRows(orders) {
             </td>
             <td class="branch-cell">${escHtml(o.branch || '—')}</td>
             <td><span class="payment-badge ${payClass}">${payLabel}</span></td>
-            <td><strong>${php(o.total)}</strong></td>
+            <td>${totalCell}</td>
             <td>${statusBadge(o.status)}</td>
             <td style="font-size:13px;color:#777;">${fmtDate(o.created_at)}</td>
         </tr>`;
@@ -843,6 +946,45 @@ function renderModal(o) {
         }
     }
 
+    // ── CHANGED: Build discount totals block ──
+    const hasDiscount = o.discount_amount > 0;
+    const discountLabel = o.discount_type
+        ? `${o.discount_pct}% off <span class="discount-type-badge">${escHtml(o.discount_type)}</span>`
+        : `${o.discount_pct}% off`;
+
+    const totalsHtml = `
+        <div class="order-totals-block">
+            ${hasDiscount ? `
+            <div class="order-subtotal-row">
+                <span class="order-subtotal-label">SUBTOTAL</span>
+                <span class="order-subtotal-value">${php(o.original_total)}</span>
+            </div>
+            <div class="order-discount-row">
+                <span class="order-discount-label">
+                    <ion-icon name="pricetag-outline" style="vertical-align:middle;margin-right:3px;color:#2e7d32;"></ion-icon>
+                    DISCOUNT (${discountLabel})
+                </span>
+                <span class="order-discount-value">− ${php(o.discount_amount)}</span>
+            </div>
+            ` : ''}
+            <div class="order-total-row">
+                <span class="order-total-label">TOTAL</span>
+                <span class="order-total-value">${php(o.total)}</span>
+            </div>
+        </div>
+    `;
+
+    // ── CHANGED: Discount meta item for the info grid ──
+    const discountMetaHtml = hasDiscount ? `
+        <div class="meta-item">
+            <label><ion-icon name="pricetag-outline" style="vertical-align:middle;margin-right:3px;"></ion-icon> Discount Applied</label>
+            <span class="discount-meta-value">
+                − ${php(o.discount_amount)}
+                ${o.discount_type ? `<span class="discount-type-badge">${escHtml(o.discount_type)}</span>` : ''}
+                <span style="color:#aaa;font-size:12px;font-weight:400;">(${o.discount_pct}% off)</span>
+            </span>
+        </div>` : '';
+
     document.getElementById('orderModalBody').innerHTML = `
         <div class="order-meta-grid">
             <div class="meta-item">
@@ -882,6 +1024,7 @@ function renderModal(o) {
                 <span>${fmtDate(o.created_at)}</span>
             </div>
             ${o.card_number ? `<div class="meta-item"><label>Card</label><span>•••• •••• •••• ${o.card_number.slice(-4)}</span></div>` : ''}
+            ${discountMetaHtml}
         </div>
 
         ${gcashHtml}
@@ -900,10 +1043,7 @@ function renderModal(o) {
             <tbody>${itemsHtml}</tbody>
         </table>
 
-        <div class="order-total-row">
-            <span class="order-total-label">TOTAL</span>
-            <span class="order-total-value">${php(o.total)}</span>
-        </div>
+        ${totalsHtml}
 
         <div class="status-actions">
             <button class="btn-confirm"       onclick="updateStatus(${o.id}, 'confirmed')">

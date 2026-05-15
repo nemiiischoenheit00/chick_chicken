@@ -32,7 +32,7 @@ session_start();
         </div>
             <div class="btn_branch">
               <button class="btn-directions"><a href="https://maps.app.goo.gl/hfRLdd8Wr84tMu388">Get Directions</button></a>
-              <a href="orders.html" class="btn-order-now">Order Now</a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
             </div>
       </div>
 
@@ -46,7 +46,7 @@ session_start();
         </div>
             <div class="btn_branch">
               <button class="btn-directions"><a href="https://maps.app.goo.gl/dpQnmV4Mwsg7623v7">Get Directions</button></a>
-              <a href="orders.html" class="btn-order-now">Order Now</a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
             </div>
       </div>
 
@@ -60,7 +60,7 @@ session_start();
         </div>
             <div class="btn_branch">
               <button class="btn-directions"><a href="https://maps.app.goo.gl/nNDEwdWQQ1oKR2QJ9">Get Directions</button></a>
-              <a href="orders.html" class="btn-order-now">Order Now</a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
             </div>
       </div>
       
@@ -74,7 +74,7 @@ session_start();
         </div>
             <div class="btn_branch">
               <button class="btn-directions"><a href="https://maps.app.goo.gl/SzJopA49FP4AHE7x5">Get Directions</button></a>
-              <a href="orders.html" class="btn-order-now">Order Now</a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
             </div>
       </div>
 
@@ -88,7 +88,7 @@ session_start();
         </div>
             <div class="btn_branch">
               <button class="btn-directions"><a href="https://maps.app.goo.gl/HvhQL1fL3GfKNQN5A">Get Directions</button></a>
-              <a href="orders.html" class="btn-order-now">Order Now</a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
             </div>
       </div>
   </div>
