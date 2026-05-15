@@ -81,7 +81,8 @@ if ($result) {
 }
 
 // ── Categories used ───────────────────────────────────────
-$categories = ['Mains', 'Combo Tenders', 'Sauces'];
+$catResult = $pdo->query("SELECT DISTINCT category FROM products WHERE category IS NOT NULL AND category != '' ORDER BY category");
+$categories = $catResult ? $catResult->fetchAll(PDO::FETCH_COLUMN) : [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -377,7 +378,7 @@ $categories = ['Mains', 'Combo Tenders', 'Sauces'];
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════ SIDEBAR (matching admin.html) ═══ -->
+<!-- ═══════════════════════════════════════ SIDEBAR ═══ -->
 <header>
   <div class="sidebar">
     <div class="logo">
@@ -401,10 +402,10 @@ $categories = ['Mains', 'Combo Tenders', 'Sauces'];
             <ion-icon name="clipboard-outline"></ion-icon><span>Inventory</span>
           </a></li>
           <li>
-              <a href="admins-review.php" class="header_button">
-                  <ion-icon name="chatbubbles-outline"></ion-icon>
-                  <span>Inventory</span>
-              </a>
+            <a href="admins-review.php" class="header_button">
+              <ion-icon name="chatbubbles-outline"></ion-icon>
+              <span>Reviews</span>
+            </a>
           </li>
         </ul>
       </nav>
