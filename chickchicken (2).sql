@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 09:38 PM
+-- Generation Time: May 15, 2026 at 08:52 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,13 +48,21 @@ CREATE TABLE `cart` (
 CREATE TABLE `discount_applications` (
   `id` int(10) UNSIGNED NOT NULL,
   `user_id` int(10) UNSIGNED NOT NULL,
-  `type` varchar(50) NOT NULL COMMENT 'e.g. Senior, PWD, Student',
+  `type` varchar(50) NOT NULL,
   `id_image_path` varchar(500) NOT NULL,
   `status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
   `notes` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `discount_applications`
+--
+
+INSERT INTO `discount_applications` (`id`, `user_id`, `type`, `id_image_path`, `status`, `notes`, `created_at`, `updated_at`) VALUES
+(1, 11, 'Senior Citizen', 'uploads/discount_ids/discount_11_1778821782.png', 'rejected', '', '2026-05-15 05:09:42', '2026-05-15 05:16:50'),
+(2, 11, 'PWD', 'uploads/discount_ids/discount_11_1778822568.png', 'approved', '', '2026-05-15 05:22:48', '2026-05-15 05:22:55');
 
 -- --------------------------------------------------------
 
@@ -114,7 +122,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `payment_method`, `gcash_proof`, `branch`, `status`, `created_at`) VALUES
 (8, 10, 'Robert Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '175 P 23rd Ave', 'cod', NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-14 15:02:45'),
-(9, 11, 'Klein Moretti', '+639922634538', 'blasphemydarem@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/9_1778777152.png', 'Chick Chicken - Maginhawa, QC', 'completed', '2026-05-14 16:45:52');
+(9, 11, 'Klein Moretti', '+639922634538', 'blasphemydarem@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/9_1778777152.png', 'Chick Chicken - Maginhawa, QC', 'completed', '2026-05-14 16:45:52'),
+(10, 11, 'Klein Moretti', '+639922634538', 'blasphemydarem@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/10_1778827047.png', 'Chick Chicken - Maginhawa, QC', 'pending', '2026-05-15 06:37:27');
 
 -- --------------------------------------------------------
 
@@ -140,7 +149,9 @@ CREATE TABLE `order_items` (
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `option_selected`, `sauce`, `extra_flavor`, `mix_preference`, `price`) VALUES
 (10, 8, 1, 1, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Mixed', 169.00),
-(11, 9, 5, 2, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 339.00);
+(11, 9, 5, 2, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 339.00),
+(12, 10, 4, 1, 'Double (1000ml)', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 289.00),
+(13, 10, 1, 2, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 169.00);
 
 -- --------------------------------------------------------
 
@@ -251,7 +262,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `discount_status`) VALUES
 (10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm', 'none'),
-(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq', 'none');
+(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq', 'approved');
 
 --
 -- Indexes for dumped tables
@@ -327,13 +338,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `discount_applications`
 --
 ALTER TABLE `discount_applications`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -345,19 +356,19 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `raw_ingredients`
@@ -387,12 +398,6 @@ ALTER TABLE `users`
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `discount_applications`
---
-ALTER TABLE `discount_applications`
-  ADD CONSTRAINT `discount_applications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `inventory`

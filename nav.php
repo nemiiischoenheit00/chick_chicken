@@ -207,9 +207,9 @@ header nav ul li a.ordernow_button:hover {
 
   <nav>
     <ul>
-      <li><a href="aboutus.html" class="header_button">About Us</a></li>
+      <li><a href="aboutus.php" class="header_button">About Us</a></li>
       <li><a href="index.php#FAQS" class="header_button">FAQs</a></li>
-      <li><a href="branch-locator.html" class="header_button">Branch Locator</a></li>
+      <li><a href="branch-locator.php" class="header_button">Branch Locator</a></li>
 
       <li>
         <?php if (isset($_SESSION['user_id'])): ?>

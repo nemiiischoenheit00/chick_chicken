@@ -30,10 +30,15 @@ if (!$user) {
     exit;
 }
 
-// ── FETCH EXISTING DISCOUNT APPLICATION ─────────────────────
+// ── FETCH LATEST DISCOUNT APPLICATION (matches your DB schema) ──
+// Schema: id, user_id, type, id_image_path, status enum(pending/approved/rejected), notes, created_at, updated_at
 $appStmt = $pdo->prepare("SELECT * FROM discount_applications WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
 $appStmt->execute([$user_id]);
 $discountApp = $appStmt->fetch(PDO::FETCH_ASSOC);
+
+// Derive discount status from the latest application row (not a users column)
+// If no row exists => 'none'; otherwise use the row's status enum value
+$discountStatus = $discountApp ? $discountApp['status'] : 'none';
 
 // ── HANDLE PROFILE UPDATE ────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_profile') {
@@ -86,6 +91,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
 }
 
 // ── HANDLE DISCOUNT APPLICATION ──────────────────────────────
+// Inserts into: discount_applications(user_id, type, id_image_path)
+// status defaults to 'pending' per your DB schema
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply_discount') {
     $type = trim($_POST['discount_type'] ?? '');
 
@@ -110,17 +117,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
             $dest     = $uploadDir . $filename;
 
             if (move_uploaded_file($_FILES['id_image']['tmp_name'], $dest)) {
+                // Delete any existing pending application before inserting a new one
                 $del = $pdo->prepare("DELETE FROM discount_applications WHERE user_id = ? AND status = 'pending'");
                 $del->execute([$user_id]);
 
+                // Insert — status defaults to 'pending' per DB schema (no need to pass it explicitly)
                 $ins = $pdo->prepare("INSERT INTO discount_applications (user_id, type, id_image_path) VALUES (?, ?, ?)");
                 $ins->execute([$user_id, $type, $dest]);
 
-                $pdo->prepare("UPDATE users SET discount_status = 'pending' WHERE id = ?")->execute([$user_id]);
-                $user['discount_status'] = 'pending';
-
+                // Re-fetch the new application row
                 $appStmt->execute([$user_id]);
-                $discountApp = $appStmt->fetch(PDO::FETCH_ASSOC);
+                $discountApp    = $appStmt->fetch(PDO::FETCH_ASSOC);
+                $discountStatus = $discountApp ? $discountApp['status'] : 'none';
 
                 $success = 'Your discount application has been submitted and is under review!';
             } else {
@@ -129,8 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
         }
     }
 }
-
-$discountStatus = $user['discount_status'] ?? 'none';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -278,6 +284,16 @@ $discountStatus = $user['discount_status'] ?? 'none';
     .badge-approved { background: #e8f5e9; color: #2e7d32; }
     .badge-rejected { background: #fce4ec; color: #c62828; }
 
+    /* ── DISCOUNT TYPE CHIP ── */
+    .discount-type-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff8e1; color: #b45309;
+      border: 1.5px solid #f5c800; border-radius: 20px;
+      padding: 4px 12px; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.3px;
+      margin-left: 8px; vertical-align: middle;
+    }
+
     /* ── FILE UPLOAD ── */
     .upload-zone {
       border: 2px dashed #e0e0e0; border-radius: 12px;
@@ -312,6 +328,20 @@ $discountStatus = $user['discount_status'] ?? 'none';
       margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
     }
     .prev-app strong { color: #222; }
+
+    /* ── APPLICATION DETAIL TABLE ── */
+    .app-detail-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px; margin-bottom: 20px;
+    }
+    .app-detail-table td {
+      padding: 8px 12px; border-bottom: 1px solid #f5f5f5;
+    }
+    .app-detail-table td:first-child {
+      font-weight: 700; color: #999; text-transform: uppercase;
+      font-size: 11px; letter-spacing: 0.5px; width: 130px;
+    }
+    .app-detail-table td:last-child { color: #222; }
 
     #editFormWrap { display: none; }
 
@@ -444,25 +474,64 @@ $discountStatus = $user['discount_status'] ?? 'none';
     <p class="card-sub">Apply for a senior, PWD, or student discount on your orders.</p>
 
     <?php
-      $badgeClass = ['none'=>'badge-none','pending'=>'badge-pending','approved'=>'badge-approved','rejected'=>'badge-rejected'][$discountStatus] ?? 'badge-none';
-      $badgeLabel = ['none'=>'● No Application','pending'=>'⏳ Pending Review','approved'=>'✔ Approved','rejected'=>'✖ Rejected'][$discountStatus] ?? '● No Application';
+      $badgeClass = [
+        'none'     => 'badge-none',
+        'pending'  => 'badge-pending',
+        'approved' => 'badge-approved',
+        'rejected' => 'badge-rejected',
+      ][$discountStatus] ?? 'badge-none';
+
+      $badgeLabel = [
+        'none'     => '● No Application',
+        'pending'  => '⏳ Pending Review',
+        'approved' => '✔ Approved',
+        'rejected' => '✖ Rejected',
+      ][$discountStatus] ?? '● No Application';
     ?>
-    <div class="discount-badge <?= $badgeClass ?>"><?= $badgeLabel ?></div>
+    <div class="discount-badge <?= $badgeClass ?>">
+      <?= $badgeLabel ?>
+      <?php if ($discountApp && $discountStatus !== 'none'): ?>
+        <span class="discount-type-chip">
+          <?= htmlspecialchars($discountApp['type']) ?>
+        </span>
+      <?php endif; ?>
+    </div>
 
     <?php if ($discountStatus === 'approved'): ?>
-      <div class="alert alert-success" style="margin-bottom:0;">
+      <div class="alert alert-success" style="margin-bottom:16px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Your discount has been approved! Enjoy your discounted orders.
+        Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> discount has been approved! Enjoy your discounted orders.
       </div>
+      <!-- Show approved application details -->
+      <table class="app-detail-table">
+        <tr><td>Type</td><td><?= htmlspecialchars($discountApp['type']) ?></td></tr>
+        <tr><td>Submitted</td><td><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></td></tr>
+        <tr><td>Approved</td><td><?= date('M j, Y', strtotime($discountApp['updated_at'])) ?></td></tr>
+        <?php if ($discountApp['notes']): ?>
+          <tr><td>Notes</td><td><?= htmlspecialchars($discountApp['notes']) ?></td></tr>
+        <?php endif; ?>
+      </table>
+
     <?php elseif ($discountStatus === 'pending'): ?>
       <div class="prev-app">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e65c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <div>Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> application is under review. Submitted on <strong><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></strong>.</div>
+        <div>
+          Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> application is under review.
+          Submitted on <strong><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></strong>.
+          <?php if ($discountApp['notes']): ?>
+            <br><span style="color:#999; font-size:13px;">Note: <?= htmlspecialchars($discountApp['notes']) ?></span>
+          <?php endif; ?>
+        </div>
       </div>
+
     <?php elseif ($discountStatus === 'rejected'): ?>
       <div class="alert alert-error" style="margin-bottom:20px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Your previous application was not approved.<?php if (!empty($discountApp['notes'])): ?> Reason: <?= htmlspecialchars($discountApp['notes']) ?><?php endif; ?> You may re-apply below.
+        Your previous <strong><?= htmlspecialchars($discountApp['type']) ?></strong> application was not approved.
+        <?php if (!empty($discountApp['notes'])): ?>
+          Reason: <?= htmlspecialchars($discountApp['notes']) ?>
+        <?php endif; ?>
+        You may re-apply below.
       </div>
     <?php endif; ?>
 
@@ -485,7 +554,7 @@ $discountStatus = $user['discount_status'] ?? 'none';
             <div class="upload-zone">
               <input type="file" name="id_image" accept="image/*" required onchange="showFileName(this)">
               <span class="upload-zone-icon">🪪</span>
-              <span class="upload-zone-label"><strong>Click to upload</strong> or drag & drop<br>JPG, PNG, WEBP · Max 5MB</span>
+              <span class="upload-zone-label"><strong>Click to upload</strong> or drag &amp; drop<br>JPG, PNG, WEBP · Max 5MB</span>
               <div id="fileNameDisplay"></div>
             </div>
           </div>

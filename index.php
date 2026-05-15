@@ -231,9 +231,9 @@ session_start();
       <div class="footer-info">
         <h4>Information</h4>
         <ul>
-          <li><a href="aboutus.html">About Us</a></li>
+          <li><a href="aboutus.php">About Us</a></li>
           <li><a href="index.php#FAQS">FAQs</a></li>
-          <li><a href="branch-locator.html">Branch Locator</a></li>
+          <li><a href="branch-locator.php">Branch Locator</a></li>
         </ul>
       </div>
       <div class="footer-section">

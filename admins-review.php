@@ -381,7 +381,7 @@
                 <span>Inventory</span>
               </a>
             </li>
-
+<li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
             <li>
               <a href="admin-reviews.php" class="header_button active">
                 <ion-icon name="chatbubbles-outline"></ion-icon>
