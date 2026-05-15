@@ -54,13 +54,14 @@ html {
 /* HEADER STYLING */
 header {
     display: grid;
-    padding: 40px 20px;
+    padding: 40px 0 40px 20px;
     height: 100%;
     width: 220px;
     align-content: baseline;
     position: fixed;
     background-color: var(--mustard);
     z-index: 500;
+    overflow: visible;
 }
 
 .logo {
@@ -135,4 +136,44 @@ nav ul li {
 
 .page-content.active {
     display: block !important;
+}
+
+/* ── Sidebar logout button ── */
+.sidebar-logout-wrap {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    padding: 0;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 20px 12px 20px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    border: none;
+    background: transparent;
+    color: var(--white);
+    font-size: 22px;
+    font-family: "Oswald", sans-serif;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 20px 0 0 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: left;
+}
+
+.btn-logout ion-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+}
+
+.btn-logout:hover {
+    background-color: var(--white);
+    color: var(--red);
+    border-radius: 20px 0 0 20px;
 }

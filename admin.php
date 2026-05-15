@@ -121,8 +121,20 @@
                                 <span>Inventory</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="admins-review.php" class="header_button">
+                                <ion-icon name="chatbubbles-outline"></ion-icon>
+                                <span>Reviews</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
+            </div>
+            <div class="sidebar-logout-wrap">
+                <a href="logout_process.php" class="btn-logout">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <span>Logout</span>
+                </a>
             </div>
         </div>
     </header>

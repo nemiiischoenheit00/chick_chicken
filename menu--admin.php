@@ -388,7 +388,7 @@ $categories = ['Mains', 'Combo Tenders', 'Sauces'];
     <div class="navigation--admin">
       <nav>
         <ul>
-          <li><a href="admin.html" class="header_button">
+          <li><a href="admin.php" class="header_button">
             <ion-icon name="grid-outline"></ion-icon><span>Dashboard</span>
           </a></li>
           <li><a href="orders--admin.html" class="header_button">
@@ -397,16 +397,26 @@ $categories = ['Mains', 'Combo Tenders', 'Sauces'];
           <li><a href="menu--admin.php" class="header_button active">
             <ion-icon name="book-outline"></ion-icon><span>Menus</span>
           </a></li>
-          <li><a href="inventory.html" class="header_button">
+          <li><a href="inventory.php" class="header_button">
             <ion-icon name="clipboard-outline"></ion-icon><span>Inventory</span>
           </a></li>
+          <li>
+              <a href="admins-review.php" class="header_button">
+                  <ion-icon name="chatbubbles-outline"></ion-icon>
+                  <span>Inventory</span>
+              </a>
+          </li>
         </ul>
       </nav>
     </div>
+    <div class="sidebar-logout-wrap">
+        <a href="logout_process.php" class="btn-logout">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <span>Logout</span>
+        </a>
+    </div>
   </div>
 </header>
-
-<!-- ═══════════════════════════════════════ MAIN CONTENT ═══ -->
 <main class="main-content">
   <section class="page-content active">
 

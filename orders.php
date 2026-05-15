@@ -77,7 +77,8 @@ require 'db.php';
        LAYOUT — hero + sidebar locked, only main scrolls
     ═══════════════════════════════════════════ */
     .shop-layout {
-      display: block;
+      display: grid;
+      grid-template-columns: 220px 1fr;
       overflow: hidden;
       min-height: calc(100vh - 65px - 130px);
       height: calc(100vh - 65px - 130px);
@@ -90,12 +91,9 @@ require 'db.php';
       border-right: 2px solid var(--border);
       padding: 32px 0;
       overflow-y: auto;
-      position: fixed;
-      top: 65px;
-      left: 0;
-      width: 220px;
-      max-height: calc(100vh - 65px);
-      z-index: 800;
+      position: sticky;
+      top: 0;
+      height: 100%;
     }
     .sidebar-label {
       font-family: var(--oswald); font-size: 11px; font-weight:600;
@@ -128,25 +126,13 @@ require 'db.php';
       overflow-y: auto;
       height: 100%;
       min-height: 0;
-      margin-left: 220px;
     }
 
 
     /* ═══════════════════════════════════════════
        MENU GRID
     ═══════════════════════════════════════════ */
-    .menu-section { margin-bottom: 64px; scroll-margin-top: 130px; }
-    .menu-section:last-child { margin-bottom: 40vh; }
-
-    /* Section headings match "Our Menu" hero — Oswald, bold, large */
-    .section-head h2 {
-      font-family: var(--oswald);
-      font-weight: 700;
-      font-size: clamp(20px, 4vw, 32px);
-      line-height: 1;
-      letter-spacing: -0.5px;
-      color: var(--black);
-    }
+    .menu-section { margin-bottom: 64px; scroll-margin-top: 80px; }
 
     .menu-grid {
       display: grid;
@@ -564,8 +550,9 @@ require 'db.php';
        RESPONSIVE
     ═══════════════════════════════════════════ */
     @media (max-width:900px) {
+      .shop-layout { grid-template-columns:1fr; }
       .sidebar { display:none; }
-      .main-content { padding:32px 24px; margin-left:0; }
+      .main-content { padding:32px 24px; }
       .popup-modal { flex-direction:column; }
       .popup-img { width:100%; height:220px; }
       .popup-row { flex-direction:column; gap:16px; }
@@ -579,10 +566,6 @@ require 'db.php';
     }
 
     /* ════════════════════════════════════════════════════════ NAV STYLES ════ */
-    .footer {
-      position: relative;
-      z-index: 1000;
-    }
 
   </style>
 </head>
@@ -1110,7 +1093,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (link) link.classList.add("active");
       }
     });
-  }, { rootMargin: "-130px 0px -66% 0px" });
+  }, { rootMargin: "-40% 0px -50% 0px" });
   sections.forEach(s => observer.observe(s));
 
   /* ─── INIT ───────────────────────────────── */
@@ -1120,16 +1103,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function lockLayout() {
     const header = document.querySelector('header');
     const hero   = document.querySelector('.page-hero');
-    const sidebar = document.querySelector('.sidebar');
     const layout = document.querySelector('.shop-layout');
     if (!layout) return;
     const headerH = header ? header.offsetHeight : 65;
     const heroH   = hero   ? hero.offsetHeight   : 0;
     layout.style.height = (window.innerHeight - headerH - heroH) + 'px';
-    if (sidebar) {
-      sidebar.style.top = (headerH + heroH) + 'px';
-      sidebar.style.maxHeight = (window.innerHeight - headerH - heroH) + 'px';
-    }
   }
   lockLayout();
   window.addEventListener('resize', lockLayout);
@@ -1481,28 +1459,33 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     async function fetchOrders() {
-        try {
-            var res  = await fetch('order_tracker.php?action=active_orders');
-            var data = await res.json();
+      try {
+          var res  = await fetch('order_tracker.php?action=active_orders');
+          var data = await res.json();
 
-            if (data.error === 'not_logged_in') {
-                document.getElementById('ot-toggle').style.display = 'none';
-                return;
-            }
+          if (data.error === 'not_logged_in') {
+              document.getElementById('ot-toggle').style.display = 'none';
+              return;
+          }
 
-            var orders = data.orders || [];
-            var toggle = document.getElementById('ot-toggle');
+          var orders = data.orders || [];
 
-            if (orders.length === 0) {
-                toggle.style.display = 'none';
-                return;
-            }
+          // 🔥 FILTER OUT COMPLETED ORDERS
+          orders = orders.filter(order => order.status !== 'completed');
 
-            toggle.style.display = 'flex';
-            renderCard(orders[0]);
-        } catch (e) {
-            console.error('Order tracker error:', e);
-        }
+          var toggle = document.getElementById('ot-toggle');
+
+          if (orders.length === 0) {
+              toggle.style.display = 'none';
+              return;
+          }
+
+          toggle.style.display = 'flex';
+          renderCard(orders[0]);
+
+      } catch (e) {
+          console.error('Order tracker error:', e);
+      }
     }
 
     function renderCard(o) {

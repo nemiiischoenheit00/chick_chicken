@@ -411,12 +411,14 @@
                 </ul>
             </nav>
         </div>
+        <div class="sidebar-logout-wrap">
+            <a href="logout_process.php" class="btn-logout">
+                <ion-icon name="log-out-outline"></ion-icon>
+                <span>Logout</span>
+            </a>
+        </div>
     </div>
 </header>
-
-<main class="main-content">
-    <section class="page-content active">
-        <h1 style="margin-bottom: 25px;">Orders</h1>
 
         <!-- Toolbar -->
         <div class="orders-toolbar">

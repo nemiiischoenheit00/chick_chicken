@@ -9,19 +9,17 @@ if (!isset($_SESSION['user_id'])) {
   exit;
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
-if (!$data) {
-  echo json_encode(["error" => "No data received"]);
-  exit;
-}
+$data = $_POST;
+if (empty($data)) { echo json_encode(["error" => "No data received"]); exit; }
 
 $user_id        = $_SESSION['user_id'];
 $name           = $data['name'];
 $phone          = $data['phone'];
 $email          = $data['email'];
 $address        = $data['address'];
-$payment_method = $data['payment_method'] === 'online' ? 'online' : 'cod';
-$card_number    = $data['card_number'] ?? '';
+$payment_method = in_array($data['payment_method'], ['gcash', 'cod'])
+  ? $data['payment_method']
+  : 'cod';
 
 // 1. Fetch cart
 $stmt = $pdo->prepare("
@@ -39,11 +37,25 @@ if (empty($cart_items)) {
 
 // 2. Insert order
 $stmt = $pdo->prepare("
-  INSERT INTO orders (user_id, name, phone, email, address, payment_method, card_number)
+  INSERT INTO orders (user_id, name, phone, email, address, payment_method, branch)
   VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
-$stmt->execute([$user_id, $name, $phone, $email, $address, $payment_method, $card_number]);
+$branch = $data['branch'] ?? '';
+$stmt->execute([$user_id, $name, $phone, $email, $address, $payment_method, $branch]);
 $order_id = $pdo->lastInsertId();
+
+// 2b. Handle GCash proof upload and update the order row
+$gcash_proof_path = null;
+if ($payment_method === 'gcash' && isset($_FILES['gcash_proof']) && $_FILES['gcash_proof']['error'] === 0) {
+  $upload_dir = 'uploads/gcash/';
+  if (!is_dir($upload_dir)) mkdir($upload_dir, 0755, true);
+  $ext              = pathinfo($_FILES['gcash_proof']['name'], PATHINFO_EXTENSION);
+  $gcash_proof_path = $upload_dir . $order_id . '_' . time() . '.' . $ext;
+  move_uploaded_file($_FILES['gcash_proof']['tmp_name'], $gcash_proof_path);
+
+  $stmt = $pdo->prepare("UPDATE orders SET gcash_proof = ? WHERE id = ?");
+  $stmt->execute([$gcash_proof_path, $order_id]);
+}
 
 // 3. Insert order items
 $stmt = $pdo->prepare("
