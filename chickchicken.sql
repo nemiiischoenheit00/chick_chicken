@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2026 at 08:52 AM
+-- Generation Time: May 16, 2026 at 10:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -61,8 +61,9 @@ CREATE TABLE `discount_applications` (
 --
 
 INSERT INTO `discount_applications` (`id`, `user_id`, `type`, `id_image_path`, `status`, `notes`, `created_at`, `updated_at`) VALUES
-(1, 11, 'Senior Citizen', 'uploads/discount_ids/discount_11_1778821782.png', 'rejected', '', '2026-05-15 05:09:42', '2026-05-15 05:16:50'),
-(2, 11, 'PWD', 'uploads/discount_ids/discount_11_1778822568.png', 'approved', '', '2026-05-15 05:22:48', '2026-05-15 05:22:55');
+(5, 10, 'PWD', 'uploads/discount_ids/discount_10_1778832683.png', 'approved', '', '2026-05-15 08:11:23', '2026-05-15 08:11:31'),
+(7, 12, 'Student', 'uploads/discount_ids/discount_12_1778957073.png', 'rejected', '', '2026-05-16 18:44:33', '2026-05-16 19:11:06'),
+(8, 12, 'Student', 'uploads/discount_ids/discount_12_1778958691.png', 'approved', '', '2026-05-16 19:11:31', '2026-05-16 19:11:37');
 
 -- --------------------------------------------------------
 
@@ -112,18 +113,27 @@ CREATE TABLE `orders` (
   `payment_method` enum('gcash','cod') NOT NULL,
   `gcash_proof` varchar(255) DEFAULT NULL,
   `branch` varchar(150) DEFAULT 'Chick Chicken - Amang Rodriguez Pasig',
-  `status` enum('pending','confirmed','cooking','in_transit','completed') NOT NULL DEFAULT 'pending',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `status` enum('pending','confirmed','cooking','in_transit','completed','cancelled') NOT NULL DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `discount_type` varchar(50) DEFAULT '',
+  `discount_rate` decimal(5,2) DEFAULT 0.00,
+  `original_total` decimal(10,2) DEFAULT 0.00,
+  `discount_amount` decimal(10,2) DEFAULT 0.00,
+  `total` decimal(10,2) DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `payment_method`, `gcash_proof`, `branch`, `status`, `created_at`) VALUES
-(8, 10, 'Robert Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '175 P 23rd Ave', 'cod', NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-14 15:02:45'),
-(9, 11, 'Klein Moretti', '+639922634538', 'blasphemydarem@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/9_1778777152.png', 'Chick Chicken - Maginhawa, QC', 'completed', '2026-05-14 16:45:52'),
-(10, 11, 'Klein Moretti', '+639922634538', 'blasphemydarem@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/10_1778827047.png', 'Chick Chicken - Maginhawa, QC', 'pending', '2026-05-15 06:37:27');
+INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `payment_method`, `gcash_proof`, `branch`, `status`, `created_at`, `discount_type`, `discount_rate`, `original_total`, `discount_amount`, `total`) VALUES
+(19, 10, 'Robert Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '175 P 23rd Ave', 'cod', NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-15 08:13:19', '', 0.00, 1356.00, 0.00, 1356.00),
+(20, 12, 'Escriba John', '+636767676767', 'chesterganongan@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/20_1778956698.png', 'Chick Chicken - Makati', 'completed', '2026-05-16 18:38:18', '', 0.00, 1695.00, 0.00, 1695.00),
+(21, 12, 'Escriba John', '+636767676767', 'chesterganongan@gmail.com', 'awdasd', 'cod', NULL, 'Chick Chicken - Marikina', 'completed', '2026-05-16 18:54:58', '', 0.00, 319.00, 0.00, 319.00),
+(22, 12, 'Escriba John', '+636767676767', 'chesterganongan@gmail.com', 'OSMAK', 'cod', NULL, 'Chick Chicken - Makati', 'completed', '2026-05-16 19:11:55', 'Student', 0.10, 638.00, 0.00, 638.00),
+(23, 12, 'Escriba John', '+636767676767', 'chesterganongan@gmail.com', 'awdasd', 'cod', NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-16 19:20:44', 'Student', 0.10, 678.00, 67.80, 610.20),
+(24, 12, 'Escriba John', '+636767676767', 'chesterganongan@gmail.com', 'awdasd', 'cod', NULL, 'Chick Chicken - Marikina', 'cancelled', '2026-05-16 19:39:21', 'Student', 0.10, 678.00, 67.80, 610.20),
+(25, 12, 'Escriba John', '+636767676767', 'chesterganongan@gmail.com', 'wasd', 'cod', NULL, 'Chick Chicken - Timog', 'pending', '2026-05-16 19:46:56', 'Student', 0.10, 319.00, 31.90, 287.10);
 
 -- --------------------------------------------------------
 
@@ -148,10 +158,13 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `option_selected`, `sauce`, `extra_flavor`, `mix_preference`, `price`) VALUES
-(10, 8, 1, 1, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Mixed', 169.00),
-(11, 9, 5, 2, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 339.00),
-(12, 10, 4, 1, 'Double (1000ml)', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 289.00),
-(13, 10, 1, 2, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 169.00);
+(25, 19, 5, 4, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Mixed', 339.00),
+(26, 20, 5, 5, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 339.00),
+(27, 21, 8, 1, 'Double (1000ml)', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 319.00),
+(28, 22, 8, 2, 'Double (1000ml)', 'Chick Sauce', 'Hot Buffalo', 'Separate', 319.00),
+(29, 23, 5, 2, 'Double (1000ml)', 'Chick Sauce', 'Hot Buffalo', 'Separate', 339.00),
+(30, 24, 5, 2, 'Solo (600ml)', 'Chick Sauce', 'Hot Buffalo', 'Separate', 339.00),
+(31, 25, 8, 1, 'Double (1000ml)', 'Garlic Mayo', 'Hot Buffalo', 'Separate', 319.00);
 
 -- --------------------------------------------------------
 
@@ -238,7 +251,7 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`id`, `name`, `rating`, `review_text`, `created_at`) VALUES
-(1, 'Chester Ganongan', 4, 'Very good!', '2026-05-13 02:23:59');
+(7, 'Robert Bayud', 5, 'naisu!', '2026-05-15 16:13:28');
 
 -- --------------------------------------------------------
 
@@ -261,8 +274,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `discount_status`) VALUES
-(10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm', 'none'),
-(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq', 'approved');
+(10, 'Robert', 'Bayud', '+639201807155', 'r.jamesb.25@gmail.com', '$2y$10$eXsmXalVCrse0u51SS.6dubJOFRPJ6MAS93LrQP6ajRMmMgX1qkdm', 'approved'),
+(11, 'Klein', 'Moretti', '+639922634538', 'blasphemydarem@gmail.com', '$2y$10$9mlHF/xSdOifXLs924BfYeKNhqg7Zv.BpcYGOfiEC2LHcUWcUjIjq', 'approved'),
+(12, 'Escriba', 'John', '+636767676767', 'chesterganongan@gmail.com', '$2y$10$OESnbO9cU4g7AC7ZFEOk6OtnseUEc4bqbn0W7pk.DO46td6OAgwKi', 'approved');
 
 --
 -- Indexes for dumped tables
@@ -338,13 +352,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `discount_applications`
 --
 ALTER TABLE `discount_applications`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `inventory`
@@ -356,13 +370,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -380,13 +394,13 @@ ALTER TABLE `raw_ingredients`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables

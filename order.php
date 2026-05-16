@@ -5,8 +5,6 @@ require 'db.php';
 header("Content-Type: application/json");
 
 // ── AUTH CHECK ───────────────────────────────────────────────────────────────
-// Adjust this check to match however you verify admin users.
-// Example: check a session flag set at admin login.
 // if (!isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
 //     echo json_encode(["error" => "unauthorized"]);
 //     exit;
@@ -36,12 +34,12 @@ try {
 function listOrders(): void {
     global $pdo;
 
-    $page    = max(1, (int)($_GET['page']    ?? 1));
-    $limit   = max(1, min(100, (int)($_GET['limit'] ?? 20)));
-    $offset  = ($page - 1) * $limit;
-    $search  = trim($_GET['search']  ?? '');
-    $status  = trim($_GET['status']  ?? '');
-    $sort    = in_array($_GET['sort'] ?? '', ['asc','desc']) ? $_GET['sort'] : 'desc';
+    $page   = max(1, (int)($_GET['page']  ?? 1));
+    $limit  = max(1, min(100, (int)($_GET['limit'] ?? 20)));
+    $offset = ($page - 1) * $limit;
+    $search = trim($_GET['search'] ?? '');
+    $status = trim($_GET['status'] ?? '');
+    $sort   = in_array($_GET['sort'] ?? '', ['asc', 'desc']) ? $_GET['sort'] : 'desc';
 
     $where  = [];
     $params = [];
@@ -55,7 +53,6 @@ function listOrders(): void {
         $params[] = is_numeric($search) ? (int)$search : -1;
     }
 
-    // FIX 1: Added 'completed' to the status allowlist here
     if (in_array($status, ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'])) {
         $where[]  = "o.status = ?";
         $params[] = $status;
@@ -63,12 +60,12 @@ function listOrders(): void {
 
     $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
 
-    // Total count (for pagination)
+    // Total count for pagination
     $countStmt = $pdo->prepare("SELECT COUNT(*) FROM orders o $whereSql");
     $countStmt->execute($params);
     $total = (int)$countStmt->fetchColumn();
 
-    // Order rows
+    // Fetch orders — read stored totals directly from the orders table
     $stmt = $pdo->prepare("
         SELECT
             o.id,
@@ -81,16 +78,17 @@ function listOrders(): void {
             o.branch,
             o.status,
             o.created_at,
-            COALESCE(SUM(oi.price * oi.quantity), 0) AS total
+            COALESCE(o.original_total,  0) AS original_total,
+            COALESCE(o.discount_amount, 0) AS discount_amount,
+            COALESCE(o.discount_rate,   0) AS discount_rate,
+            COALESCE(o.discount_type,  '') AS discount_type,
+            COALESCE(o.total,           0) AS total
         FROM orders o
-        LEFT JOIN order_items oi ON oi.order_id = o.id
         $whereSql
-        GROUP BY o.id
         ORDER BY o.created_at $sort
         LIMIT ? OFFSET ?
     ");
 
-    // Bind LIMIT and OFFSET explicitly as integers (PDO emulation treats ? as strings otherwise)
     $paramIndex = 1;
     foreach ($params as $val) {
         $stmt->bindValue($paramIndex++, $val);
@@ -100,10 +98,15 @@ function listOrders(): void {
     $stmt->execute();
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Format totals
+    // Cast numeric fields and compute discount_pct for the frontend badge
     foreach ($orders as &$row) {
-        $row['total'] = (float)$row['total'];
+        $row['original_total']  = (float)$row['original_total'];
+        $row['discount_amount'] = (float)$row['discount_amount'];
+        $row['discount_rate']   = (float)$row['discount_rate'];
+        $row['total']           = (float)$row['total'];
+        $row['discount_pct']    = round((float)$row['discount_rate'] * 100);
     }
+    unset($row);
 
     respond([
         "orders"      => $orders,
@@ -124,7 +127,18 @@ function getOrder(): void {
         return;
     }
 
-    $stmt = $pdo->prepare("SELECT * FROM orders WHERE id = ?");
+    // Read stored totals directly from the orders table
+    $stmt = $pdo->prepare("
+        SELECT
+            o.*,
+            COALESCE(o.original_total,  0) AS original_total,
+            COALESCE(o.discount_amount, 0) AS discount_amount,
+            COALESCE(o.discount_rate,   0) AS discount_rate,
+            COALESCE(o.discount_type,  '') AS discount_type,
+            COALESCE(o.total,           0) AS total
+        FROM orders o
+        WHERE o.id = ?
+    ");
     $stmt->execute([$id]);
     $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -146,12 +160,12 @@ function getOrder(): void {
     $itemStmt->execute([$id]);
     $order['items'] = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Compute total
-    $order['total'] = array_reduce(
-        $order['items'],
-        fn($carry, $item) => $carry + ($item['price'] * $item['quantity']),
-        0.0
-    );
+    // Cast and expose discount_pct for frontend badge
+    $order['original_total']  = (float)$order['original_total'];
+    $order['discount_amount'] = (float)$order['discount_amount'];
+    $order['discount_rate']   = (float)$order['discount_rate'];
+    $order['total']           = (float)$order['total'];
+    $order['discount_pct']    = round((float)$order['discount_rate'] * 100);
 
     respond($order);
 }
@@ -169,8 +183,6 @@ function updateStatus(): void {
         return;
     }
 
-    // FIX 2: Added 'completed' to the status allowlist here — this was the
-    // root cause of the Complete button silently failing on your groupmate's end
     $allowed = ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'];
     if (!in_array($status, $allowed)) {
         respond(["error" => "Invalid status. Must be one of: " . implode(', ', $allowed)], 400);

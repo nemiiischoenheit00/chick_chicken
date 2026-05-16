@@ -360,7 +360,7 @@
                 <span>Dashboard</span>
               </a>
             </li>
-
+            <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
             <li>
               <a href="orders--admin.php" class="header_button">
                 <ion-icon name="bag-handle-outline"></ion-icon>

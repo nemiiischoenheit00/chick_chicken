@@ -246,7 +246,7 @@
 
     <div class="ty-field">
       <div class="ty-label">Your Name</div>
-      <input type="text" id="ty-name" class="ty-input" placeholder="Juan dela Cruz">
+      <input type="text" id="ty-name" class="ty-input" placeholder="Juan dela Cruz" value="<?= htmlspecialchars($_GET['name'] ?? '') ?>">
     </div>
 
     <div class="ty-field">

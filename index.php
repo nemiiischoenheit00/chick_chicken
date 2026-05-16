@@ -637,7 +637,7 @@ session_start();
       var STEPS = [
           { key: 'pending',    label: 'Pending',    icon: '&#x23F3;' },
           { key: 'confirmed',  label: 'Confirmed',  icon: '&#x2713;'  },
-          { key: 'cooking',    label: 'Cooking',    icon: '&#x1F373;' },
+          { key: 'cooking', label: 'Preparing', icon: '&#x1F373;' },
           { key: 'in_transit', label: 'In Transit', icon: '&#x1F6F5;' },
       ];
 
@@ -658,18 +658,17 @@ session_start();
             var orders = data.orders || [];
 
             // 🔥 FILTER OUT COMPLETED ORDERS
-            orders = orders.filter(order => order.status !== 'completed');
+            orders = orders.filter(order => order.status !== 'completed' && order.status !== 'cancelled');
 
             var toggle = document.getElementById('ot-toggle');
+if (orders.length === 0) {
+    toggle.style.display = 'none';
+    document.getElementById('ot-panel').classList.remove('open');
+    return;
+}
 
-            if (orders.length === 0) {
-                toggle.style.display = 'none';
-                return;
-            }
-
-            toggle.style.display = 'flex';
-            renderCard(orders[0]);
-
+toggle.style.display = 'flex';
+renderCard(orders[0]);
         } catch (e) {
             console.error('Order tracker error:', e);
         }
@@ -689,7 +688,7 @@ session_start();
                   + '</div>';
           }).join('');
 
-          var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', cooking: 'Cooking', in_transit: 'In Transit' };
+          var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', cooking: 'Preparing', in_transit: 'In Transit' };
           var date    = new Date(o.created_at);
           var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
           var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });

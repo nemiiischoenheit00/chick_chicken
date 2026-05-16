@@ -136,9 +136,30 @@
         .status-pending    { background: #fff8e1; color: #e65c00; }
         .status-confirmed  { background: #e8f5e9; color: #2e7d32; }
         .status-cancelled  { background: #fce4ec; color: #c62828; }
-        .status-cooking    { background: #fff3e0; color: #e65100; }
+        .status-cooking,
+        .status-preparing  { background: #fff3e0; color: #e65100; }
         .status-in_transit { background: #e3f2fd; color: #1565c0; }
         .status-completed  { background: #ede7f6; color: #4527a0; }
+
+        .discount-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .total-original {
+            font-size: 11px;
+            color: #bbb;
+            text-decoration: line-through;
+            display: block;
+        }
 
         /* ── Skeleton ── */
         .skeleton {
@@ -259,17 +280,74 @@
         .item-name { font-weight: 700; color: #222; }
         .item-opts { font-size: 11px; color: #999; margin-top: 2px; }
 
+        /* ── Totals block ── */
+        .order-totals-block {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 10px;
+            margin-bottom: 4px;
+        }
+        .order-subtotal-row,
+        .order-discount-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            padding: 3px 0;
+            font-family: 'Oswald', sans-serif;
+        }
+        .order-subtotal-label,
+        .order-discount-label {
+            font-size: 13px;
+            color: #aaa;
+            letter-spacing: .4px;
+        }
+        .order-subtotal-value {
+            font-size: 14px;
+            color: #bbb;
+            text-decoration: line-through;
+            min-width: 100px;
+            text-align: right;
+        }
+        .order-discount-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2e7d32;
+            min-width: 100px;
+            text-align: right;
+        }
         .order-total-row {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             gap: 12px;
-            padding: 10px 0 0;
-            border-top: 2px solid #f0f0f0;
+            padding: 8px 0 0;
             font-family: 'Oswald', sans-serif;
         }
         .order-total-label { font-size: 14px; color: #888; letter-spacing: .5px; }
         .order-total-value { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+
+        .discount-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .discount-meta-value {
+            color: #2e7d32 !important;
+            font-weight: 700 !important;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
 
         .status-actions {
             display: flex;
@@ -308,15 +386,15 @@
         .btn-pending-order:hover  { background: #bf360c; }
         .btn-pending-order:active { transform: scale(.97); }
 
-        .btn-cooking-order {
+        .btn-preparing-order {
             padding: 8px 20px; background: #f57c00; color: #fff;
             border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
             font-size: 14px; cursor: pointer;
             display: flex; align-items: center; gap: 6px;
             transition: background .2s, transform .1s;
         }
-        .btn-cooking-order:hover  { background: #e65100; }
-        .btn-cooking-order:active { transform: scale(.97); }
+        .btn-preparing-order:hover  { background: #e65100; }
+        .btn-preparing-order:active { transform: scale(.97); }
 
         .btn-transit-order {
             padding: 8px 20px; background: #1565c0; color: #fff;
@@ -328,7 +406,6 @@
         .btn-transit-order:hover  { background: #0d47a1; }
         .btn-transit-order:active { transform: scale(.97); }
 
-        /* ── NEW: Complete button ── */
         .btn-complete-order {
             padding: 8px 20px; background: #4527a0; color: #fff;
             border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
@@ -508,6 +585,7 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
                     <li>
                         <a href="orders--admin.php" class="header_button active">
                             <ion-icon name="bag-handle-outline"></ion-icon>
@@ -527,12 +605,12 @@
                         </a>
                     </li>
                     <li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
-                             <li>
-              <a href="admins-review.php" class="header_button">
-                  <ion-icon name="chatbubbles-outline"></ion-icon>
-                  <span>Inventory</span>
-              </a>
-          </li>
+                    <li>
+                        <a href="admins-review.php" class="header_button">
+                            <ion-icon name="chatbubbles-outline"></ion-icon>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -550,7 +628,7 @@
                 <option value="">All Statuses</option>
                 <option value="pending">Pending</option>
                 <option value="confirmed">Confirmed</option>
-                <option value="cooking">Cooking</option>
+                <option value="preparing">Preparing</option>
                 <option value="in_transit">In Transit</option>
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
@@ -679,6 +757,15 @@ function statusBadge(s) {
     return `<span class="order-status status-${s}">${s.replace('_',' ')}</span>`;
 }
 
+// ── DISCOUNT BADGE STYLE ─────────────────────────────────
+function discountBadgeStyle(type) {
+    const t = (type || '').toLowerCase();
+    if (t.includes('senior'))  return { bg: '#fff3e0', color: '#e65100', icon: 'person-outline' };
+    if (t.includes('student')) return { bg: '#e3f2fd', color: '#1565c0', icon: 'school-outline' };
+    if (t.includes('pwd'))     return { bg: '#e8f5e9', color: '#1b5e20', icon: 'accessibility-outline' };
+    return { bg: '#f5f5f5', color: '#757575', icon: 'pricetag-outline' };
+}
+
 // ── LOAD ORDERS TABLE ────────────────────────────────────
 async function loadOrders(page = 1) {
     currentPage = page;
@@ -723,6 +810,18 @@ function renderRows(orders) {
     tbody.innerHTML = orders.map(o => {
         const payClass = o.payment_method === 'gcash' ? 'pay-gcash' : 'pay-cod';
         const payLabel = o.payment_method === 'gcash' ? 'GCash' : 'COD';
+
+        const hasDiscount = o.discount_amount > 0;
+        const ds = discountBadgeStyle(o.discount_type);
+        const totalCell = hasDiscount
+            ? `<span class="total-original">${php(o.original_total)}</span>
+               <strong style="color:#2e7d32;">${php(o.total)}</strong>
+               <span class="discount-tag" style="background:${ds.bg};color:${ds.color};">
+                   <ion-icon name="${ds.icon}" style="font-size:9px;"></ion-icon>
+                   ${escHtml(o.discount_type || 'discount')}
+               </span>`
+            : `<strong>${php(o.total)}</strong>`;
+
         return `
         <tr onclick="openOrder(${o.id})">
             <td class="order-id-cell">${padId(o.id)}</td>
@@ -732,7 +831,7 @@ function renderRows(orders) {
             </td>
             <td class="branch-cell">${escHtml(o.branch || '—')}</td>
             <td><span class="payment-badge ${payClass}">${payLabel}</span></td>
-            <td><strong>${php(o.total)}</strong></td>
+            <td>${totalCell}</td>
             <td>${statusBadge(o.status)}</td>
             <td style="font-size:13px;color:#777;">${fmtDate(o.created_at)}</td>
         </tr>`;
@@ -852,6 +951,54 @@ function renderModal(o) {
         }
     }
 
+    // ── Discount totals block ──
+    const hasDiscount = o.discount_amount > 0;
+    const ds = discountBadgeStyle(o.discount_type);
+    const discountLabel = o.discount_type
+        ? `${o.discount_pct}% off <span class="discount-type-badge" style="background:${ds.bg};color:${ds.color};">
+               <ion-icon name="${ds.icon}" style="font-size:9px;vertical-align:middle;"></ion-icon>
+               ${escHtml(o.discount_type)}
+           </span>`
+        : `${o.discount_pct}% off`;
+
+    const totalsHtml = `
+        <div class="order-totals-block">
+            ${hasDiscount ? `
+            <div class="order-subtotal-row">
+                <span class="order-subtotal-label">SUBTOTAL</span>
+                <span class="order-subtotal-value">${php(o.original_total)}</span>
+            </div>
+            <div class="order-discount-row">
+                <span class="order-discount-label">
+                    <ion-icon name="pricetag-outline" style="vertical-align:middle;margin-right:3px;color:#2e7d32;"></ion-icon>
+                    DISCOUNT (${discountLabel})
+                </span>
+                <span class="order-discount-value">− ${php(o.discount_amount)}</span>
+            </div>
+            ` : ''}
+            <div class="order-total-row">
+                <span class="order-total-label">TOTAL</span>
+                <span class="order-total-value">${php(o.total)}</span>
+            </div>
+        </div>
+    `;
+
+    // ── Discount meta item ──
+    const discountMetaHtml = hasDiscount ? `
+        <div class="meta-item">
+            <label><ion-icon name="pricetag-outline" style="vertical-align:middle;margin-right:3px;"></ion-icon> Discount Applied</label>
+            <span class="discount-meta-value">
+                − ${php(o.discount_amount)}
+                ${o.discount_type
+                    ? `<span class="discount-type-badge" style="background:${ds.bg};color:${ds.color};">
+                           <ion-icon name="${ds.icon}" style="font-size:9px;vertical-align:middle;"></ion-icon>
+                           ${escHtml(o.discount_type)}
+                       </span>`
+                    : ''}
+                <span style="color:#aaa;font-size:12px;font-weight:400;">(${o.discount_pct}% off)</span>
+            </span>
+        </div>` : '';
+
     document.getElementById('orderModalBody').innerHTML = `
         <div class="order-meta-grid">
             <div class="meta-item">
@@ -891,6 +1038,7 @@ function renderModal(o) {
                 <span>${fmtDate(o.created_at)}</span>
             </div>
             ${o.card_number ? `<div class="meta-item"><label>Card</label><span>•••• •••• •••• ${o.card_number.slice(-4)}</span></div>` : ''}
+            ${discountMetaHtml}
         </div>
 
         ${gcashHtml}
@@ -909,28 +1057,25 @@ function renderModal(o) {
             <tbody>${itemsHtml}</tbody>
         </table>
 
-        <div class="order-total-row">
-            <span class="order-total-label">TOTAL</span>
-            <span class="order-total-value">${php(o.total)}</span>
-        </div>
+        ${totalsHtml}
 
         <div class="status-actions">
-            <button class="btn-confirm"       onclick="updateStatus(${o.id}, 'confirmed')">
+            <button class="btn-confirm"          onclick="updateStatus(${o.id}, 'confirmed')">
                 <ion-icon name="checkmark-circle-outline"></ion-icon> Confirm
             </button>
-            <button class="btn-cooking-order" onclick="updateStatus(${o.id}, 'cooking')">
-                <ion-icon name="flame-outline"></ion-icon> Cooking
+            <button class="btn-preparing-order"  onclick="updateStatus(${o.id}, 'preparing')">
+                <ion-icon name="flame-outline"></ion-icon> Preparing
             </button>
-            <button class="btn-transit-order" onclick="updateStatus(${o.id}, 'in_transit')">
+            <button class="btn-transit-order"    onclick="updateStatus(${o.id}, 'in_transit')">
                 <ion-icon name="bicycle-outline"></ion-icon> In Transit
             </button>
-            <button class="btn-complete-order" onclick="updateStatus(${o.id}, 'completed')">
+            <button class="btn-complete-order"   onclick="updateStatus(${o.id}, 'completed')">
                 <ion-icon name="bag-check-outline"></ion-icon> Complete
             </button>
-            <button class="btn-pending-order" onclick="updateStatus(${o.id}, 'pending')">
+            <button class="btn-pending-order"    onclick="updateStatus(${o.id}, 'pending')">
                 <ion-icon name="time-outline"></ion-icon> Set Pending
             </button>
-            <button class="btn-cancel-order"  onclick="updateStatus(${o.id}, 'cancelled')">
+            <button class="btn-cancel-order"     onclick="updateStatus(${o.id}, 'cancelled')">
                 <ion-icon name="close-circle-outline"></ion-icon> Cancel
             </button>
             <span class="status-update-msg" id="statusMsg"></span>

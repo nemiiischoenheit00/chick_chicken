@@ -179,6 +179,37 @@ $discountJson = json_encode($discountInfo);
       color: #D62828; text-decoration: underline;
       font-weight: 600;
     }
+
+    /* ── Confirm Order button — styled like "Order Now" CTA ── */
+.place-order-button {
+  display: block;
+  width: 100%;
+  padding: 16px 32px;
+  margin-top: 28px;
+  background: #D62828;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(214, 40, 40, 0.30);
+}
+
+.place-order-button:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(214, 40, 40, 0.40);
+}
+
+.place-order-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(214, 40, 40, 0.25);
+}
   </style>
 </head>
 
@@ -411,7 +442,7 @@ $discountJson = json_encode($discountInfo);
     window.DISCOUNT = <?= $discountJson ?>;
   </script>
 
-  <script src="checkout.js"></script>
+  <script src="checkout.js?v=<?= time() ?>"></script>
 
   <script>
     // ── DISCOUNT: update order summary totals ─────────────────

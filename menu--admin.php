@@ -392,7 +392,8 @@ $categories = $catResult ? $catResult->fetchAll(PDO::FETCH_COLUMN) : [];
           <li><a href="admin.php" class="header_button">
             <ion-icon name="grid-outline"></ion-icon><span>Dashboard</span>
           </a></li>
-          <li><a href="orders--admin.html" class="header_button">
+          <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
+          <li><a href="orders--admin.php" class="header_button">
             <ion-icon name="bag-handle-outline"></ion-icon><span>Orders</span>
           </a></li>
           <li><a href="menu--admin.php" class="header_button active">

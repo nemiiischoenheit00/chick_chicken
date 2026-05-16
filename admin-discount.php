@@ -321,6 +321,7 @@ require_once 'db.php';
       <nav>
         <ul>
           <li><a href="admin.php#dashboard--admin" class="header_button"><ion-icon name="grid-outline"></ion-icon><span>Dashboard</span></a></li>
+          <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
           <li><a href="orders--admin.php" class="header_button"><ion-icon name="bag-handle-outline"></ion-icon><span>Orders</span></a></li>
           <li><a href="menu--admin.php" class="header_button"><ion-icon name="book-outline"></ion-icon><span>Menus</span></a></li>
           <li><a href="inventory.php" class="header_button"><ion-icon name="clipboard-outline"></ion-icon><span>Inventory</span></a></li>

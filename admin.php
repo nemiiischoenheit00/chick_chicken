@@ -94,6 +94,7 @@
                             style="width: auto; height: 55px" /></a>
                 </h1>
             </div>
+            
             <div class="navigation--admin">
                 <nav>
                     <ul>
@@ -103,6 +104,7 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
                         <li>
                             <a href="orders--admin.php" class="header_button">
                                 <ion-icon name="bag-handle-outline"></ion-icon>
@@ -125,7 +127,7 @@
                                  <li>
               <a href="admins-review.php" class="header_button">
                   <ion-icon name="chatbubbles-outline"></ion-icon>
-                  <span>Inventory</span>
+                  <span>Reviews</span>
               </a>
           </li>
                     </ul>
