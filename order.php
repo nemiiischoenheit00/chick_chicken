@@ -53,7 +53,8 @@ function listOrders(): void {
         $params[] = is_numeric($search) ? (int)$search : -1;
     }
 
-    if (in_array($status, ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'])) {
+    $allowed_statuses = ['pending', 'confirmed', 'preparing', 'in_transit', 'completed', 'cancelled'];
+    if (in_array($status, $allowed_statuses)) {
         $where[]  = "o.status = ?";
         $params[] = $status;
     }
@@ -127,10 +128,11 @@ function getOrder(): void {
         return;
     }
 
-    // Read stored totals directly from the orders table
     $stmt = $pdo->prepare("
         SELECT
-            o.*,
+            o.id, o.user_id, o.name, o.phone, o.email, o.address,
+            o.payment_method, o.branch, o.status, o.created_at,
+            o.gcash_proof, o.gcash_reference,
             COALESCE(o.original_total,  0) AS original_total,
             COALESCE(o.discount_amount, 0) AS discount_amount,
             COALESCE(o.discount_rate,   0) AS discount_rate,
@@ -147,7 +149,6 @@ function getOrder(): void {
         return;
     }
 
-    // Fetch order items with product details
     $itemStmt = $pdo->prepare("
         SELECT
             oi.*,
@@ -160,12 +161,13 @@ function getOrder(): void {
     $itemStmt->execute([$id]);
     $order['items'] = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Cast and expose discount_pct for frontend badge
     $order['original_total']  = (float)$order['original_total'];
     $order['discount_amount'] = (float)$order['discount_amount'];
     $order['discount_rate']   = (float)$order['discount_rate'];
     $order['total']           = (float)$order['total'];
     $order['discount_pct']    = round((float)$order['discount_rate'] * 100);
+    $order['gcash_reference'] = $order['gcash_reference'] ?? null;
+    $order['gcash_proof']     = $order['gcash_proof']     ?? null;
 
     respond($order);
 }
@@ -183,7 +185,7 @@ function updateStatus(): void {
         return;
     }
 
-    $allowed = ['pending', 'confirmed', 'cooking', 'in_transit', 'completed', 'cancelled'];
+    $allowed = ['pending', 'confirmed', 'preparing', 'in_transit', 'completed', 'cancelled'];
     if (!in_array($status, $allowed)) {
         respond(["error" => "Invalid status. Must be one of: " . implode(', ', $allowed)], 400);
         return;

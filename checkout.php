@@ -4,15 +4,11 @@ require 'db.php';
 
 $user = ['full_name' => '', 'phone' => '', 'email' => ''];
 
-// ── Discount defaults ─────────────────────────────────────────
-// discount_applications schema: id, user_id, type, id_image_path,
-//   status enum('pending','approved','rejected') DEFAULT 'pending',
-//   notes, created_at, updated_at
 $discountInfo = [
-    'status'       => 'none',   // none | pending | approved | rejected
-    'type'         => '',       // Senior Citizen | PWD | Student
-    'rate'         => 0,        // e.g. 0.20 for 20%
-    'label'        => '',       // human-readable label for UI
+    'status'       => 'none',
+    'type'         => '',
+    'rate'         => 0,
+    'label'        => '',
 ];
 
 if (isset($_SESSION['user_id'])) {
@@ -25,7 +21,6 @@ if (isset($_SESSION['user_id'])) {
         $user['email']     = htmlspecialchars($row['email'] ?? '');
     }
 
-    // Fetch the most recent discount application for this user
     $dStmt = $pdo->prepare(
         "SELECT type, status, notes FROM discount_applications
          WHERE user_id = ?
@@ -38,9 +33,7 @@ if (isset($_SESSION['user_id'])) {
         $discountInfo['status'] = $dRow['status'];
         $discountInfo['type']   = $dRow['type'];
 
-        // Only apply discount when status === 'approved'
         if ($dRow['status'] === 'approved') {
-            // Discount rates per type — adjust as needed
             $rates = [
                 'Senior Citizen' => 0.20,
                 'PWD'            => 0.20,
@@ -52,7 +45,6 @@ if (isset($_SESSION['user_id'])) {
     }
 }
 
-// Pass discount data to JS as JSON
 $discountJson = json_encode($discountInfo);
 ?>
 <!DOCTYPE html>
@@ -69,7 +61,6 @@ $discountJson = json_encode($discountInfo);
   <title>Chick Chicken - Checkout</title>
 
   <style>
-    /* ── Font base ── */
     .checkout-container h1,
     .checkout-container h3,
     .checkout-form h3,
@@ -86,7 +77,6 @@ $discountJson = json_encode($discountInfo);
       font-family: 'Alegreya Sans', sans-serif;
     }
 
-    /* ── Branch selector ── */
     .branch-selector-section { margin-bottom: 28px; }
     .branch-selector-label {
       font-size: 18px; font-weight: 600;
@@ -117,16 +107,13 @@ $discountJson = json_encode($discountInfo);
     .branch-hours  { font-size: 13px; color: #e65c00; font-weight: 700; margin: 0; }
     .branch-phone  { font-size: 14px; color: #1a1a1a; font-weight: 700; margin: 0; }
 
-    /* ── Pre-filled inputs ── */
     .checkout-form input[data-prefilled="true"] {
       background: #fafafa; color: #444; border-color: #ddd;
     }
 
-    /* ── Payment section spacing ── */
     .checkout-form h3.payment-heading { margin-top: 36px; }
     #gcash-field { margin-top: 16px; }
 
-    /* ── DISCOUNT BANNER ── */
     #discount-banner {
       display: none;
       align-items: center;
@@ -160,56 +147,67 @@ $discountJson = json_encode($discountInfo);
       background: #f5c800; color: #1a1a1a;
     }
 
-    /* ── DISCOUNT ROW IN SUMMARY ── */
-    .summary-row.discount-row {
-      color: #2e7d32;
-      font-weight: 700;
-    }
-    .summary-row.discount-row span:last-child {
-      color: #2e7d32;
-    }
+    .summary-row.discount-row { color: #2e7d32; font-weight: 700; }
+    .summary-row.discount-row span:last-child { color: #2e7d32; }
 
-    /* ── LINK TO PROFILE ── */
+    .summary-row.vat-row { color: #555; font-size: 13px; }
+    .summary-row.vat-row span:last-child { color: #555; }
+
     .discount-profile-link {
       font-family: 'Alegreya Sans', sans-serif;
       font-size: 13px; color: #888;
       display: block; margin-bottom: 20px; margin-top: -6px;
     }
     .discount-profile-link a {
-      color: #D62828; text-decoration: underline;
-      font-weight: 600;
+      color: #D62828; text-decoration: underline; font-weight: 600;
     }
 
-    /* ── Confirm Order button — styled like "Order Now" CTA ── */
-.place-order-button {
-  display: block;
-  width: 100%;
-  padding: 16px 32px;
-  margin-top: 28px;
-  background: #D62828;
-  color: #fff;
-  font-family: 'Oswald', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 4px 16px rgba(214, 40, 40, 0.30);
-}
+    .place-order-button {
+      display: block; width: 100%;
+      padding: 16px 32px; margin-top: 28px;
+      background: #D62828; color: #fff;
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(214, 40, 40, 0.30);
+    }
+    .place-order-button:hover {
+      background: #b71c1c; transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(214, 40, 40, 0.40);
+    }
+    .place-order-button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(214, 40, 40, 0.25);
+    }
 
-.place-order-button:hover {
-  background: #b71c1c;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(214, 40, 40, 0.40);
-}
-
-.place-order-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(214, 40, 40, 0.25);
-}
+    /* GCash reference input */
+    #gcash-ref-wrap { margin-top: 14px; }
+    #gcash-ref-wrap label {
+      display: block;
+      font-family: 'Alegreya Sans', sans-serif;
+      font-size: 15px;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+    #gcash-ref-wrap label span { color: #D62828; margin-left: 2px; }
+    #gcash-ref {
+      display: block; width: 100%; padding: 13px 16px;
+      box-sizing: border-box;
+      border: 2px solid #e5e5e5; border-radius: 10px;
+      font-family: 'Alegreya Sans', sans-serif;
+      font-size: 15px; color: #1a1a1a;
+      outline: none; transition: border-color 0.2s;
+      letter-spacing: 1px;
+    }
+    #gcash-ref:focus { border-color: #f5c800; }
+    #gcash-ref-hint {
+      margin-top: 5px;
+      font-family: 'Alegreya Sans', sans-serif;
+      font-size: 12px;
+      color: #aaa;
+    }
   </style>
 </head>
 
@@ -272,7 +270,7 @@ $discountJson = json_encode($discountInfo);
       </div>
     </section>
 
-    <!-- ── DISCOUNT BANNER ── -->
+    <!-- DISCOUNT BANNER -->
     <?php if ($discountInfo['status'] === 'approved'): ?>
       <div id="discount-banner" style="display:flex;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -305,16 +303,21 @@ $discountJson = json_encode($discountInfo);
       </p>
     <?php endif; ?>
 
-    <!-- Order Summary -->
+    <!-- ORDER SUMMARY -->
     <section class="order-summary">
       <h3>Order Summary</h3>
       <div id="summary-items"></div>
       <div class="summary-totals">
         <div class="summary-row"><span>Subtotal</span><span id="summary-subtotal">₱0.00</span></div>
-        <!-- Discount row — only shown when discount is approved -->
         <div class="summary-row discount-row" id="summary-discount-row" style="display:none;">
           <span id="summary-discount-label">Discount</span>
           <span id="summary-discount-amount">-₱0.00</span>
+        </div>
+        <div class="summary-row vat-row" id="summary-vatable-row" style="display:none;">
+          <span>VATable Sales</span><span id="summary-vatable">₱0.00</span>
+        </div>
+        <div class="summary-row vat-row" id="summary-vat-row" style="display:none;">
+          <span>VAT (12%)</span><span id="summary-vat">₱0.00</span>
         </div>
         <div class="summary-row total"><span>Total</span><span id="summary-total">₱0.00</span></div>
       </div>
@@ -376,7 +379,24 @@ $discountJson = json_encode($discountInfo);
               ">
           </div>
         </div>
-        <label for="gcash-proof">Proof of Payment<span>*</span></label>
+
+        <!-- GCash Reference Number -->
+        <div id="gcash-ref-wrap">
+          <label for="gcash-ref">GCash Reference Number<span>*</span></label>
+          <input
+            type="text"
+            id="gcash-ref"
+            name="gcash_reference"
+            placeholder="e.g. 1234567890123"
+            maxlength="13"
+            inputmode="numeric"
+            autocomplete="off"
+          >
+          <p id="gcash-ref-hint">Enter the 13-digit reference number from your GCash receipt.</p>
+        </div>
+
+        <!-- Proof of Payment -->
+        <label for="gcash-proof" style="display:block; margin-top:14px;">Proof of Payment<span>*</span></label>
         <input type="file" id="gcash-proof" name="gcash_proof"
           accept="image/png, image/jpeg, image/jpg, image/webp"
           style="
@@ -392,9 +412,8 @@ $discountJson = json_encode($discountInfo);
         </div>
       </div>
 
-      <!-- Hidden field so checkout.js / server knows the applied discount -->
-      <input type="hidden" name="discount_type"   value="<?= htmlspecialchars($discountInfo['status'] === 'approved' ? $discountInfo['type'] : '') ?>">
-      <input type="hidden" name="discount_rate"   value="<?= $discountInfo['status'] === 'approved' ? $discountInfo['rate'] : 0 ?>">
+      <input type="hidden" name="discount_type" value="<?= htmlspecialchars($discountInfo['status'] === 'approved' ? $discountInfo['type'] : '') ?>">
+      <input type="hidden" name="discount_rate" value="<?= $discountInfo['status'] === 'approved' ? $discountInfo['rate'] : 0 ?>">
 
       <div class="checkout-divider"></div>
       <button type="submit" class="place-order-button">Confirm Order</button>
@@ -437,7 +456,6 @@ $discountJson = json_encode($discountInfo);
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
-  <!-- ── DISCOUNT DATA FROM PHP ── -->
   <script>
     window.DISCOUNT = <?= $discountJson ?>;
   </script>
@@ -445,10 +463,6 @@ $discountJson = json_encode($discountInfo);
   <script src="checkout.js?v=<?= time() ?>"></script>
 
   <script>
-    // ── DISCOUNT: update order summary totals ─────────────────
-    // This patches into whatever checkout.js uses to render totals.
-    // It reads window.DISCOUNT and recalculates when the summary updates.
-
     (function () {
       var discount = window.DISCOUNT || {};
 
@@ -457,58 +471,68 @@ $discountJson = json_encode($discountInfo);
       }
 
       function applyDiscount() {
-        var subtotalEl = document.getElementById('summary-subtotal');
-        var totalEl    = document.getElementById('summary-total');
-        var discRow    = document.getElementById('summary-discount-row');
-        var discLabel  = document.getElementById('summary-discount-label');
-        var discAmt    = document.getElementById('summary-discount-amount');
+        var subtotalEl  = document.getElementById('summary-subtotal');
+        var totalEl     = document.getElementById('summary-total');
+        var discRow     = document.getElementById('summary-discount-row');
+        var discLabel   = document.getElementById('summary-discount-label');
+        var discAmt     = document.getElementById('summary-discount-amount');
+        var vatableEl   = document.getElementById('summary-vatable');
+        var vatEl       = document.getElementById('summary-vat');
+        var vatableRow  = document.getElementById('summary-vatable-row');
+        var vatRow      = document.getElementById('summary-vat-row');
 
         if (!subtotalEl || !totalEl) return;
 
-        // Parse the raw subtotal rendered by checkout.js (strips ₱ and commas)
-        var raw = subtotalEl.textContent.replace(/[^\d.]/g, '');
+        var raw      = subtotalEl.textContent.replace(/[^\d.]/g, '');
         var subtotal = parseFloat(raw) || 0;
+        var total    = subtotal;
 
         if (discount.status === 'approved' && discount.rate > 0) {
           var savings = subtotal * discount.rate;
-          var total   = subtotal - savings;
-
+          total       = subtotal - savings;
           discLabel.textContent = discount.label || (discount.type + ' Discount');
           discAmt.textContent   = '-' + formatPHP(savings);
           discRow.style.display = 'flex';
-          totalEl.textContent   = formatPHP(total);
         } else {
           discRow.style.display = 'none';
-          totalEl.textContent   = formatPHP(subtotal);
         }
+
+        // VAT breakdown — prices are VAT-inclusive
+        var vat     = total / 1.12 * 0.12;
+        var vatable = total / 1.12;
+
+        vatableEl.textContent    = formatPHP(vatable);
+        vatEl.textContent        = formatPHP(vat);
+        vatableRow.style.display = 'flex';
+        vatRow.style.display     = 'flex';
+        totalEl.textContent      = formatPHP(total);
       }
 
-      // Run once on load, then watch for DOM changes checkout.js makes to summary-subtotal
       applyDiscount();
 
-      var observer = new MutationObserver(applyDiscount);
+      var observer   = new MutationObserver(applyDiscount);
       var subtotalEl = document.getElementById('summary-subtotal');
       if (subtotalEl) {
         observer.observe(subtotalEl, { childList: true, characterData: true, subtree: true });
       }
 
-      // Also expose so checkout.js can call window.applyDiscount() after it re-renders
       window.applyDiscount = applyDiscount;
     })();
 
-    // ── GCash payment toggle ──────────────────────────────────
+    // GCash toggle
     document.querySelectorAll('input[name="payment"]').forEach(function(radio) {
       radio.addEventListener('change', function() {
         var gcashField = document.getElementById('gcash-field');
         gcashField.style.display = this.value === 'gcash' ? 'block' : 'none';
         if (this.value !== 'gcash') {
           document.getElementById('gcash-proof').value = '';
+          document.getElementById('gcash-ref').value = '';
           document.getElementById('gcash-preview').style.display = 'none';
         }
       });
     });
 
-    // Live preview of uploaded screenshot
+    // GCash proof preview
     document.getElementById('gcash-proof').addEventListener('change', function() {
       var preview = document.getElementById('gcash-preview');
       var img     = document.getElementById('gcash-preview-img');
@@ -519,9 +543,14 @@ $discountJson = json_encode($discountInfo);
         preview.style.display = 'none';
       }
     });
+
+    // GCash reference — digits only
+    document.getElementById('gcash-ref').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').substring(0, 13);
+    });
   </script>
 
-  <!-- ── ORDER TRACKER BUBBLE (unchanged from original) ── -->
+  <!-- ORDER TRACKER WIDGET -->
   <style>
   @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Alegreya+Sans:wght@400;700&display=swap');
 
@@ -576,7 +605,7 @@ $discountJson = json_encode($discountInfo);
   .ot-status-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.4px; font-family: 'Oswald', sans-serif; margin-bottom: 12px; }
   .pill-pending    { background: #fff8e1; color: #e65c00; }
   .pill-confirmed  { background: #e8f5e9; color: #2e7d32; }
-  .pill-cooking    { background: #fff3e0; color: #e65100; }
+  .pill-preparing  { background: #fff3e0; color: #e65100; }
   .pill-in_transit { background: #e3f2fd; color: #1565c0; }
   .pill-cancelled  { background: #fce4ec; color: #c62828; }
   .ot-items-label { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: #bbb; margin-bottom: 10px; }
@@ -623,8 +652,8 @@ $discountJson = json_encode($discountInfo);
   (function () {
     var STEPS = [
       { key: 'pending',    label: 'Pending',    icon: '&#x23F3;' },
-      { key: 'confirmed',  label: 'Confirmed',  icon: '&#x2713;'  },
-      { key: 'cooking',    label: 'Cooking',    icon: '&#x1F373;' },
+      { key: 'confirmed',  label: 'Confirmed',  icon: '&#x2713;' },
+      { key: 'preparing',  label: 'Preparing',  icon: '&#x1F373;' },
       { key: 'in_transit', label: 'In Transit', icon: '&#x1F6F5;' },
     ];
     window.otTogglePanel = function () {
@@ -635,9 +664,9 @@ $discountJson = json_encode($discountInfo);
         var res  = await fetch('order_tracker.php?action=active_orders');
         var data = await res.json();
         if (data.error === 'not_logged_in') { document.getElementById('ot-toggle').style.display = 'none'; return; }
-        var orders = (data.orders || []).filter(o => o.status !== 'completed');
+        var orders = (data.orders || []).filter(o => o.status !== 'completed' && o.status !== 'cancelled');
         var toggle = document.getElementById('ot-toggle');
-        if (orders.length === 0) { toggle.style.display = 'none'; return; }
+        if (orders.length === 0) { toggle.style.display = 'none'; document.getElementById('ot-panel').classList.remove('open'); return; }
         toggle.style.display = 'flex';
         renderCard(orders[0]);
       } catch(e) { console.error('Order tracker error:', e); }
@@ -651,9 +680,9 @@ $discountJson = json_encode($discountInfo);
         var cls = i < stepIdx ? 'done' : (i === stepIdx ? 'active' : '');
         return '<div class="ot-step ' + cls + '"><div class="ot-step-dot">' + step.icon + '</div><div class="ot-step-label">' + step.label + '</div></div>';
       }).join('');
-      var pillLabels = { pending:'Pending', confirmed:'Confirmed', cooking:'Cooking', in_transit:'In Transit' };
+      var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', preparing: 'Preparing', in_transit: 'In Transit' };
       var date    = new Date(o.created_at);
-      var dateStr = date.toLocaleDateString('en-PH', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+      var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });
       var itemsHtml = (o.items || []).map(item => {
         var imgHtml = item.product_image
@@ -662,10 +691,10 @@ $discountJson = json_encode($discountInfo);
         var subtotal = Number(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 });
         return '<div class="ot-item">' + imgHtml + '<div class="ot-item-info"><div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div><div class="ot-item-qty">x' + item.quantity + '</div></div><div class="ot-item-price">&#x20B1;' + subtotal + '</div></div>';
       }).join('');
-      body.innerHTML = '<div class="ot-card"><div class="ot-order-id">ORDER #' + String(o.id).padStart(7,'0') + '</div><span class="ot-status-pill pill-' + status + '">' + (pillLabels[status]||status) + '</span><div class="ot-order-meta">' + dateStr + '</div><div class="ot-progress-track"><div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div><div class="ot-steps">' + stepsHtml + '</div></div><div class="ot-items-label">Your Items</div><div class="ot-items-list">' + itemsHtml + '</div><hr class="ot-divider"><div class="ot-total-row"><span class="ot-total-label">TOTAL</span><span class="ot-total-value">&#x20B1;' + total + '</span></div></div>';
+      body.innerHTML = '<div class="ot-card"><div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div><span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span><div class="ot-order-meta">' + dateStr + '</div><div class="ot-progress-track"><div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div><div class="ot-steps">' + stepsHtml + '</div></div><div class="ot-items-label">Your Items</div><div class="ot-items-list">' + itemsHtml + '</div><hr class="ot-divider"><div class="ot-total-row"><span class="ot-total-label">TOTAL</span><span class="ot-total-value">&#x20B1;' + total + '</span></div></div>';
     }
-    function escHtml(str) { return String(str==null?'':str).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    function escAttr(str) { return String(str==null?'':str).replace(/["'<>&]/g,c=>({'"':'&quot;',"'":'&#39;','<':'&lt;','>':'&gt;','&':'&amp;'}[c])); }
+    function escHtml(str) { return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    function escAttr(str) { return String(str == null ? '' : str).replace(/["'<>&]/g, c => ({ '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])); }
     fetchOrders();
     setInterval(fetchOrders, 15000);
   })();

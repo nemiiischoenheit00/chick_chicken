@@ -30,14 +30,11 @@ if (!$user) {
     exit;
 }
 
-// ── FETCH LATEST DISCOUNT APPLICATION (matches your DB schema) ──
-// Schema: id, user_id, type, id_image_path, status enum(pending/approved/rejected), notes, created_at, updated_at
+// ── FETCH LATEST DISCOUNT APPLICATION ──────────────────────
 $appStmt = $pdo->prepare("SELECT * FROM discount_applications WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
 $appStmt->execute([$user_id]);
 $discountApp = $appStmt->fetch(PDO::FETCH_ASSOC);
 
-// Derive discount status from the latest application row (not a users column)
-// If no row exists => 'none'; otherwise use the row's status enum value
 $discountStatus = $discountApp ? $discountApp['status'] : 'none';
 
 // ── HANDLE PROFILE UPDATE ────────────────────────────────────
@@ -91,8 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
 }
 
 // ── HANDLE DISCOUNT APPLICATION ──────────────────────────────
-// Inserts into: discount_applications(user_id, type, id_image_path)
-// status defaults to 'pending' per your DB schema
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply_discount') {
     $type = trim($_POST['discount_type'] ?? '');
 
@@ -117,15 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
             $dest     = $uploadDir . $filename;
 
             if (move_uploaded_file($_FILES['id_image']['tmp_name'], $dest)) {
-                // Delete any existing pending application before inserting a new one
                 $del = $pdo->prepare("DELETE FROM discount_applications WHERE user_id = ? AND status = 'pending'");
                 $del->execute([$user_id]);
 
-                // Insert — status defaults to 'pending' per DB schema (no need to pass it explicitly)
                 $ins = $pdo->prepare("INSERT INTO discount_applications (user_id, type, id_image_path) VALUES (?, ?, ?)");
                 $ins->execute([$user_id, $type, $dest]);
 
-                // Re-fetch the new application row
                 $appStmt->execute([$user_id]);
                 $discountApp    = $appStmt->fetch(PDO::FETCH_ASSOC);
                 $discountStatus = $discountApp ? $discountApp['status'] : 'none';
@@ -343,6 +335,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
     }
     .app-detail-table td:last-child { color: #222; }
 
+    /* ── SUBMITTED ID IMAGE ── */
+    .submitted-id-wrap {
+      margin-top: 16px;
+    }
+    .submitted-id-label {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: #bbb; display: block; margin-bottom: 10px;
+    }
+    .submitted-id-img {
+      max-width: 340px;
+      width: 100%;
+      border-radius: 12px;
+      border: 1.5px solid #e8e8e8;
+      display: block;
+      cursor: zoom-in;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .submitted-id-img:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+      transform: scale(1.01);
+    }
+    .submitted-id-hint {
+      font-size: 12px; color: #bbb;
+      margin: 6px 0 0; font-style: italic;
+    }
+
+    /* ── IMAGE ZOOM LIGHTBOX ── */
+    #imgZoomOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #imgZoomOverlay.active { display: flex; }
+    #imgZoomTarget {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 14px;
+      object-fit: contain;
+      box-shadow: 0 12px 60px rgba(0,0,0,0.5);
+    }
+    .zoom-close {
+      position: absolute; top: 20px; right: 26px;
+      color: #fff; font-size: 32px; font-weight: 300;
+      cursor: pointer; line-height: 1;
+      opacity: 0.8; transition: opacity 0.15s;
+    }
+    .zoom-close:hover { opacity: 1; }
+
+    /* ── SENIOR PHONE HINT ── */
+    .field-hint {
+      font-size: 12px; color: #999; margin-top: 2px;
+    }
+
     #editFormWrap { display: none; }
 
     @media (max-width: 600px) {
@@ -502,7 +552,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> discount has been approved! Enjoy your discounted orders.
       </div>
-      <!-- Show approved application details -->
+
       <table class="app-detail-table">
         <tr><td>Type</td><td><?= htmlspecialchars($discountApp['type']) ?></td></tr>
         <tr><td>Submitted</td><td><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></td></tr>
@@ -511,6 +561,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
           <tr><td>Notes</td><td><?= htmlspecialchars($discountApp['notes']) ?></td></tr>
         <?php endif; ?>
       </table>
+
+      <?php if (!empty($discountApp['id_image_path'])): ?>
+        <div class="submitted-id-wrap">
+          <span class="submitted-id-label">Submitted ID / Proof</span>
+          <img
+            src="<?= htmlspecialchars($discountApp['id_image_path']) ?>"
+            alt="Submitted ID"
+            class="submitted-id-img"
+            onclick="openImgZoom(this.src)"
+          >
+          <p class="submitted-id-hint">Click image to enlarge</p>
+        </div>
+      <?php endif; ?>
 
     <?php elseif ($discountStatus === 'pending'): ?>
       <div class="prev-app">
@@ -523,6 +586,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
           <?php endif; ?>
         </div>
       </div>
+
+      <?php if (!empty($discountApp['id_image_path'])): ?>
+        <div class="submitted-id-wrap">
+          <span class="submitted-id-label">Submitted ID / Proof</span>
+          <img
+            src="<?= htmlspecialchars($discountApp['id_image_path']) ?>"
+            alt="Submitted ID"
+            class="submitted-id-img"
+            onclick="openImgZoom(this.src)"
+          >
+          <p class="submitted-id-hint">Click image to enlarge</p>
+        </div>
+      <?php endif; ?>
 
     <?php elseif ($discountStatus === 'rejected'): ?>
       <div class="alert alert-error" style="margin-bottom:20px;">
@@ -540,15 +616,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
       <form method="POST" action="profile.php" enctype="multipart/form-data">
         <input type="hidden" name="action" value="apply_discount">
         <div class="form-grid">
+
           <div class="form-group full">
             <label>Discount Type</label>
-            <select name="discount_type" required>
+            <select name="discount_type" id="discountTypeSelect" required onchange="toggleSeniorPhone(this.value)">
               <option value="" disabled selected>— Select a type —</option>
               <option value="Senior Citizen">Senior Citizen (60+)</option>
               <option value="PWD">Person with Disability (PWD)</option>
               <option value="Student">Student</option>
             </select>
           </div>
+
+          <div class="form-group full" id="seniorPhoneGroup" style="display:none;">
+            <label>Senior Citizen Phone Number</label>
+            <input
+              type="text"
+              name="senior_phone"
+              id="seniorPhone"
+              placeholder="e.g. 09xx-xxx-xxxx"
+              value="<?= htmlspecialchars($user['phone']) ?>"
+            >
+            <span class="field-hint">This number will be used to verify your senior citizen identity.</span>
+          </div>
+
           <div class="form-group full">
             <label>Upload Valid ID or Proof</label>
             <div class="upload-zone">
@@ -558,6 +648,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
               <div id="fileNameDisplay"></div>
             </div>
           </div>
+
         </div>
         <button type="submit" class="btn-primary" style="margin-top:20px;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -567,6 +658,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
     <?php endif; ?>
   </div>
 
+</div>
+
+<!-- ── IMAGE ZOOM LIGHTBOX ── -->
+<div id="imgZoomOverlay" onclick="closeImgZoom()">
+  <span class="zoom-close" onclick="closeImgZoom()">✕</span>
+  <img id="imgZoomTarget" src="" alt="ID enlarged">
 </div>
 
 <script>
@@ -592,6 +689,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
     input.type   = showing ? 'password' : 'text';
     btn.innerHTML = showing ? eyeSVG : eyeOffSVG;
   }
+
+  function toggleSeniorPhone(val) {
+    var grp = document.getElementById('seniorPhoneGroup');
+    if (grp) grp.style.display = val === 'Senior Citizen' ? 'flex' : 'none';
+  }
+
+  function openImgZoom(src) {
+    document.getElementById('imgZoomTarget').src = src;
+    document.getElementById('imgZoomOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeImgZoom() {
+    document.getElementById('imgZoomOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeImgZoom();
+  });
 </script>
 
 </body>

@@ -18,44 +18,25 @@ require_once 'db.php';
     @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');
 
     /* ── Page layout ── */
-    .disc-page {
-      padding: 0 28px 40px 28px;
-    }
+    .disc-page { padding: 0 28px 40px 28px; }
     .disc-page h1 {
       font-family: 'Oswald', sans-serif;
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #1a1a1a;
+      font-size: 2rem; font-weight: 600;
+      margin-bottom: 6px; color: #1a1a1a;
     }
-    .disc-subtitle {
-      color: #888;
-      font-size: 13px;
-      margin-bottom: 24px;
-    }
+    .disc-subtitle { color: #888; font-size: 13px; margin-bottom: 24px; }
 
     /* ── Stat cards ── */
-    .disc-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 24px;
-    }
+    .disc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     .disc-stat {
-      background: #fff;
-      border-radius: 14px;
-      padding: 18px 20px;
+      background: #fff; border-radius: 14px; padding: 18px 20px;
       box-shadow: 0 2px 10px rgba(0,0,0,.06);
-      display: flex;
-      align-items: center;
-      gap: 14px;
+      display: flex; align-items: center; gap: 14px;
     }
     .disc-stat-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
+      width: 44px; height: 44px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
+      font-size: 20px; flex-shrink: 0;
     }
     .disc-stat-icon.yellow { background: #fff8dc; color: #e0a800; }
     .disc-stat-icon.orange { background: #fff3e0; color: #e65c00; }
@@ -65,26 +46,12 @@ require_once 'db.php';
     .disc-stat-val   { font-size: 22px; font-weight: 800; color: #1a1a1a; line-height: 1.1; font-family: 'Oswald', sans-serif; }
 
     /* ── Toolbar ── */
-    .disc-toolbar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
-    }
-    .disc-search {
-      flex: 1; min-width: 200px;
-      position: relative;
-    }
+    .disc-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+    .disc-search { flex: 1; min-width: 200px; position: relative; }
     .disc-search input {
-      width: 100%;
-      border: 1.5px solid #e8e8e8;
-      border-radius: 10px;
-      padding: 9px 14px 9px 38px;
-      font-size: 14px;
-      outline: none;
-      background: #fff;
-      transition: border .2s;
+      width: 100%; border: 1.5px solid #e8e8e8; border-radius: 10px;
+      padding: 9px 14px 9px 38px; font-size: 14px; outline: none;
+      background: #fff; transition: border .2s;
     }
     .disc-search input:focus { border-color: #f5c800; }
     .disc-search .search-ico {
@@ -92,79 +59,37 @@ require_once 'db.php';
       color: #bbb; font-size: 16px; pointer-events: none;
     }
     .disc-filter-select {
-      border: 1.5px solid #e8e8e8;
-      border-radius: 10px;
-      padding: 9px 14px;
-      font-size: 13px;
-      background: #fff;
-      outline: none;
-      cursor: pointer;
-      transition: border .2s;
+      border: 1.5px solid #e8e8e8; border-radius: 10px;
+      padding: 9px 14px; font-size: 13px; background: #fff;
+      outline: none; cursor: pointer; transition: border .2s;
     }
     .disc-filter-select:focus { border-color: #f5c800; }
 
     /* ── Table card ── */
-    .disc-table-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 14px rgba(0,0,0,.07);
-      overflow: hidden;
-    }
-    .disc-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    .disc-table thead tr {
-        background: #FFDE59;
-        border-bottom: 2px solid rgba(0,0,0,.1);
-    }
+    .disc-table-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 14px rgba(0,0,0,.07); overflow: hidden; }
+    .disc-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .disc-table thead tr { background: #FFDE59; border-bottom: 2px solid rgba(0,0,0,.1); }
     .disc-table thead th {
-        padding: 14px 18px;
-        font-family: 'Oswald', sans-serif;
-        font-weight: 700;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #111111;
-        white-space: nowrap;
+      padding: 14px 18px; font-family: 'Oswald', sans-serif;
+      font-weight: 700; font-size: 13px; text-transform: uppercase;
+      letter-spacing: 1px; color: #111111; white-space: nowrap;
     }
-    .disc-table tbody tr {
-      border-bottom: 1px solid #f5f5f5;
-      transition: background .15s;
-    }
+    .disc-table tbody tr { border-bottom: 1px solid #f5f5f5; transition: background .15s; }
     .disc-table tbody tr:last-child { border-bottom: none; }
     .disc-table tbody tr:hover { background: #fffdf0; }
-    .disc-table td {
-      padding: 13px 16px;
-      vertical-align: middle;
-    }
+    .disc-table td { padding: 13px 16px; vertical-align: middle; }
 
-    .applicant-name { font-weight: 700; color: #1a1a1a; }
+    .applicant-name  { font-weight: 700; color: #1a1a1a; }
     .applicant-email { font-size: 11px; color: #bbb; margin-top: 2px; }
 
     /* ── Status badges ── */
-    .status-badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .4px;
-    }
+    .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; }
     .badge-pending  { background: #fff8dc; color: #b45309; }
     .badge-approved { background: #e8f5e9; color: #2e7d32; }
     .badge-rejected { background: #fce4ec; color: #c62828; }
 
     /* ── Discount type chip ── */
-    .type-chip {
-      display: inline-flex; align-items: center; gap: 5px;
-      background: #f5f5f5; color: #555;
-      border-radius: 20px;
-      padding: 3px 10px; font-size: 11px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .3px;
-    }
+    .type-chip { display: inline-flex; align-items: center; gap: 5px; background: #f5f5f5; color: #555; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; }
     .type-chip.senior  { background: #e3f2fd; color: #1565c0; }
     .type-chip.pwd     { background: #f3e5f5; color: #6a1b9a; }
     .type-chip.student { background: #e8f5e9; color: #2e7d32; }
@@ -178,24 +103,21 @@ require_once 'db.php';
       display: flex; align-items: center; gap: 4px;
     }
     .btn-row:hover { opacity: .8; transform: translateY(-1px); }
-    .btn-view     { background: #e8f4fd; color: #1565c0; }
-    .btn-approve  { background: #e8f5e9; color: #2e7d32; }
-    .btn-reject   { background: #fce4ec; color: #c62828; }
+    .btn-view    { background: #e8f4fd; color: #1565c0; }
+    .btn-approve { background: #e8f5e9; color: #2e7d32; }
+    .btn-reject  { background: #fce4ec; color: #c62828; }
 
     /* ── ID image thumb ── */
     .id-thumb {
       width: 44px; height: 44px; object-fit: cover;
       border-radius: 8px; border: 1.5px solid #eee;
-      cursor: pointer;
+      cursor: zoom-in;
       transition: transform .15s, box-shadow .15s;
     }
-    .id-thumb:hover { transform: scale(1.1); box-shadow: 0 4px 14px rgba(0,0,0,.14); }
+    .id-thumb:hover { transform: scale(1.12); box-shadow: 0 4px 14px rgba(0,0,0,.18); }
 
     /* ── Empty / loading ── */
-    .disc-empty {
-      text-align: center; padding: 50px 20px;
-      color: #bbb; font-size: 14px;
-    }
+    .disc-empty { text-align: center; padding: 50px 20px; color: #bbb; font-size: 14px; }
     .disc-empty ion-icon { font-size: 40px; display: block; margin: 0 auto 10px; }
     .skeleton {
       display: inline-block;
@@ -207,20 +129,13 @@ require_once 'db.php';
     @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
     /* ── Modal tweaks ── */
-    .modal-header {
-      background: #1a1a1a;
-      color: #fff;
-      border-radius: 12px 12px 0 0;
-    }
+    .modal-header { background: #1a1a1a; color: #fff; border-radius: 12px 12px 0 0; }
     .modal-header .btn-close { filter: invert(1); }
     .modal-title { font-family: 'Oswald', sans-serif; font-size: 1.2rem; font-weight: 600; }
     .modal-content { border-radius: 14px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,.18); }
     .modal-footer { border-top: 1px solid #f0f0f0; }
     .form-label { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: #555; }
-    .form-control, .form-select {
-      border: 1.5px solid #e8e8e8; border-radius: 9px; font-size: 14px;
-      transition: border .2s;
-    }
+    .form-control, .form-select { border: 1.5px solid #e8e8e8; border-radius: 9px; font-size: 14px; transition: border .2s; }
     .form-control:focus, .form-select:focus { border-color: #f5c800; box-shadow: 0 0 0 3px rgba(245,200,0,.15); }
     .btn-approve-modal { background: #2e7d32; border: none; color: #fff; font-weight: 800; border-radius: 9px; padding: 10px 24px; }
     .btn-approve-modal:hover { background: #1b5e20; color: #fff; }
@@ -234,20 +149,25 @@ require_once 'db.php';
     .detail-field label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #bbb; display: block; margin-bottom: 4px; }
     .detail-field span { font-size: 15px; color: #222; font-weight: 500; }
 
-    /* Full ID image in modal */
+    /* Full ID image in modal — zoomable */
     .id-preview-wrap {
       border-radius: 10px; overflow: hidden;
       border: 1.5px solid #eee;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       background: #f9f9f9;
       display: flex; align-items: center; justify-content: center;
       min-height: 180px;
+      cursor: zoom-in;
+      transition: border-color .2s;
     }
+    .id-preview-wrap:hover { border-color: #aaa; }
     .id-preview-wrap img {
       max-width: 100%; max-height: 320px;
-      object-fit: contain;
-      display: block;
+      object-fit: contain; display: block;
+      transition: transform .2s;
     }
+    .id-preview-wrap:hover img { transform: scale(1.02); }
+    .id-zoom-hint { font-size: 11px; color: #bbb; text-align: center; margin-bottom: 14px; font-style: italic; }
 
     /* Quick approve/reject confirm modal */
     .confirm-icon { font-size: 36px; display: block; margin: 0 auto 10px; }
@@ -255,32 +175,23 @@ require_once 'db.php';
     /* ── Pending alert bar ── */
     .alert-pending {
       background: linear-gradient(135deg, #fff8dc, #fff3cd);
-      border: 1.5px solid #f5c800;
-      border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 13px;
-      color: #7a5c00;
-      font-weight: 600;
-      margin-bottom: 18px;
-      display: none;
-      align-items: center;
-      gap: 10px;
+      border: 1.5px solid #f5c800; border-radius: 12px;
+      padding: 12px 18px; font-size: 13px; color: #7a5c00; font-weight: 600;
+      margin-bottom: 18px; display: none; align-items: center; gap: 10px;
     }
     .alert-pending ion-icon { font-size: 18px; }
 
     /* ── Pagination ── */
     .disc-pagination {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 20px;
-      border-top: 1px solid #f0f0f0;
+      padding: 14px 20px; border-top: 1px solid #f0f0f0;
       font-size: 13px; color: #888;
     }
     .pg-btns { display: flex; gap: 6px; }
     .pg-btn {
       width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid #e8e8e8;
       background: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all .15s;
+      display: flex; align-items: center; justify-content: center; transition: all .15s;
     }
     .pg-btn:hover, .pg-btn.active { background: #f5c800; border-color: #f5c800; color: #1a1a1a; }
     .pg-btn:disabled { opacity: .4; cursor: default; }
@@ -299,9 +210,42 @@ require_once 'db.php';
     #toast.success::before { content: '✅ '; }
     #toast.error::before   { content: '❌ '; }
 
-    @media (max-width: 900px) {
-      .disc-stats { grid-template-columns: repeat(2, 1fr); }
+    /* ── IMAGE ZOOM LIGHTBOX ── */
+    #imgZoomOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
     }
+    #imgZoomOverlay.active { display: flex; }
+    #imgZoomBig {
+      max-width: 92vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 16px 60px rgba(0,0,0,0.5);
+      /* prevent the overlay click from firing when clicking the image itself */
+      pointer-events: none;
+    }
+    .zoom-close-btn {
+      position: absolute; top: 20px; right: 26px;
+      color: #fff; font-size: 34px; font-weight: 300;
+      cursor: pointer; line-height: 1;
+      opacity: 0.75; transition: opacity .15s;
+      pointer-events: all;
+    }
+    .zoom-close-btn:hover { opacity: 1; }
+    .zoom-label {
+      position: absolute; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.45); font-size: 12px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) { .disc-stats { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) {
       .disc-page { padding: 0 14px 40px; }
       .detail-row { flex-direction: column; gap: 8px; }
@@ -451,11 +395,13 @@ require_once 'db.php';
           <div class="detail-field"><label>Status</label><span id="vStatus">—</span></div>
         </div>
 
-        <div style="margin-bottom:10px;">
+        <div style="margin-bottom:4px;">
           <label class="form-label">ID / Proof Image</label>
-          <div class="id-preview-wrap">
+          <!-- clicking the wrap or image opens the lightbox -->
+          <div class="id-preview-wrap" onclick="openZoomFromModal()">
             <img id="vImage" src="" alt="ID Proof" />
           </div>
+          <p class="id-zoom-hint">Click image to enlarge</p>
         </div>
 
         <div class="mb-3">
@@ -525,6 +471,13 @@ require_once 'db.php';
 <!-- Toast -->
 <div id="toast"></div>
 
+<!-- ── IMAGE ZOOM LIGHTBOX ── -->
+<div id="imgZoomOverlay" onclick="closeZoom()">
+  <span class="zoom-close-btn" onclick="closeZoom()">✕</span>
+  <img id="imgZoomBig" src="" alt="ID enlarged" />
+  <span class="zoom-label">Press Esc or click anywhere to close</span>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
@@ -550,6 +503,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('searchInput').addEventListener('input', debounce(renderTable, 250));
   document.getElementById('typeFilter').addEventListener('change', renderTable);
   document.getElementById('statusFilter').addEventListener('change', renderTable);
+
+  // Close lightbox on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
 
   // Auto-refresh every 60 s
   setInterval(() => { loadStats(); loadApplications(true); }, 60000);
@@ -640,10 +596,9 @@ function renderTable() {
   }
 
   tbody.innerHTML = page.map((it, idx) => {
-    const badgeCls = `badge-${it.status}`;
-    const badgeTxt = { pending: 'Pending', approved: 'Approved', rejected: 'Rejected' }[it.status] || it.status;
-
-    const typeKey  = it.type === 'Senior Citizen' ? 'senior' : it.type === 'PWD' ? 'pwd' : 'student';
+    const badgeCls  = `badge-${it.status}`;
+    const badgeTxt  = { pending: 'Pending', approved: 'Approved', rejected: 'Rejected' }[it.status] || it.status;
+    const typeKey   = it.type === 'Senior Citizen' ? 'senior' : it.type === 'PWD' ? 'pwd' : 'student';
     const typeEmoji = it.type === 'Senior Citizen' ? '👴' : it.type === 'PWD' ? '♿' : '🎓';
 
     const notesTxt = it.notes
@@ -654,10 +609,17 @@ function renderTable() {
       ? `<button class="btn-row btn-approve" onclick="openQuickApprove(${it.id},'${esc(it.first_name+' '+it.last_name)}','${esc(it.type)}')">
            <ion-icon name="checkmark-outline"></ion-icon> Approve
          </button>` : '';
-    const rejectBtn  = it.status !== 'rejected'
+    const rejectBtn = it.status !== 'rejected'
       ? `<button class="btn-row btn-reject" onclick="openQuickReject(${it.id},'${esc(it.first_name+' '+it.last_name)}','${esc(it.type)}')">
            <ion-icon name="close-outline"></ion-icon> Reject
          </button>` : '';
+
+    // Thumbnail: click zooms the image directly; View button opens the detail modal
+    const thumbCell = it.id_image_path
+      ? `<img class="id-thumb" src="${esc(it.id_image_path)}" alt="ID"
+             onclick="openZoom('${esc(it.id_image_path)}')"
+             title="Click to zoom" />`
+      : `<span style="color:#ddd;font-size:12px;">No image</span>`;
 
     return `<tr>
       <td style="color:#bbb;font-size:13px;">${start + idx + 1}</td>
@@ -667,11 +629,7 @@ function renderTable() {
       </td>
       <td><span class="type-chip ${typeKey}">${typeEmoji} ${esc(it.type)}</span></td>
       <td style="color:#888;font-size:13px;white-space:nowrap;">${formatDate(it.created_at)}</td>
-      <td>
-        ${it.id_image_path
-          ? `<img class="id-thumb" src="${esc(it.id_image_path)}" alt="ID" onclick="openView(${JSON.stringify(it).replace(/"/g,'&quot;')})" />`
-          : `<span style="color:#ddd;font-size:12px;">No image</span>`}
-      </td>
+      <td>${thumbCell}</td>
       <td><span class="status-badge ${badgeCls}">${badgeTxt}</span></td>
       <td>${notesTxt}</td>
       <td>
@@ -703,7 +661,7 @@ function renderTable() {
 
 // ── VIEW MODAL ──────────────────────────────────────────────
 function openView(it) {
-  document.getElementById('viewId').value   = it.id;
+  document.getElementById('viewId').value       = it.id;
   document.getElementById('vName').textContent  = it.first_name + ' ' + it.last_name;
   document.getElementById('vEmail').textContent = it.email;
   document.getElementById('vPhone').textContent = it.phone || '—';
@@ -711,7 +669,6 @@ function openView(it) {
   document.getElementById('vDate').textContent  = formatDate(it.created_at);
   document.getElementById('vNotes').value       = it.notes || '';
 
-  // Status badge inline
   const badgeMap = {
     pending:  '<span class="status-badge badge-pending">Pending</span>',
     approved: '<span class="status-badge badge-approved">Approved</span>',
@@ -719,7 +676,6 @@ function openView(it) {
   };
   document.getElementById('vStatus').innerHTML = badgeMap[it.status] || it.status;
 
-  // ID image
   const img = document.getElementById('vImage');
   if (it.id_image_path) {
     img.src = it.id_image_path;
@@ -728,14 +684,19 @@ function openView(it) {
     img.style.display = 'none';
   }
 
-  // Show/hide action buttons based on current status
-  const footer = document.getElementById('vFooter');
+  const footer     = document.getElementById('vFooter');
   const approveBtn = footer.querySelector('.btn-approve-modal');
   const rejectBtn  = footer.querySelector('.btn-reject-modal');
   approveBtn.style.display = it.status !== 'approved' ? 'inline-flex' : 'none';
   rejectBtn.style.display  = it.status !== 'rejected' ? 'inline-flex' : 'none';
 
   viewModal.show();
+}
+
+// Opens lightbox using the image already loaded in the modal
+function openZoomFromModal() {
+  const src = document.getElementById('vImage').src;
+  if (src) openZoom(src);
 }
 
 // ── DECIDE FROM VIEW MODAL ───────────────────────────────────
@@ -776,7 +737,6 @@ async function doQuickDecide(newStatus) {
   const isApprove = newStatus === 'approved';
   const id    = document.getElementById(isApprove ? 'qaId' : 'qrId').value;
   const notes = isApprove ? '' : document.getElementById('qrNotes').value.trim();
-
   try {
     const res = await post('decide', { id, status: newStatus, notes });
     if (res.success) {
@@ -788,6 +748,18 @@ async function doQuickDecide(newStatus) {
       toast(res.error || 'Action failed.', 'error');
     }
   } catch(e) { toast('Network error.', 'error'); }
+}
+
+// ── IMAGE ZOOM LIGHTBOX ──────────────────────────────────────
+function openZoom(src) {
+  document.getElementById('imgZoomBig').src = src;
+  document.getElementById('imgZoomOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeZoom() {
+  document.getElementById('imgZoomOverlay').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 // ── UTILS ────────────────────────────────────────────────────

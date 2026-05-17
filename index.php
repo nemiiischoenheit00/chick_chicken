@@ -498,7 +498,7 @@ session_start();
   }
   .pill-pending    { background: #fff8e1; color: #e65c00; }
   .pill-confirmed  { background: #e8f5e9; color: #2e7d32; }
-  .pill-cooking    { background: #fff3e0; color: #e65100; }
+  .pill-preparing  { background: #fff3e0; color: #e65100; }
   .pill-in_transit { background: #e3f2fd; color: #1565c0; }
   .pill-cancelled  { background: #fce4ec; color: #c62828; }
 
@@ -637,7 +637,7 @@ session_start();
       var STEPS = [
           { key: 'pending',    label: 'Pending',    icon: '&#x23F3;' },
           { key: 'confirmed',  label: 'Confirmed',  icon: '&#x2713;'  },
-          { key: 'cooking', label: 'Preparing', icon: '&#x1F373;' },
+          { key: 'preparing', label: 'Preparing', icon: '&#x1F373;' },
           { key: 'in_transit', label: 'In Transit', icon: '&#x1F6F5;' },
       ];
 
@@ -675,61 +675,76 @@ renderCard(orders[0]);
       }
 
       function renderCard(o) {
-          var body    = document.getElementById('ot-panel-body');
-          var status  = o.status;
-          var stepIdx = STEPS.findIndex(function(s) { return s.key === status; });
-          var fillPct = stepIdx < 0 ? 0 : Math.round((stepIdx / (STEPS.length - 1)) * 100);
+    var body    = document.getElementById('ot-panel-body');
+    var status  = o.status;
+    var stepIdx = STEPS.findIndex(function(s) { return s.key === status; });
+    var fillPct = stepIdx < 0 ? 0 : Math.round((stepIdx / (STEPS.length - 1)) * 100);
 
-          var stepsHtml = STEPS.map(function(step, i) {
-              var cls = i < stepIdx ? 'done' : (i === stepIdx ? 'active' : '');
-              return '<div class="ot-step ' + cls + '">'
-                  + '<div class="ot-step-dot">' + step.icon + '</div>'
-                  + '<div class="ot-step-label">' + step.label + '</div>'
-                  + '</div>';
-          }).join('');
+    var stepsHtml = STEPS.map(function(step, i) {
+        var cls = i < stepIdx ? 'done' : (i === stepIdx ? 'active' : '');
+        return '<div class="ot-step ' + cls + '">'
+            + '<div class="ot-step-dot">' + step.icon + '</div>'
+            + '<div class="ot-step-label">' + step.label + '</div>'
+            + '</div>';
+    }).join('');
 
-          var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', cooking: 'Preparing', in_transit: 'In Transit' };
-          var date    = new Date(o.created_at);
-          var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-          var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+    var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', preparing: 'Preparing', in_transit: 'In Transit' };
+    var date    = new Date(o.created_at);
+    var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });
 
-          var items = o.items || [];
-          var itemsHtml = items.map(function(item) {
-              var imgHtml;
-              if (item.product_image) {
-                  imgHtml = '<img class="ot-item-img" src="' + escAttr(item.product_image) + '" alt="' + escAttr(item.product_name) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
-                          + '<div class="ot-item-img-placeholder" style="display:none;">&#x1F357;</div>';
-              } else {
-                  imgHtml = '<div class="ot-item-img-placeholder">&#x1F357;</div>';
-              }
-              var subtotal = Number(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 });
-              return '<div class="ot-item">'
-                  + imgHtml
-                  + '<div class="ot-item-info">'
-                  + '<div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div>'
-                  + '<div class="ot-item-qty">x' + item.quantity + '</div>'
-                  + '</div>'
-                  + '<div class="ot-item-price">&#x20B1;' + subtotal + '</div>'
-                  + '</div>';
-          }).join('');
+    // Build discount row only when a discount exists
+    var discountHtml = '';
+    if (o.discount && Number(o.discount) > 0) {
+        var discountAmt = Number(o.discount).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+        discountHtml = '<div class="ot-total-row" style="margin-bottom:4px;">'
+            + '<span class="ot-total-label">SUBTOTAL</span>'
+            + '<span style="font-family:\'Oswald\',sans-serif;font-size:14px;color:#555;">&#x20B1;' + Number(Number(o.total) + Number(o.discount)).toLocaleString('en-PH', { minimumFractionDigits: 2 }) + '</span>'
+            + '</div>'
+            + '<div class="ot-total-row" style="margin-bottom:4px;">'
+            + '<span class="ot-total-label" style="color:#2e7d32;">DISCOUNT</span>'
+            + '<span style="font-family:\'Oswald\',sans-serif;font-size:14px;color:#2e7d32;">-&#x20B1;' + discountAmt + '</span>'
+            + '</div>';
+    }
 
-          body.innerHTML = '<div class="ot-card">'
-              + '<div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div>'
-              + '<span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span>'
-              + '<div class="ot-order-meta">' + dateStr + '</div>'
-              + '<div class="ot-progress-track">'
-              + '<div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div>'
-              + '<div class="ot-steps">' + stepsHtml + '</div>'
-              + '</div>'
-              + '<div class="ot-items-label">Your Items</div>'
-              + '<div class="ot-items-list">' + itemsHtml + '</div>'
-              + '<hr class="ot-divider">'
-              + '<div class="ot-total-row">'
-              + '<span class="ot-total-label">TOTAL</span>'
-              + '<span class="ot-total-value">&#x20B1;' + total + '</span>'
-              + '</div>'
-              + '</div>';
-      }
+    var items = o.items || [];
+    var itemsHtml = items.map(function(item) {
+        var imgHtml;
+        if (item.product_image) {
+            imgHtml = '<img class="ot-item-img" src="' + escAttr(item.product_image) + '" alt="' + escAttr(item.product_name) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+                    + '<div class="ot-item-img-placeholder" style="display:none;">&#x1F357;</div>';
+        } else {
+            imgHtml = '<div class="ot-item-img-placeholder">&#x1F357;</div>';
+        }
+        var subtotal = Number(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+        return '<div class="ot-item">'
+            + imgHtml
+            + '<div class="ot-item-info">'
+            + '<div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div>'
+            + '<div class="ot-item-qty">x' + item.quantity + '</div>'
+            + '</div>'
+            + '<div class="ot-item-price">&#x20B1;' + subtotal + '</div>'
+            + '</div>';
+    }).join('');
+
+    body.innerHTML = '<div class="ot-card">'
+        + '<div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div>'
+        + '<span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span>'
+        + '<div class="ot-order-meta">' + dateStr + '</div>'
+        + '<div class="ot-progress-track">'
+        + '<div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div>'
+        + '<div class="ot-steps">' + stepsHtml + '</div>'
+        + '</div>'
+        + '<div class="ot-items-label">Your Items</div>'
+        + '<div class="ot-items-list">' + itemsHtml + '</div>'
+        + '<hr class="ot-divider">'
+        + discountHtml
+        + '<div class="ot-total-row">'
+        + '<span class="ot-total-label">TOTAL</span>'
+        + '<span class="ot-total-value">&#x20B1;' + total + '</span>'
+        + '</div>'
+        + '</div>';
+}
 
       function escHtml(str) {
           return String(str == null ? '' : str).replace(/[&<>"']/g, function(c) {

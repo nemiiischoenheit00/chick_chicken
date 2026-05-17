@@ -920,36 +920,50 @@ function renderModal(o) {
     `).join('');
 
     // ── GCash proof block ──
-    let gcashHtml = '';
-    if (o.payment_method === 'gcash') {
-        if (o.gcash_proof) {
-            gcashHtml = `
-                <div class="gcash-proof-section">
-                    <label><ion-icon name="card-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon> GCash Payment Proof</label>
-                    <div>
-                        <span class="gcash-badge">
-                            <ion-icon name="checkmark-circle-outline"></ion-icon> GCash
-                        </span>
-                    </div>
-                    <div class="gcash-proof-img-wrap" onclick="openLightbox('${escHtml(o.gcash_proof)}')">
-                        <img src="${escHtml(o.gcash_proof)}" alt="GCash Proof"
-                             onerror="this.parentElement.parentElement.innerHTML='<div class=\'gcash-no-proof\'><ion-icon name=\'image-outline\'></ion-icon> Image could not be loaded</div>'">
-                        <div class="gcash-proof-overlay">
-                            <span><ion-icon name="expand-outline"></ion-icon> View Full</span>
-                        </div>
-                    </div>
-                </div>`;
-        } else {
-            gcashHtml = `
-                <div class="gcash-proof-section">
-                    <label><ion-icon name="card-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon> GCash Payment Proof</label>
-                    <div class="gcash-no-proof">
-                        <ion-icon name="alert-circle-outline"></ion-icon>
-                        No payment screenshot uploaded yet
-                    </div>
-                </div>`;
-        }
-    }
+let gcashHtml = '';
+if (o.payment_method === 'gcash') {
+    const refHtml = o.gcash_reference
+        ? `<div style="
+                display:inline-flex; align-items:center; gap:8px;
+                background:#e8f5e9; border:1px solid #a5d6a7;
+                border-radius:8px; padding:8px 14px; margin-bottom:12px;
+            ">
+                <ion-icon name="receipt-outline" style="color:#2e7d32;font-size:16px;"></ion-icon>
+                <span style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.5px;color:#1b5e20;text-transform:uppercase;">Ref No.</span>
+                <strong style="font-family:'Alegreya Sans',sans-serif;font-size:15px;color:#1a1a1a;letter-spacing:1.5px;">${escHtml(o.gcash_reference)}</strong>
+            </div>`
+        : `<div style="
+                display:inline-flex; align-items:center; gap:6px;
+                background:#fff8e1; border:1px dashed #f5c800;
+                border-radius:8px; padding:7px 12px; margin-bottom:12px;
+                font-family:'Alegreya Sans',sans-serif; font-size:13px; color:#b45309;
+            ">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                No reference number provided
+            </div>`;
+
+    const proofHtml = o.gcash_proof
+        ? `<div class="gcash-proof-img-wrap" onclick="openLightbox('${escHtml(o.gcash_proof)}')">
+                <img src="${escHtml(o.gcash_proof)}" alt="GCash Proof"
+                     onerror="this.parentElement.parentElement.innerHTML='<div class=\'gcash-no-proof\'><ion-icon name=\'image-outline\'></ion-icon> Image could not be loaded</div>'">
+                <div class="gcash-proof-overlay">
+                    <span><ion-icon name="expand-outline"></ion-icon> View Full</span>
+                </div>
+           </div>`
+        : `<div class="gcash-no-proof">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                No payment screenshot uploaded yet
+           </div>`;
+
+    gcashHtml = `
+        <div class="gcash-proof-section">
+            <label><ion-icon name="card-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon> GCash Payment</label>
+            <div><span class="gcash-badge"><ion-icon name="checkmark-circle-outline"></ion-icon> GCash</span></div>
+            ${refHtml}
+            <label style="margin-top:4px;"><ion-icon name="image-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon> Proof of Payment</label>
+            ${proofHtml}
+        </div>`;
+}
 
     // ── Discount totals block ──
     const hasDiscount = o.discount_amount > 0;
