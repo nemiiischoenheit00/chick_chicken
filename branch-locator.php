@@ -1,0 +1,140 @@
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="Image" href="assets/Logo.png"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="branchloc.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
+    <title>Chick Chicken</title>
+  </head>
+
+<body>
+<?php include 'nav.php'; ?>
+<section class="branch-locator">
+  <div class="header-text-branch">
+    <h1>FIND YOUR NEAREST BRANCH!</h1>
+  </div>
+<div class="branch-container">
+  <div class="branch-locator-box">
+        <div class="branch-locator-text">
+          <h2>CHICK CHICKEN - PASIG</h2>
+          <h3>274 Eulogio Amang Rodriguez Ave, Pasig, 1610 Metro Manila</h3>
+            <div class="hours">
+              <h3>OPEN 5AM-6PM</h3>
+            </div>
+        </div>
+            <div class="btn_branch">
+              <button class="btn-directions"><a href="https://maps.app.goo.gl/hfRLdd8Wr84tMu388">Get Directions</button></a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
+            </div>
+      </div>
+
+        <div class="branch-locator-box">
+        <div class="branch-locator-text">
+          <h2>CHICK CHICKEN - MAKATI</h2>
+          <h3>3231 Zapote, Makati City, Metro Manila</h3>
+            <div class="hours">
+              <h3>OPEN 5AM-6PM</h3>
+            </div>
+        </div>
+            <div class="btn_branch">
+              <button class="btn-directions"><a href="https://maps.app.goo.gl/dpQnmV4Mwsg7623v7">Get Directions</button></a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
+            </div>
+      </div>
+
+      <div class="branch-locator-box">
+        <div class="branch-locator-text">
+          <h2>CHICK CHICKEN - MAGINHAWA, QC</h2>
+          <h3>193 Maginhawa, Diliman, Quezon City, Kalakhang Maynila</h3>
+            <div class="hours">
+              <h3>OPEN 5AM-6PM</h3>
+            </div>
+        </div>
+            <div class="btn_branch">
+              <button class="btn-directions"><a href="https://maps.app.goo.gl/nNDEwdWQQ1oKR2QJ9">Get Directions</button></a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
+            </div>
+      </div>
+      
+      <div class="branch-locator-box">
+        <div class="branch-locator-text">
+          <h2>CHICK CHICKEN - MARIKINA</h2>
+          <h3>14 Redwood, Marikina, 1800 Metro Manila</h3>
+            <div class="hours">
+              <h3>OPEN 5AM-6PM</h3>
+            </div>
+        </div>
+            <div class="btn_branch">
+              <button class="btn-directions"><a href="https://maps.app.goo.gl/SzJopA49FP4AHE7x5">Get Directions</button></a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
+            </div>
+      </div>
+
+      <div class="branch-locator-box">
+        <div class="branch-locator-text">
+          <h2>CHICK CHICKEN - TIMOG</h2>
+          <h3> 80 Panay Ave, Diliman, Quezon City, 1103 Metro Manila</h3>
+            <div class="hours">
+              <h3>OPEN 5AM-6PM</h3>
+            </div>
+        </div>
+            <div class="btn_branch">
+              <button class="btn-directions"><a href="https://maps.app.goo.gl/HvhQL1fL3GfKNQN5A">Get Directions</button></a>
+              <a href="orders.php" class="btn-order-now">Order Now</a>
+            </div>
+      </div>
+  </div>
+
+</section>
+
+
+
+<!-- footer ngani -->
+<footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="orders.php">Menu</a></li>
+        </ul>
+      </div>
+      <div class="footer-info">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="aboutus.php">About Us</a></li>
+          <li><a href="index.php#FAQS">FAQs</a></li>
+          <li><a href="branch-locator.php">Branch Locator</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Need help?</h4>
+        <p>Contact us on:</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/chickchickenph/"><img src="assets/facebook-icon.png" alt="Facebook"></a>
+          <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets/instagram-icon.png" alt="Instagram"></a>
+          <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 Chick Chicken. All rights reserved.</div>
+  </footer>
+<!-- end of footer ngani -->
+
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

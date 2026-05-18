@@ -1,0 +1,172 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    width: 90%;
+    max-width: 600px;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-container h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.subtitle a {
+    color: #ff0000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.subtitle a:hover {
+    text-decoration: underline;
+}
+
+/* Terms notice */
+.terms-notice {
+    text-align: center;
+    font-size: 0.82rem;
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.terms-notice a {
+    color: #ff0000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.terms-notice a:hover {
+    text-decoration: underline;
+}
+
+/* Side-by-side row */
+.name-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+.login-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+/* Inputs */
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.login-container input:focus {
+    border-color: #ff0000;
+}
+
+/* Email spacing */
+input[type="email"] {
+    margin-bottom: 20px;
+}
+
+/* Phone wrapper */
+.phone-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.phone-input-wrapper:focus-within {
+    border-color: #ff0000;
+}
+
+.country-code {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ccc;
+    height: 100%;
+    min-height: 44px;
+    white-space: nowrap;
+}
+
+.country-code span {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.phone-input-wrapper input[type="tel"] {
+    border: none;
+    border-radius: 0;
+    flex: 1;
+}
+
+.phone-input-wrapper input[type="tel"]:focus {
+    border-color: transparent;
+    box-shadow: none;
+}
+
+/* Sign Up button */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    background-color: #ff0000;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+    background-color: #cc0000;
+}
