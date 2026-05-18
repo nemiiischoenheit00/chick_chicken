@@ -141,13 +141,13 @@ input[type="email"] {
     color: #333;
 }
 
-.phone-input-wrapper input[type="tel"] {
+.phone-input-wrapper input[type="text"] {
     border: none;
     border-radius: 0;
     flex: 1;
 }
 
-.phone-input-wrapper input[type="tel"]:focus {
+.phone-input-wrapper input[type="text"]:focus {
     border-color: transparent;
     box-shadow: none;
 }
@@ -170,6 +170,7 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #cc0000;
 }
+
 /* =========================================
    RESPONSIVE FIXES
 ========================================= */
@@ -189,7 +190,6 @@ img {
 ========================================= */
 
 @media (max-width: 992px) {
-
     .login-container {
         width: 92%;
         padding: 35px 30px;
@@ -205,7 +205,6 @@ img {
 ========================================= */
 
 @media (max-width: 768px) {
-
     body {
         align-items: flex-start;
         padding: 20px 0;
@@ -228,7 +227,6 @@ img {
         line-height: 1.5;
     }
 
-    /* STACK FIRST/LAST NAME */
     .name-row {
         flex-direction: column;
         gap: 20px;
@@ -263,7 +261,6 @@ img {
 ========================================= */
 
 @media (max-width: 480px) {
-
     .login-container {
         width: 96%;
         padding: 22px 16px;
@@ -301,3 +298,104 @@ img {
         padding: 12px;
     }
 }
+
+/* =========================================
+   PASSWORD STRENGTH BAR
+========================================= */
+
+.strength-bar-wrap {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.strength-seg {
+    flex: 1;
+    height: 5px;
+    border-radius: 99px;
+    background-color: #e0e0e0;
+    transition: background-color 0.25s ease;
+}
+
+.strength-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    min-height: 18px;
+}
+
+.strength-label {
+    font-size: 0.78em;
+    font-weight: 600;
+    transition: color 0.25s ease;
+}
+
+/* =========================================
+   PASSWORD REQUIREMENTS CHECKLIST
+========================================= */
+
+.pw-requirements {
+    list-style: none;
+    padding: 10px 12px;
+    margin: 8px 0 0;
+    background: #f7f7f7;
+    border-radius: 8px;
+    border: 1px solid #ececec;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pw-requirements li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82em;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.pw-requirements li.met {
+    color: #2e7d32;
+}
+
+.req-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid #ccc;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s;
+    overflow: hidden;
+    color: transparent;
+}
+
+.req-circle svg {
+    width: 16px;
+    height: 16px;
+}
+
+.pw-requirements li.met .req-circle {
+    border-color: #43a047;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* =========================================
+   CONFIRM PASSWORD FEEDBACK
+========================================= */
+
+.confirm-msg {
+    font-size: 0.82em;
+    font-weight: 500;
+    margin-top: 5px;
+    display: block;
+    min-height: 1em;
+}
+
+.confirm-msg.match    { color: #2e7d32; }
+.confirm-msg.no-match { color: #b00020; }
