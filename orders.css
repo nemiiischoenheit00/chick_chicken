@@ -193,3 +193,77 @@ body {
   gap: 40px;
 }
 
+/* ── CART ITEM EDIT / INLINE QTY ─────────────────────────────── */
+
+/* Inline quantity row inside each cart item */
+.cart-item-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-top: 7px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+}
+.cart-qty-btn {
+  background: none;
+  border: none;
+  width: 28px;
+  height: 28px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition);
+  color: var(--black);
+}
+.cart-qty-btn:hover { background: var(--cream); }
+.cart-qty-display {
+  font-family: var(--oswald);
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 26px;
+  text-align: center;
+  border-left: 1.5px solid #e0e0e0;
+  border-right: 1.5px solid #e0e0e0;
+  padding: 0 4px;
+  height: 28px;
+  line-height: 28px;
+}
+
+/* Edit button */
+.cart-item-edit {
+  background: none;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 3px 7px;
+  transition: border-color var(--transition), background var(--transition);
+  line-height: 1;
+}
+.cart-item-edit:hover {
+  border-color: var(--mustard-d);
+  background: var(--cream);
+}
+
+/* Delete button — keep existing but bump down slightly */
+.cart-item-del {
+  background: none;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #ccc;
+  font-size: 13px;
+  padding: 3px 7px;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+  line-height: 1;
+}
+.cart-item-del:hover {
+  color: var(--red);
+  border-color: var(--red);
+  background: #fff0f0;
+}

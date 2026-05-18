@@ -15,13 +15,13 @@ header {
   background-color: #FFDE59;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 999;
 }
 
 header, nav {
   position: sticky; /* or fixed if you're using fixed navbar */
   top: 0;
-  z-index: 10000;
+  z-index: 999;
 }
 
 header .logo h1 { margin: 0; line-height: 1; }
