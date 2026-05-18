@@ -25,6 +25,20 @@ if ($product_id <= 0) {
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
+
+// ── Block if user already has an active order ────────────────────────────────
+$activeOrder = $pdo->prepare("
+    SELECT id FROM orders
+    WHERE user_id = ? AND status IN ('pending','confirmed','cooking','in_transit')
+    LIMIT 1
+");
+$activeOrder->execute([$user_id]);
+if ($activeOrder->fetch()) {
+    echo json_encode(['error' => 'active_order']);
+    exit;
+}
+
 // ── Verify product exists ────────────────────────────────────────────────────
 $stmt = $pdo->prepare("SELECT id FROM products WHERE id = ?");
 $stmt->execute([$product_id]);
@@ -34,8 +48,6 @@ if (!$stmt->fetch()) {
 }
 
 // ── Check for existing identical cart line ───────────────────────────────────
-$user_id = $_SESSION['user_id'];
-
 $check = $pdo->prepare("
     SELECT id, quantity FROM cart
     WHERE user_id = ? AND product_id = ?

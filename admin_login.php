@@ -168,21 +168,6 @@
             border-color: #1a1a1a;
         }
 
-        /* Forgot password link */
-        .forgot-wrap {
-            text-align: right;
-            width: 100%;
-            max-width: 600px;
-            margin-top: -8px;
-            margin-bottom: 10px;
-        }
-
-        .forgot-wrap a {
-            font-size: 0.9em;
-            color: var(--wine-red);
-            text-decoration: none;
-            font-family: 'Alegreya Sans', sans-serif;
-        }
 
         /* Button */
         .login-form button[type="submit"] {
@@ -218,93 +203,7 @@
             font-weight: bold;
         }
 
-        /* ── Forgot Password Modal ── */
-        #forgot-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.55);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .modal-box {
-            background: #fff;
-            border-radius: 16px;
-            padding: 36px 36px 40px;
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 14px; right: 16px;
-            background: none; border: none;
-            font-size: 20px; cursor: pointer;
-            color: #aaa; line-height: 1;
-            width: 30px; height: 30px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
-            transition: background 0.15s;
-        }
-        .modal-close:hover { background: #f0f0f0; color: #555; }
-
-        .modal-box h2 {
-            font-family: 'Oswald', sans-serif;
-            font-size: 1.6rem;
-            margin: 0 0 10px;
-            color: #1a1a1a;
-        }
-
-        .modal-box p {
-            font-family: 'Alegreya Sans', sans-serif;
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-        }
-
-        #forgot-msg {
-            display: none;
-            margin-bottom: 16px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-
-        .modal-box input[type="email"] {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-family: 'Alegreya Sans', sans-serif;
-            box-sizing: border-box;
-            margin-bottom: 16px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .modal-box input[type="email"]:focus { border-color: #1a1a1a; }
-
-        .modal-box button[type="submit"] {
-            width: 100%;
-            padding: 14px;
-            background: #1a1a1a;
-            color: var(--mustard);
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            font-family: 'Alegreya Sans', sans-serif;
-            transition: background 0.2s;
-            border-radius: 25px;
-        }
-        .modal-box button[type="submit"]:hover { background: #333; }
     </style>
 </head>
 <body>
@@ -341,14 +240,10 @@
                 <form action="admin_login_process.php" method="POST">
                     <input type="email" id="email" name="email" placeholder="Enter admin email" required>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <div class="forgot-wrap">
-                        <a href="#" onclick="document.getElementById('forgot-modal').style.display='flex'; return false;">
-                            Forgot password?
-                        </a>
-                    </div>
                     <button type="submit">Login</button>
                 </form>
 
+                <p class="back-text">Don't have an account? <a href="admin_signup.php">Sign up</a></p>
                 <p class="back-text">Not an admin? <a href="login.php">Go to user login</a></p>
             </div>
         </div>
@@ -356,51 +251,6 @@
     </div>
 </section>
 
-<!-- Forgot Password Modal -->
-<div id="forgot-modal">
-    <div class="modal-box">
-        <button class="modal-close" onclick="document.getElementById('forgot-modal').style.display='none'">&#x2715;</button>
-        <h2>Forgot Password?</h2>
-        <p>Enter your admin email and we'll send you a reset link.</p>
-        <div id="forgot-msg"></div>
-        <form onsubmit="submitForgot(event)">
-            <input type="email" id="forgot-email" placeholder="Enter your admin email address" required>
-            <button type="submit">Send Reset Link</button>
-        </form>
-    </div>
-</div>
 
-<script>
-async function submitForgot(e) {
-    e.preventDefault();
-    const email = document.getElementById('forgot-email').value.trim();
-    const msgEl = document.getElementById('forgot-msg');
-    const btn   = e.target.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    try {
-        const res  = await fetch('admin_forgot_password.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'email=' + encodeURIComponent(email)
-        });
-        const data = await res.json();
-        msgEl.style.display = 'block';
-        if (data.success) {
-            msgEl.style.cssText = 'display:block; background:#e6f4ea; color:#1e6e34; border:1px solid #b7dfc4; margin-bottom:16px; padding:10px 14px; border-radius:8px; font-size:0.9rem; text-align:left;';
-            msgEl.textContent = '✓ Reset link sent! Check your inbox.';
-            document.getElementById('forgot-email').value = '';
-        } else {
-            msgEl.style.cssText = 'display:block; background:#ffe5e5; color:#b00020; border:1px solid #f5c2c2; margin-bottom:16px; padding:10px 14px; border-radius:8px; font-size:0.9rem; text-align:left;';
-            msgEl.textContent = data.error || 'Something went wrong. Please try again.';
-        }
-    } catch (err) {
-        msgEl.style.cssText = 'display:block; background:#ffe5e5; color:#b00020; border:1px solid #f5c2c2; margin-bottom:16px; padding:10px 14px; border-radius:8px; font-size:0.9rem; text-align:left;';
-        msgEl.textContent = 'Network error. Please try again.';
-    }
-    btn.disabled = false;
-    btn.textContent = 'Send Reset Link';
-}
-</script>
 </body>
 </html>

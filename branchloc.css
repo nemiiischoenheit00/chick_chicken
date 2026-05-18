@@ -28,6 +28,10 @@ body {
     font: var(--oswald);
 }
 
+body .logo img {
+  margin-top: -5px !important;
+}
+
 html {
     scroll-behavior: smooth;
     font-family: "Oswald", sans-serif;
@@ -67,107 +71,6 @@ html {
 
 /* HEADER STYLING */
 /* HEADER STYLING */
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* height: 60px;  <-- REMOVED THIS. It was too small and cutting off the button */
-    min-height: 50px;
-    /* Added this instead to ensure enough room */
-    padding: 2px 30px;
-    position: sticky;
-    top: 0;
-    background-color: var(--mustard);
-    z-index: 1000;
-    font-family: 'Oswald';
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* Optional: Adds a nice shadow */
-}
-
-header a {
-    color: var(--red) !important;
-    text-decoration: none;
-}
-
-/* This fixes the alignment of the list items */
-nav ul {
-    display: flex;
-    /* Uses Flexbox instead of inline-block */
-    align-items: center;
-    /* Vertically centers everything perfectly */
-    gap: 30px;
-    /* Adds space between the words */
-    margin: 0;
-    /* Removes default browser margin */
-    padding: 0;
-    /* Removes default browser padding */
-}
-
-nav ul li {
-    list-style: none;
-    /* display: inline-block; <-- REMOVED THIS. Flexbox on the UL handles it now */
-}
-
-header nav ul li a,
-header .sign--in li a {
-    color: var(--red) !important;
-}
-
-/* Navigation Links Styling */
-.header_button {
-    position: relative;
-    padding-bottom: 5px;
-    font-size: 22px;
-    transition: color 0.3s ease;
-}
-
-.header_button::after {
-    color: var(--wine-red);
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    height: 3px;
-    width: 100%;
-    left: 0;
-    background-color: var(--red);
-    transition: all 0.3s ease-in-out;
-    transform: scale(0);
-}
-
-.header_button:hover::after {
-    transform: scale(1);
-}
-
-/* Order Button Styling */
-.ordernow_button {
-    display: inline-block;
-    /* Changed to inline-block so it respects padding */
-    background-color: var(--red);
-    color: #fff !important;
-    padding: 12px 30px;
-    /* Adjusted padding for a better look */
-    border-radius: 40px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    z-index: 1000;
-    font-size: 22px;
-    line-height: 1;
-    /* Prevents font height from messing up the button size */
-}
-
-.ordernow_button:hover {
-    transform: scale(1.05);
-    /* Adds a small pop effect on hover */
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
-}
-
-.my_cart {
-    width: 20px;
-    height: 20px;
-    padding-right: 5px;
-}
-
-/* END OF HEADER STYLING */
 
 
 /*branch locator*/

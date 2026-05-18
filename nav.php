@@ -18,6 +18,12 @@ header {
   z-index: 1000;
 }
 
+header, nav {
+  position: sticky; /* or fixed if you're using fixed navbar */
+  top: 0;
+  z-index: 10000;
+}
+
 header .logo h1 { margin: 0; line-height: 1; }
 
 header nav ul {
@@ -207,6 +213,7 @@ header nav ul li a.ordernow_button:hover {
 
   <nav>
     <ul>
+      <li><a href="index.php" class="header_button">Home</a></li>
       <li><a href="aboutus.php" class="header_button">About Us</a></li>
       <li><a href="index.php#FAQS" class="header_button">FAQs</a></li>
       <li><a href="branch-locator.php" class="header_button">Our Branches</a></li>

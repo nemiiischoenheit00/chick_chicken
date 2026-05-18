@@ -77,10 +77,6 @@
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
                     <div style="text-align:right; width:100%; max-width:600px; margin-top:-8px; margin-bottom:10px;">
-                        <a href="#" onclick="document.getElementById('forgot-modal').style.display='flex'; return false;"
-                           style="font-size:0.9em; color:#FF0000; text-decoration:none; font-family:'Alegreya Sans',sans-serif;">
-                            Forgot password?
-                        </a>
                     </div>
                     <button type="submit">Login</button>
                 </form>

@@ -67,6 +67,7 @@ html {
 
 /* HEADER STYLING */
 /* HEADER STYLING */
+
 header {
   display: flex;
   align-items: center;
@@ -1075,4 +1076,14 @@ p {
 /* SAFETY FIX */
 html, body {
   overflow-x: hidden;
+}
+
+header .logo h1 a img {
+  width: auto !important;
+  height: 45px !important;
+  max-width: none !important;
+  min-width: unset !important;
+  flex-shrink: 0 !important;
+  object-fit: contain !important;
+  display: block !important;
 }

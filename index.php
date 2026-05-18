@@ -280,6 +280,15 @@ section[style*="140vh"] {
     font-size: 12px;
   }
 }
+header .logo h1 a img {
+  width: auto !important;
+  height: 45px !important;
+  max-width: none !important;
+  min-width: unset !important;
+  flex-shrink: 0 !important;
+  object-fit: contain !important;
+  display: block !important;
+}
   </style>
 </head>
 

@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if (empty($_SESSION['is_admin'])) {
+    header("Location: admin_login.php");
+    exit;
+}
+?>
 <html lang="en">
 
 <head>
@@ -132,6 +139,15 @@
           </li>
                     </ul>
                 </nav>
+            </div>
+
+            <!-- Logout -->
+            <div style="margin-top: auto; padding: 20px 0 10px;">
+                <a href="admin_logout.php" class="header_button" style="color:#c62828;"
+                   onclick="return confirm('Are you sure you want to log out?')">
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <span>Log Out</span>
+                </a>
             </div>
         </div>
     </header>

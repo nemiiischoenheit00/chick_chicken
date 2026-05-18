@@ -56,6 +56,19 @@ function getCatAnchor($catName, $catIds) {
     }
 
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    header, header * { margin: revert; padding: revert; } 
+
+    body .logo img {
+      margin-top: -5px !important;
+    }
+    header nav ul li a.ordernow_button {
+      padding: 5px 30px !important;
+    }
+
+    header nav ul {
+  margin-right: 2px !important;
+}
+
     html { scroll-behavior:smooth; font-size:16px; }
     body {
       font-family: var(--barlow);
@@ -72,15 +85,15 @@ function getCatAnchor($catName, $catIds) {
     /* ═══════════════════════════════════════════
        PAGE HERO STRIP
     ═══════════════════════════════════════════ */
-    .page-hero {
-      background: var(--mustard);
-      border-bottom: 3px solid var(--black);
-      padding: 10px 60px 20px;
-      display: flex; align-items: flex-end; gap: 20px;
-      position: sticky;
-      top: 65px;
-      z-index: 900;
-    }
+.page-hero {
+  background: var(--mustard);
+  border-bottom: 3px solid var(--black);
+  padding: 10px 60px 20px;
+  display: flex; align-items: flex-end; gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
     .page-hero h1 {
       font-family: var(--oswald); font-weight:700; font-size: clamp(42px, 6vw, 72px);
       line-height: 1; letter-spacing: -1px;
@@ -99,7 +112,7 @@ function getCatAnchor($catName, $catIds) {
       max-width: 100%;
       display: grid;
       grid-template-columns: 260px 1fr;
-      overflow: hidden;
+      overflow: visible;
       min-height: calc(100vh - 65px - 130px);
       height: calc(100vh - 65px - 130px);
     }
@@ -397,7 +410,8 @@ function getCatAnchor($catName, $catIds) {
     .cart-backdrop {
       display:none; position:fixed; inset:0;
       background:rgba(10,10,10,0.55);
-      z-index:1800;
+      z-index: 10000;
+
     }
     .cart-backdrop.open { display:block; }
 
@@ -409,6 +423,7 @@ function getCatAnchor($catName, $catIds) {
       box-shadow: -4px 0 40px rgba(0,0,0,0.18);
       transition: right 0.32s cubic-bezier(0.4,0,0.2,1);
       border-left: 3px solid var(--black);
+      z-index: 10001;
     }
     .cart-drawer.open { right:0; }
 
@@ -560,11 +575,9 @@ function getCatAnchor($catName, $catIds) {
       .cart-drawer { width:100%; right:-100%; }
       .menu-grid { grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:14px; }
     }
-    .page-hero {
-  padding: 10px 32px 16px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
+
+
+
  
 /* ── 2. SHOP LAYOUT — default (desktop) stays the same ─── */
 .shop-layout {
