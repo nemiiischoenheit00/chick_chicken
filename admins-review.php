@@ -360,7 +360,7 @@
                 <span>Dashboard</span>
               </a>
             </li>
-
+            <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
             <li>
               <a href="orders--admin.php" class="header_button">
                 <ion-icon name="bag-handle-outline"></ion-icon>
@@ -381,9 +381,9 @@
                 <span>Inventory</span>
               </a>
             </li>
-
+<li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
             <li>
-              <a href="admin-reviews.php" class="header_button active">
+              <a href="admins-review.php" class="header_button active">
                 <ion-icon name="chatbubbles-outline"></ion-icon>
                 <span>Reviews</span>
               </a>
@@ -392,12 +392,7 @@
           </ul>
         </nav>
       </div>
-      <div class="sidebar-logout-wrap">
-          <a href="logout_process.php" class="btn-logout">
-              <ion-icon name="log-out-outline"></ion-icon>
-              <span>Logout</span>
-          </a>
-      </div>
+
     </div>
   </header>
 

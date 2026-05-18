@@ -1,8 +1,6 @@
 <?php
 session_start();
-require 'db.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,44 +15,8 @@ require 'db.php';
     <title>Chick Chicken</title>
   </head>
 
-<header>
-  <div class="logo">
-    <h1>
-      <a href="index.php">
-        <img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:45px;">
-      </a>
-    </h1>
-  </div>
-
-  <nav>
-    <ul>
-      <li><a href="aboutus.php"        class="header_button">About Us</a></li>
-      <li><a href="index.php#FAQS"     class="header_button">FAQs</a></li>
-      <li><a href="branch-locator.php" class="header_button">Branch Locator</a></li>
-
-      <li>
-        <?php if (isset($_SESSION['user_id'])): ?>
-          <div class="nav-user-wrap" id="navUserWrap">
-            <button class="nav-user-btn" id="navUserBtn" aria-expanded="false" aria-haspopup="true">
-              <?= htmlspecialchars($_SESSION['first_name'] ?? $_SESSION['username'] ?? 'Account') ?>
-              <svg class="nav-chevron" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M1 1L6 7L11 1" stroke="#D62828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="nav-dropdown" role="menu">
-              <a href="logout_process.php" class="logout" role="menuitem">Log Out</a>
-            </div>
-          </div>
-        <?php else: ?>
-          <a href="login.php" class="header_button">Sign In</a>
-        <?php endif; ?>
-      </li>
-
-      <li><a href="orders.php" class="ordernow_button">Order Now</a></li>
-    </ul>
-  </nav>
-</header>
-
+<body>
+<?php include 'nav.php'; ?>
 <!-- About Us Section -->
   <section class="about">
     <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="about-logo">
@@ -96,44 +58,36 @@ require 'db.php';
 
 <!-- footer ngani -->
 <footer class="footer">
-  <div class="footer-container">
-
-  <div class="footer-logo">
-      <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
-    </div>
-
-    <div class="footer-links">
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="orders.html">Menu</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-info">
-      <h4>Information</h4>
-      <ul>
-                <li><a href="aboutus.html">About Us</a></li> 
-                <li><a href="index.html#FAQS">FAQs</a></li>
-                <li><a href="branch-locator.html">Branch Locator</a></li>
-      </ul>
-    </div>
-
-    <div class="footer-section">
-      <h4>Need help?</h4>
-      <p>Contact us on:</p>
-      <div class="social-icons">
-        <a href="https://www.facebook.com/chickchickenph/"><img src="assets/facebook-icon.png" alt="Facebook"></a>
-        <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets/instagram-icon.png" alt="Instagram"></a>
-        <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="orders.php">Menu</a></li>
+        </ul>
+      </div>
+      <div class="footer-info">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="aboutus.php">About Us</a></li>
+          <li><a href="index.php#FAQS">FAQs</a></li>
+          <li><a href="branch-locator.php">Branch Locator</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Need help?</h4>
+        <p>Contact us on:</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/chickchickenph/"><img src="assets/facebook-icon.png" alt="Facebook"></a>
+          <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets/instagram-icon.png" alt="Instagram"></a>
+          <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
+        </div>
       </div>
     </div>
-
-  </div>
-
-  <div class="footer-bottom">
-    © 2025 Chick Chicken. All rights reserved.
-  </div>
-</footer>
+    <div class="footer-bottom">© 2025 Chick Chicken. All rights reserved.</div>
+  </footer>
 <!-- end of footer ngani -->
 
 

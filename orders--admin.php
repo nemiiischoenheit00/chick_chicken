@@ -34,9 +34,7 @@
             outline: none;
             transition: border-color .2s;
         }
-        .orders-toolbar input[type="text"]:focus {
-            border-color: #f5c800;
-        }
+        .orders-toolbar input[type="text"]:focus { border-color: #f5c800; }
         .orders-toolbar select {
             padding: 9px 14px;
             border: 1.5px solid #e5e5e5;
@@ -48,9 +46,7 @@
             cursor: pointer;
             transition: border-color .2s;
         }
-        .orders-toolbar select:focus {
-            border-color: #f5c800;
-        }
+        .orders-toolbar select:focus { border-color: #f5c800; }
         .btn-refresh {
             padding: 9px 18px;
             background: #f5c800;
@@ -83,17 +79,19 @@
             font-size: 14px;
         }
         .orders-table thead tr {
-            background: #1a1a1a;
-            color: #f5c800;
+            background: #FFDE59;
+            color: #1a1a1a;
         }
         .orders-table thead th {
-            padding: 13px 16px;
+            padding: 14px 18px;
             font-family: 'Oswald', sans-serif;
-            font-weight: 500;
-            letter-spacing: .6px;
+            font-weight: 700;
+            letter-spacing: 1px;
             font-size: 13px;
             text-transform: uppercase;
             white-space: nowrap;
+            color: #111111;
+            border-bottom: 2px solid rgba(0,0,0,.1);
         }
         .orders-table tbody tr {
             border-bottom: 1px solid #f4f4f4;
@@ -125,6 +123,7 @@
         }
         .pay-online { background: #e3f2fd; color: #1565c0; }
         .pay-cod    { background: #f3e5f5; color: #6a1b9a; }
+        .pay-gcash  { background: #e8f5e9; color: #1b5e20; }
 
         .order-status {
             font-size: 11px;
@@ -134,9 +133,33 @@
             text-transform: capitalize;
             display: inline-block;
         }
-        .status-pending   { background: #fff8e1; color: #e65c00; }
-        .status-confirmed { background: #e8f5e9; color: #2e7d32; }
-        .status-cancelled { background: #fce4ec; color: #c62828; }
+        .status-pending    { background: #fff8e1; color: #e65c00; }
+        .status-confirmed  { background: #e8f5e9; color: #2e7d32; }
+        .status-cancelled  { background: #fce4ec; color: #c62828; }
+        .status-cooking,
+        .status-preparing  { background: #fff3e0; color: #e65100; }
+        .status-in_transit { background: #e3f2fd; color: #1565c0; }
+        .status-completed  { background: #ede7f6; color: #4527a0; }
+
+        .discount-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .total-original {
+            font-size: 11px;
+            color: #bbb;
+            text-decoration: line-through;
+            display: block;
+        }
 
         /* ── Skeleton ── */
         .skeleton {
@@ -257,34 +280,86 @@
         .item-name { font-weight: 700; color: #222; }
         .item-opts { font-size: 11px; color: #999; margin-top: 2px; }
 
+        /* ── Totals block ── */
+        .order-totals-block {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 10px;
+            margin-bottom: 4px;
+        }
+        .order-subtotal-row,
+        .order-discount-row {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            padding: 3px 0;
+            font-family: 'Oswald', sans-serif;
+        }
+        .order-subtotal-label,
+        .order-discount-label {
+            font-size: 13px;
+            color: #aaa;
+            letter-spacing: .4px;
+        }
+        .order-subtotal-value {
+            font-size: 14px;
+            color: #bbb;
+            text-decoration: line-through;
+            min-width: 100px;
+            text-align: right;
+        }
+        .order-discount-value {
+            font-size: 14px;
+            font-weight: 700;
+            color: #2e7d32;
+            min-width: 100px;
+            text-align: right;
+        }
         .order-total-row {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             gap: 12px;
-            padding: 10px 0 0;
-            border-top: 2px solid #f0f0f0;
+            padding: 8px 0 0;
             font-family: 'Oswald', sans-serif;
         }
         .order-total-label { font-size: 14px; color: #888; letter-spacing: .5px; }
         .order-total-value { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+
+        .discount-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+        .discount-meta-value {
+            color: #2e7d32 !important;
+            font-weight: 700 !important;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
 
         .status-actions {
             display: flex;
             gap: 8px;
             margin-top: 18px;
             flex-wrap: wrap;
+            align-items: center;
         }
         .btn-confirm {
-            padding: 8px 20px;
-            background: #2e7d32;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            letter-spacing: .4px;
-            cursor: pointer;
+            padding: 8px 20px; background: #2e7d32; color: #fff;
+            border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+            font-size: 14px; letter-spacing: .4px; cursor: pointer;
             transition: background .2s, transform .1s;
             display: flex; align-items: center; gap: 6px;
         }
@@ -292,15 +367,9 @@
         .btn-confirm:active { transform: scale(.97); }
 
         .btn-cancel-order {
-            padding: 8px 20px;
-            background: #c62828;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            letter-spacing: .4px;
-            cursor: pointer;
+            padding: 8px 20px; background: #c62828; color: #fff;
+            border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+            font-size: 14px; letter-spacing: .4px; cursor: pointer;
             transition: background .2s, transform .1s;
             display: flex; align-items: center; gap: 6px;
         }
@@ -308,20 +377,44 @@
         .btn-cancel-order:active { transform: scale(.97); }
 
         .btn-pending-order {
-            padding: 8px 20px;
-            background: #e65c00;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Oswald', sans-serif;
-            font-size: 14px;
-            letter-spacing: .4px;
-            cursor: pointer;
+            padding: 8px 20px; background: #e65c00; color: #fff;
+            border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+            font-size: 14px; letter-spacing: .4px; cursor: pointer;
             transition: background .2s, transform .1s;
             display: flex; align-items: center; gap: 6px;
         }
         .btn-pending-order:hover  { background: #bf360c; }
         .btn-pending-order:active { transform: scale(.97); }
+
+        .btn-preparing-order {
+            padding: 8px 20px; background: #f57c00; color: #fff;
+            border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+            font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: background .2s, transform .1s;
+        }
+        .btn-preparing-order:hover  { background: #e65100; }
+        .btn-preparing-order:active { transform: scale(.97); }
+
+        .btn-transit-order {
+            padding: 8px 20px; background: #1565c0; color: #fff;
+            border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+            font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: background .2s, transform .1s;
+        }
+        .btn-transit-order:hover  { background: #0d47a1; }
+        .btn-transit-order:active { transform: scale(.97); }
+
+        .btn-complete-order {
+            padding: 8px 20px; background: #4527a0; color: #fff;
+            border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
+            font-size: 14px; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: background .2s, transform .1s;
+        }
+        .btn-complete-order:hover  { background: #311b92; }
+        .btn-complete-order:active { transform: scale(.97); }
 
         .status-update-msg {
             font-size: 13px;
@@ -332,6 +425,124 @@
         }
         .status-update-msg.success { background: #e8f5e9; color: #2e7d32; display: inline-block; }
         .status-update-msg.error   { background: #fce4ec; color: #c62828; display: inline-block; }
+
+        /* ── GCash Proof Section ── */
+        .gcash-proof-section {
+            margin-bottom: 20px;
+        }
+        .gcash-proof-section label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #aaa;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .gcash-proof-img-wrap {
+            position: relative;
+            display: inline-block;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+            cursor: zoom-in;
+            transition: border-color .2s;
+            max-width: 220px;
+        }
+        .gcash-proof-img-wrap:hover { border-color: #f5c800; }
+        .gcash-proof-img-wrap img {
+            width: 220px;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+        }
+        .gcash-proof-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+        .gcash-proof-img-wrap:hover .gcash-proof-overlay { opacity: 1; }
+        .gcash-proof-overlay span {
+            color: #fff;
+            font-family: 'Oswald', sans-serif;
+            font-size: 13px;
+            letter-spacing: .5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .gcash-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #e8f5e9;
+            color: #1b5e20;
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            margin-bottom: 8px;
+        }
+        .gcash-no-proof {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff8e1;
+            color: #e65c00;
+            font-family: 'Alegreya Sans', sans-serif;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px dashed #f5c800;
+        }
+
+        /* ── Lightbox ── */
+        .gcash-lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0,0,0,.85);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .gcash-lightbox.open { display: flex; }
+        .gcash-lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 8px 60px rgba(0,0,0,.5);
+        }
+        .gcash-lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            line-height: 1;
+            opacity: .8;
+            transition: opacity .15s;
+        }
+        .gcash-lightbox-close:hover { opacity: 1; }
+        .gcash-lightbox-label {
+            color: #f5c800;
+            font-family: 'Oswald', sans-serif;
+            font-size: 14px;
+            letter-spacing: .5px;
+        }
 
         /* ── Toast ── */
         .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; }
@@ -354,22 +565,6 @@
             from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-        .btn-cooking-order {
-    padding: 8px 20px; background: #f57c00; color: #fff;
-    border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
-    font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;
-}
-.btn-cooking-order:hover { background: #e65100; }
-
-.btn-transit-order {
-    padding: 8px 20px; background: #1565c0; color: #fff;
-    border: none; border-radius: 8px; font-family: 'Oswald', sans-serif;
-    font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px;
-}
-.btn-transit-order:hover { background: #0d47a1; }
-
-.status-cooking    { background: #fff3e0; color: #e65100; }
-.status-in_transit { background: #e3f2fd; color: #1565c0; }
     </style>
 </head>
 
@@ -378,47 +573,53 @@
     <div class="sidebar">
         <div class="logo">
             <h1>
-                <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:55px;" /></a>
+                <a href="admin.php"><img src="assets/Logo2.png" alt="ChickChicken" style="width:auto;height:55px;" /></a>
             </h1>
         </div>
         <div class="navigation--admin">
             <nav>
                 <ul>
                     <li>
-                        <a href="admin.html" class="header_button">
+                        <a href="admin.php" class="header_button">
                             <ion-icon name="grid-outline"></ion-icon>
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
                     <li>
-                        <a href="orders--admin.html" class="header_button active">
+                        <a href="orders--admin.php" class="header_button active">
                             <ion-icon name="bag-handle-outline"></ion-icon>
                             <span>Orders</span>
                         </a>
                     </li>
                     <li>
-                        <a href="menu--admin.html" class="header_button">
+                        <a href="menu--admin.php" class="header_button">
                             <ion-icon name="book-outline"></ion-icon>
                             <span>Menus</span>
                         </a>
                     </li>
                     <li>
-                        <a href="inventory.html" class="header_button">
+                        <a href="inventory.php" class="header_button">
                             <ion-icon name="clipboard-outline"></ion-icon>
                             <span>Inventory</span>
+                        </a>
+                    </li>
+                    <li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
+                    <li>
+                        <a href="admins-review.php" class="header_button">
+                            <ion-icon name="chatbubbles-outline"></ion-icon>
+                            <span>Reviews</span>
                         </a>
                     </li>
                 </ul>
             </nav>
         </div>
-        <div class="sidebar-logout-wrap">
-            <a href="logout_process.php" class="btn-logout">
-                <ion-icon name="log-out-outline"></ion-icon>
-                <span>Logout</span>
-            </a>
-        </div>
     </div>
 </header>
+
+<main class="main-content">
+    <section class="page-content active">
+        <h1 style="margin-bottom: 25px;">Orders</h1>
 
         <!-- Toolbar -->
         <div class="orders-toolbar">
@@ -427,6 +628,9 @@
                 <option value="">All Statuses</option>
                 <option value="pending">Pending</option>
                 <option value="confirmed">Confirmed</option>
+                <option value="preparing">Preparing</option>
+                <option value="in_transit">In Transit</option>
+                <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
             </select>
             <select id="sortOrder">
@@ -453,7 +657,6 @@
                     </tr>
                 </thead>
                 <tbody id="ordersBody">
-                    <!-- skeleton rows -->
                     <tr class="skeleton-row">
                         <td><span class="skeleton" style="width:70px;height:16px;"></span></td>
                         <td><span class="skeleton" style="width:120px;height:16px;"></span></td>
@@ -508,6 +711,16 @@
     </div>
 </div>
 
+<!-- ── GCASH LIGHTBOX ── -->
+<div class="gcash-lightbox" id="gcashLightbox" onclick="closeLightbox(event)">
+    <button class="gcash-lightbox-close" onclick="document.getElementById('gcashLightbox').classList.remove('open')" aria-label="Close">&#x2715;</button>
+    <div class="gcash-lightbox-label">
+        <ion-icon name="card-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon>
+        GCash Payment Proof
+    </div>
+    <img id="gcashLightboxImg" src="" alt="GCash Payment Proof" />
+</div>
+
 <!-- ── TOAST ── -->
 <div class="toast-container" id="toastContainer"></div>
 
@@ -541,7 +754,16 @@ const padId = id => '#' + String(id).padStart(7, '0');
 const fmtDate = s => new Date(s).toLocaleDateString('en-PH', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
 
 function statusBadge(s) {
-    return `<span class="order-status status-${s}">${s}</span>`;
+    return `<span class="order-status status-${s}">${s.replace('_',' ')}</span>`;
+}
+
+// ── DISCOUNT BADGE STYLE ─────────────────────────────────
+function discountBadgeStyle(type) {
+    const t = (type || '').toLowerCase();
+    if (t.includes('senior'))  return { bg: '#fff3e0', color: '#e65100', icon: 'person-outline' };
+    if (t.includes('student')) return { bg: '#e3f2fd', color: '#1565c0', icon: 'school-outline' };
+    if (t.includes('pwd'))     return { bg: '#e8f5e9', color: '#1b5e20', icon: 'accessibility-outline' };
+    return { bg: '#f5f5f5', color: '#757575', icon: 'pricetag-outline' };
 }
 
 // ── LOAD ORDERS TABLE ────────────────────────────────────
@@ -555,7 +777,6 @@ async function loadOrders(page = 1) {
     if (search) params.set('search', search);
     if (status) params.set('status', status);
 
-    // Show skeletons
     document.getElementById('ordersBody').innerHTML = [1,2,3,4,5].map(() => `
         <tr class="skeleton-row">
             ${[70,120,150,60,70,80,90].map(w => `<td><span class="skeleton" style="width:${w}px;height:15px;"></span></td>`).join('')}
@@ -566,13 +787,11 @@ async function loadOrders(page = 1) {
     try {
         const res  = await fetch(`${API}?${params}`);
         const data = await res.json();
-
         if (data.error) { renderError(data.error); return; }
-
         renderRows(data.orders);
         renderPagination(data.page, data.total_pages, data.total, data.limit);
     } catch (e) {
-        renderError('Could not reach orders.php — is XAMPP running?');
+        renderError('Could not reach order.php — is XAMPP running?');
     }
 }
 
@@ -588,7 +807,22 @@ function renderRows(orders) {
             </td></tr>`;
         return;
     }
-    tbody.innerHTML = orders.map(o => `
+    tbody.innerHTML = orders.map(o => {
+        const payClass = o.payment_method === 'gcash' ? 'pay-gcash' : 'pay-cod';
+        const payLabel = o.payment_method === 'gcash' ? 'GCash' : 'COD';
+
+        const hasDiscount = o.discount_amount > 0;
+        const ds = discountBadgeStyle(o.discount_type);
+        const totalCell = hasDiscount
+            ? `<span class="total-original">${php(o.original_total)}</span>
+               <strong style="color:#2e7d32;">${php(o.total)}</strong>
+               <span class="discount-tag" style="background:${ds.bg};color:${ds.color};">
+                   <ion-icon name="${ds.icon}" style="font-size:9px;"></ion-icon>
+                   ${escHtml(o.discount_type || 'discount')}
+               </span>`
+            : `<strong>${php(o.total)}</strong>`;
+
+        return `
         <tr onclick="openOrder(${o.id})">
             <td class="order-id-cell">${padId(o.id)}</td>
             <td>
@@ -596,12 +830,12 @@ function renderRows(orders) {
                 <div class="customer-sub">${escHtml(o.email || o.phone || '—')}</div>
             </td>
             <td class="branch-cell">${escHtml(o.branch || '—')}</td>
-            <td><span class="payment-badge pay-${o.payment_method}">${o.payment_method === 'cod' ? 'COD' : 'Online'}</span></td>
-            <td><strong>${php(o.total)}</strong></td>
+            <td><span class="payment-badge ${payClass}">${payLabel}</span></td>
+            <td>${totalCell}</td>
             <td>${statusBadge(o.status)}</td>
             <td style="font-size:13px;color:#777;">${fmtDate(o.created_at)}</td>
-        </tr>
-    `).join('');
+        </tr>`;
+    }).join('');
 }
 
 function renderPagination(page, totalPages, total, limit) {
@@ -613,7 +847,6 @@ function renderPagination(page, totalPages, total, limit) {
     const to   = Math.min(page * limit, total);
     info.textContent = total ? `Showing ${from}–${to} of ${total} orders` : 'No orders';
 
-    // Build page buttons (max 7 shown)
     let pages = [];
     if (totalPages <= 7) {
         pages = Array.from({length: totalPages}, (_, i) => i + 1);
@@ -633,7 +866,6 @@ function renderPagination(page, totalPages, total, limit) {
         ).join('')}
         <button class="page-btn" onclick="loadOrders(${page + 1})" ${page >= totalPages ? 'disabled' : ''}>Next ›</button>
     `;
-
     bar.style.display = 'flex';
 }
 
@@ -687,6 +919,100 @@ function renderModal(o) {
         </tr>
     `).join('');
 
+    // ── GCash proof block ──
+let gcashHtml = '';
+if (o.payment_method === 'gcash') {
+    const refHtml = o.gcash_reference
+        ? `<div style="
+                display:inline-flex; align-items:center; gap:8px;
+                background:#e8f5e9; border:1px solid #a5d6a7;
+                border-radius:8px; padding:8px 14px; margin-bottom:12px;
+            ">
+                <ion-icon name="receipt-outline" style="color:#2e7d32;font-size:16px;"></ion-icon>
+                <span style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.5px;color:#1b5e20;text-transform:uppercase;">Ref No.</span>
+                <strong style="font-family:'Alegreya Sans',sans-serif;font-size:15px;color:#1a1a1a;letter-spacing:1.5px;">${escHtml(o.gcash_reference)}</strong>
+            </div>`
+        : `<div style="
+                display:inline-flex; align-items:center; gap:6px;
+                background:#fff8e1; border:1px dashed #f5c800;
+                border-radius:8px; padding:7px 12px; margin-bottom:12px;
+                font-family:'Alegreya Sans',sans-serif; font-size:13px; color:#b45309;
+            ">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                No reference number provided
+            </div>`;
+
+    const proofHtml = o.gcash_proof
+        ? `<div class="gcash-proof-img-wrap" onclick="openLightbox('${escHtml(o.gcash_proof)}')">
+                <img src="${escHtml(o.gcash_proof)}" alt="GCash Proof"
+                     onerror="this.parentElement.parentElement.innerHTML='<div class=\'gcash-no-proof\'><ion-icon name=\'image-outline\'></ion-icon> Image could not be loaded</div>'">
+                <div class="gcash-proof-overlay">
+                    <span><ion-icon name="expand-outline"></ion-icon> View Full</span>
+                </div>
+           </div>`
+        : `<div class="gcash-no-proof">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                No payment screenshot uploaded yet
+           </div>`;
+
+    gcashHtml = `
+        <div class="gcash-proof-section">
+            <label><ion-icon name="card-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon> GCash Payment</label>
+            <div><span class="gcash-badge"><ion-icon name="checkmark-circle-outline"></ion-icon> GCash</span></div>
+            ${refHtml}
+            <label style="margin-top:4px;"><ion-icon name="image-outline" style="vertical-align:middle;margin-right:4px;"></ion-icon> Proof of Payment</label>
+            ${proofHtml}
+        </div>`;
+}
+
+    // ── Discount totals block ──
+    const hasDiscount = o.discount_amount > 0;
+    const ds = discountBadgeStyle(o.discount_type);
+    const discountLabel = o.discount_type
+        ? `${o.discount_pct}% off <span class="discount-type-badge" style="background:${ds.bg};color:${ds.color};">
+               <ion-icon name="${ds.icon}" style="font-size:9px;vertical-align:middle;"></ion-icon>
+               ${escHtml(o.discount_type)}
+           </span>`
+        : `${o.discount_pct}% off`;
+
+    const totalsHtml = `
+        <div class="order-totals-block">
+            ${hasDiscount ? `
+            <div class="order-subtotal-row">
+                <span class="order-subtotal-label">SUBTOTAL</span>
+                <span class="order-subtotal-value">${php(o.original_total)}</span>
+            </div>
+            <div class="order-discount-row">
+                <span class="order-discount-label">
+                    <ion-icon name="pricetag-outline" style="vertical-align:middle;margin-right:3px;color:#2e7d32;"></ion-icon>
+                    DISCOUNT (${discountLabel})
+                </span>
+                <span class="order-discount-value">− ${php(o.discount_amount)}</span>
+            </div>
+            ` : ''}
+            <div class="order-total-row">
+                <span class="order-total-label">TOTAL</span>
+                <span class="order-total-value">${php(o.total)}</span>
+            </div>
+        </div>
+    `;
+
+    // ── Discount meta item ──
+    const discountMetaHtml = hasDiscount ? `
+        <div class="meta-item">
+            <label><ion-icon name="pricetag-outline" style="vertical-align:middle;margin-right:3px;"></ion-icon> Discount Applied</label>
+            <span class="discount-meta-value">
+                − ${php(o.discount_amount)}
+                ${o.discount_type
+                    ? `<span class="discount-type-badge" style="background:${ds.bg};color:${ds.color};">
+                           <ion-icon name="${ds.icon}" style="font-size:9px;vertical-align:middle;"></ion-icon>
+                           ${escHtml(o.discount_type)}
+                       </span>`
+                    : ''}
+                <span style="color:#aaa;font-size:12px;font-weight:400;">(${o.discount_pct}% off)</span>
+            </span>
+        </div>` : '';
+
     document.getElementById('orderModalBody').innerHTML = `
         <div class="order-meta-grid">
             <div class="meta-item">
@@ -715,14 +1041,21 @@ function renderModal(o) {
             </div>
             <div class="meta-item">
                 <label>Payment</label>
-                <span><span class="payment-badge pay-${o.payment_method}">${o.payment_method === 'cod' ? 'Cash on Delivery' : 'Online'}</span></span>
+                <span>
+                    <span class="payment-badge ${o.payment_method === 'gcash' ? 'pay-gcash' : 'pay-cod'}">
+                        ${o.payment_method === 'gcash' ? 'GCash' : 'Cash on Delivery'}
+                    </span>
+                </span>
             </div>
             <div class="meta-item">
                 <label>Ordered At</label>
                 <span>${fmtDate(o.created_at)}</span>
             </div>
             ${o.card_number ? `<div class="meta-item"><label>Card</label><span>•••• •••• •••• ${o.card_number.slice(-4)}</span></div>` : ''}
+            ${discountMetaHtml}
         </div>
+
+        ${gcashHtml}
 
         <h6 style="font-family:'Oswald',sans-serif;letter-spacing:.5px;color:#555;margin-bottom:10px;">ORDER ITEMS</h6>
         <table class="items-table">
@@ -738,30 +1071,41 @@ function renderModal(o) {
             <tbody>${itemsHtml}</tbody>
         </table>
 
-        <div class="order-total-row">
-            <span class="order-total-label">TOTAL</span>
-            <span class="order-total-value">${php(o.total)}</span>
-        </div>
+        ${totalsHtml}
 
         <div class="status-actions">
-            <button class="btn-confirm"       onclick="updateStatus(${o.id}, 'confirmed')">
+            <button class="btn-confirm"          onclick="updateStatus(${o.id}, 'confirmed')">
                 <ion-icon name="checkmark-circle-outline"></ion-icon> Confirm
             </button>
-            <button class="btn-cooking-order" onclick="updateStatus(${o.id}, 'cooking')">
-                <ion-icon name="flame-outline"></ion-icon> Cooking
+            <button class="btn-preparing-order"  onclick="updateStatus(${o.id}, 'preparing')">
+                <ion-icon name="flame-outline"></ion-icon> Preparing
             </button>
-            <button class="btn-transit-order" onclick="updateStatus(${o.id}, 'in_transit')">
+            <button class="btn-transit-order"    onclick="updateStatus(${o.id}, 'in_transit')">
                 <ion-icon name="bicycle-outline"></ion-icon> In Transit
             </button>
-            <button class="btn-pending-order" onclick="updateStatus(${o.id}, 'pending')">
+            <button class="btn-complete-order"   onclick="updateStatus(${o.id}, 'completed')">
+                <ion-icon name="bag-check-outline"></ion-icon> Complete
+            </button>
+            <button class="btn-pending-order"    onclick="updateStatus(${o.id}, 'pending')">
                 <ion-icon name="time-outline"></ion-icon> Set Pending
             </button>
-            <button class="btn-cancel-order"  onclick="updateStatus(${o.id}, 'cancelled')">
+            <button class="btn-cancel-order"     onclick="updateStatus(${o.id}, 'cancelled')">
                 <ion-icon name="close-circle-outline"></ion-icon> Cancel
             </button>
             <span class="status-update-msg" id="statusMsg"></span>
         </div>
     `;
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────
+function openLightbox(src) {
+    document.getElementById('gcashLightboxImg').src = src;
+    document.getElementById('gcashLightbox').classList.add('open');
+}
+function closeLightbox(e) {
+    if (e.target === document.getElementById('gcashLightbox')) {
+        document.getElementById('gcashLightbox').classList.remove('open');
+    }
 }
 
 // ── UPDATE STATUS ────────────────────────────────────────
@@ -778,12 +1122,11 @@ async function updateStatus(id, status) {
         const data = await res.json();
 
         if (data.success) {
-            // Update badge inside modal
             const badge = document.getElementById('modalStatusBadge');
             if (badge) badge.innerHTML = statusBadge(status);
-            if (msg) { msg.className = 'status-update-msg success'; msg.textContent = `✓ Status updated to ${status}`; }
-            toast(`Order ${padId(id)} marked as ${status}`);
-            loadOrders(currentPage); // refresh table behind modal
+            if (msg) { msg.className = 'status-update-msg success'; msg.textContent = `✓ Status updated to ${status.replace('_',' ')}`; }
+            toast(`Order ${padId(id)} marked as ${status.replace('_',' ')}`);
+            loadOrders(currentPage);
         } else {
             if (msg) { msg.className = 'status-update-msg error'; msg.textContent = data.error || 'Update failed'; }
             toast(data.error || 'Update failed', true);

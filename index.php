@@ -39,6 +39,247 @@ session_start();
     .faq.active .question svg {
       transform: rotate(180deg);
     }
+    /* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- WELCOME SECTION ---------- */
+.welcome-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
+}
+
+.logo-welcome-box img {
+  width: 300px;
+  max-width: 100%;
+}
+
+.text-welcome-box {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* ---------- FAQ ---------- */
+.FAQS {
+  padding: 40px 20px;
+}
+
+.faq .question h2 {
+  font-size: 1.1rem;
+}
+
+/* ---------- FEEDBACK SECTION ---------- */
+.feedback-section,
+section[style*="140vh"] {
+  height: auto !important;
+  padding-bottom: 60px;
+}
+
+.container.mt-4 {
+  gap: 20px;
+}
+
+.card {
+  width: 100%;
+}
+
+/* ---------- HERO TEXT ---------- */
+.position-absolute h1 {
+  font-size: clamp(1.5rem, 5vw, 2.5rem) !important;
+}
+
+.position-absolute p {
+  font-size: clamp(1rem, 3vw, 1.5rem) !important;
+}
+
+/* ---------- FOOTER ---------- */
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  padding: 40px 20px;
+}
+
+.footer-links,
+.footer-info,
+.footer-section,
+.footer-logo {
+  flex: 1 1 200px;
+}
+
+/* ---------- ORDER TRACKER ---------- */
+#ot-bubble {
+  bottom: 15px;
+  left: 15px;
+}
+
+#ot-panel {
+  width: 90vw;
+  max-width: 340px;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+@media (max-width: 992px) {
+
+  .welcome-box {
+    text-align: center;
+  }
+
+  .text-welcome-box {
+    width: 100%;
+  }
+
+  .container.mt-4 {
+    justify-content: center;
+  }
+
+  .card {
+    flex: 1 1 100% !important;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .welcomepicture img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .welcome-box {
+    flex-direction: column;
+    padding: 30px 15px;
+  }
+
+  .logo-welcome-box img {
+    width: 220px;
+  }
+
+  .text-welcome-box h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .text-welcome-box p {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .faq .question {
+    gap: 10px;
+  }
+
+  .faq .question h2 {
+    font-size: 1rem;
+  }
+
+  .faq .answer p {
+    font-size: 0.95rem;
+  }
+
+  .position-absolute img {
+    max-width: 140px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .btn.btn-primary {
+    width: 90%;
+    font-size: 1rem !important;
+    padding: 0.9rem 1rem !important;
+  }
+
+  /* FOOTER */
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  /* ORDER TRACKER */
+  #ot-toggle {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  #ot-panel {
+    left: 0;
+    width: calc(100vw - 30px);
+    max-width: none;
+  }
+
+  .ot-item-name {
+    font-size: 13px;
+  }
+
+  .ot-total-value {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+@media (max-width: 480px) {
+
+  .text-welcome-box h1 {
+    font-size: 1.6rem;
+  }
+
+  .position-absolute h1 {
+    font-size: 1.3rem !important;
+  }
+
+  .position-absolute p {
+    font-size: 0.9rem !important;
+  }
+
+  .faq .question h2 {
+    font-size: 0.95rem;
+  }
+
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .rev-star {
+    font-size: 26px !important;
+  }
+
+  .ot-step-label {
+    font-size: 8px;
+  }
+
+  .ot-step-dot {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 
@@ -231,9 +472,9 @@ session_start();
       <div class="footer-info">
         <h4>Information</h4>
         <ul>
-          <li><a href="aboutus.html">About Us</a></li>
+          <li><a href="aboutus.php">About Us</a></li>
           <li><a href="index.php#FAQS">FAQs</a></li>
-          <li><a href="branch-locator.html">Branch Locator</a></li>
+          <li><a href="branch-locator.php">Branch Locator</a></li>
         </ul>
       </div>
       <div class="footer-section">
@@ -498,7 +739,7 @@ session_start();
   }
   .pill-pending    { background: #fff8e1; color: #e65c00; }
   .pill-confirmed  { background: #e8f5e9; color: #2e7d32; }
-  .pill-cooking    { background: #fff3e0; color: #e65100; }
+  .pill-preparing  { background: #fff3e0; color: #e65100; }
   .pill-in_transit { background: #e3f2fd; color: #1565c0; }
   .pill-cancelled  { background: #fce4ec; color: #c62828; }
 
@@ -637,7 +878,7 @@ session_start();
       var STEPS = [
           { key: 'pending',    label: 'Pending',    icon: '&#x23F3;' },
           { key: 'confirmed',  label: 'Confirmed',  icon: '&#x2713;'  },
-          { key: 'cooking',    label: 'Cooking',    icon: '&#x1F373;' },
+          { key: 'preparing', label: 'Preparing', icon: '&#x1F373;' },
           { key: 'in_transit', label: 'In Transit', icon: '&#x1F6F5;' },
       ];
 
@@ -658,79 +899,93 @@ session_start();
             var orders = data.orders || [];
 
             // 🔥 FILTER OUT COMPLETED ORDERS
-            orders = orders.filter(order => order.status !== 'completed');
+            orders = orders.filter(order => order.status !== 'completed' && order.status !== 'cancelled');
 
             var toggle = document.getElementById('ot-toggle');
+if (orders.length === 0) {
+    toggle.style.display = 'none';
+    document.getElementById('ot-panel').classList.remove('open');
+    return;
+}
 
-            if (orders.length === 0) {
-                toggle.style.display = 'none';
-                return;
-            }
-
-            toggle.style.display = 'flex';
-            renderCard(orders[0]);
-
+toggle.style.display = 'flex';
+renderCard(orders[0]);
         } catch (e) {
             console.error('Order tracker error:', e);
         }
       }
 
       function renderCard(o) {
-          var body    = document.getElementById('ot-panel-body');
-          var status  = o.status;
-          var stepIdx = STEPS.findIndex(function(s) { return s.key === status; });
-          var fillPct = stepIdx < 0 ? 0 : Math.round((stepIdx / (STEPS.length - 1)) * 100);
+    var body    = document.getElementById('ot-panel-body');
+    var status  = o.status;
+    var stepIdx = STEPS.findIndex(function(s) { return s.key === status; });
+    var fillPct = stepIdx < 0 ? 0 : Math.round((stepIdx / (STEPS.length - 1)) * 100);
 
-          var stepsHtml = STEPS.map(function(step, i) {
-              var cls = i < stepIdx ? 'done' : (i === stepIdx ? 'active' : '');
-              return '<div class="ot-step ' + cls + '">'
-                  + '<div class="ot-step-dot">' + step.icon + '</div>'
-                  + '<div class="ot-step-label">' + step.label + '</div>'
-                  + '</div>';
-          }).join('');
+    var stepsHtml = STEPS.map(function(step, i) {
+        var cls = i < stepIdx ? 'done' : (i === stepIdx ? 'active' : '');
+        return '<div class="ot-step ' + cls + '">'
+            + '<div class="ot-step-dot">' + step.icon + '</div>'
+            + '<div class="ot-step-label">' + step.label + '</div>'
+            + '</div>';
+    }).join('');
 
-          var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', cooking: 'Cooking', in_transit: 'In Transit' };
-          var date    = new Date(o.created_at);
-          var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-          var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+    var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', preparing: 'Preparing', in_transit: 'In Transit' };
+    var date    = new Date(o.created_at);
+    var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });
 
-          var items = o.items || [];
-          var itemsHtml = items.map(function(item) {
-              var imgHtml;
-              if (item.product_image) {
-                  imgHtml = '<img class="ot-item-img" src="' + escAttr(item.product_image) + '" alt="' + escAttr(item.product_name) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
-                          + '<div class="ot-item-img-placeholder" style="display:none;">&#x1F357;</div>';
-              } else {
-                  imgHtml = '<div class="ot-item-img-placeholder">&#x1F357;</div>';
-              }
-              var subtotal = Number(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 });
-              return '<div class="ot-item">'
-                  + imgHtml
-                  + '<div class="ot-item-info">'
-                  + '<div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div>'
-                  + '<div class="ot-item-qty">x' + item.quantity + '</div>'
-                  + '</div>'
-                  + '<div class="ot-item-price">&#x20B1;' + subtotal + '</div>'
-                  + '</div>';
-          }).join('');
+    // Build discount row only when a discount exists
+    var discountHtml = '';
+    if (o.discount && Number(o.discount) > 0) {
+        var discountAmt = Number(o.discount).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+        discountHtml = '<div class="ot-total-row" style="margin-bottom:4px;">'
+            + '<span class="ot-total-label">SUBTOTAL</span>'
+            + '<span style="font-family:\'Oswald\',sans-serif;font-size:14px;color:#555;">&#x20B1;' + Number(Number(o.total) + Number(o.discount)).toLocaleString('en-PH', { minimumFractionDigits: 2 }) + '</span>'
+            + '</div>'
+            + '<div class="ot-total-row" style="margin-bottom:4px;">'
+            + '<span class="ot-total-label" style="color:#2e7d32;">DISCOUNT</span>'
+            + '<span style="font-family:\'Oswald\',sans-serif;font-size:14px;color:#2e7d32;">-&#x20B1;' + discountAmt + '</span>'
+            + '</div>';
+    }
 
-          body.innerHTML = '<div class="ot-card">'
-              + '<div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div>'
-              + '<span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span>'
-              + '<div class="ot-order-meta">' + dateStr + '</div>'
-              + '<div class="ot-progress-track">'
-              + '<div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div>'
-              + '<div class="ot-steps">' + stepsHtml + '</div>'
-              + '</div>'
-              + '<div class="ot-items-label">Your Items</div>'
-              + '<div class="ot-items-list">' + itemsHtml + '</div>'
-              + '<hr class="ot-divider">'
-              + '<div class="ot-total-row">'
-              + '<span class="ot-total-label">TOTAL</span>'
-              + '<span class="ot-total-value">&#x20B1;' + total + '</span>'
-              + '</div>'
-              + '</div>';
-      }
+    var items = o.items || [];
+    var itemsHtml = items.map(function(item) {
+        var imgHtml;
+        if (item.product_image) {
+            imgHtml = '<img class="ot-item-img" src="' + escAttr(item.product_image) + '" alt="' + escAttr(item.product_name) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+                    + '<div class="ot-item-img-placeholder" style="display:none;">&#x1F357;</div>';
+        } else {
+            imgHtml = '<div class="ot-item-img-placeholder">&#x1F357;</div>';
+        }
+        var subtotal = Number(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 });
+        return '<div class="ot-item">'
+            + imgHtml
+            + '<div class="ot-item-info">'
+            + '<div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div>'
+            + '<div class="ot-item-qty">x' + item.quantity + '</div>'
+            + '</div>'
+            + '<div class="ot-item-price">&#x20B1;' + subtotal + '</div>'
+            + '</div>';
+    }).join('');
+
+    body.innerHTML = '<div class="ot-card">'
+        + '<div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div>'
+        + '<span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span>'
+        + '<div class="ot-order-meta">' + dateStr + '</div>'
+        + '<div class="ot-progress-track">'
+        + '<div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div>'
+        + '<div class="ot-steps">' + stepsHtml + '</div>'
+        + '</div>'
+        + '<div class="ot-items-label">Your Items</div>'
+        + '<div class="ot-items-list">' + itemsHtml + '</div>'
+        + '<hr class="ot-divider">'
+        + discountHtml
+        + '<div class="ot-total-row">'
+        + '<span class="ot-total-label">TOTAL</span>'
+        + '<span class="ot-total-value">&#x20B1;' + total + '</span>'
+        + '</div>'
+        + '</div>';
+}
 
       function escHtml(str) {
           return String(str == null ? '' : str).replace(/[&<>"']/g, function(c) {

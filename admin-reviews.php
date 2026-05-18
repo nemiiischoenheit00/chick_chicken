@@ -78,12 +78,6 @@
                     </ul>
                 </nav>
             </div>
-            <div class="sidebar-logout-wrap">
-                <a href="logout_process.php" class="btn-logout">
-                    <ion-icon name="log-out-outline"></ion-icon>
-                    <span>Logout</span>
-                </a>
-            </div>
         </div>
     </header>
 

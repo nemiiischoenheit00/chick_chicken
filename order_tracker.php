@@ -25,18 +25,17 @@ try {
 function getActiveOrders(int $user_id): void {
     global $pdo;
 
-    // Fetch the most recent active order for this user
     $stmt = $pdo->prepare("
         SELECT
             o.id,
             o.status,
             o.created_at,
-            COALESCE(SUM(oi.price * oi.quantity), 0) AS total
+            o.total,
+            o.discount_amount,
+            o.original_total
         FROM orders o
-        LEFT JOIN order_items oi ON oi.order_id = o.id
         WHERE o.user_id = ?
-          AND o.status != 'cancelled'
-        GROUP BY o.id
+          AND o.status NOT IN ('cancelled', 'completed')
         ORDER BY o.created_at DESC
         LIMIT 1
     ");
@@ -48,10 +47,12 @@ function getActiveOrders(int $user_id): void {
         return;
     }
 
-    $order['total'] = (float)$order['total'];
-    $order['id']    = (int)$order['id'];
+    $order['id']            = (int)$order['id'];
+    $order['total']         = (float)$order['total'];
+    $order['discount']      = (float)$order['discount_amount'];
+    $order['status']        = $order['status'] === 'cooking' ? 'preparing' : $order['status'];
+    unset($order['discount_amount'], $order['original_total']);
 
-    // Fetch items with product name and image
     $itemStmt = $pdo->prepare("
         SELECT
             oi.quantity,
@@ -65,7 +66,6 @@ function getActiveOrders(int $user_id): void {
     $itemStmt->execute([$order['id']]);
     $order['items'] = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Cast quantities
     foreach ($order['items'] as &$item) {
         $item['quantity'] = (int)$item['quantity'];
         $item['price']    = (float)$item['price'];

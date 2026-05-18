@@ -30,7 +30,28 @@ html, body {
 
 .login {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+
+  .login {
+    height: auto;
+  }
+
+  .separator {
+    flex-direction: column;
+  }
+
+  .greetings {
+    min-height: auto;
+    padding: 40px 20px 20px;
+  }
+
+  .login-form {
+    width: 100%;
+    padding: 20px;
+  }
 }
 
 .separator {
@@ -134,4 +155,261 @@ html, body {
 .signup-text a {
     color: red;
     text-decoration: none;
+}
+/* =========================================
+   GLOBAL RESPONSIVE FIXES
+========================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
+
+.login {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.separator {
+  display: flex;
+  min-height: 100vh;
+  flex-wrap: wrap;
+}
+
+/* LEFT SIDE */
+.greetings {
+  flex: 1;
+  min-width: 320px;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.greetings h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.1;
+}
+
+.greetings p {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+}
+
+/* RIGHT SIDE */
+.login-form {
+  flex: 1;
+  min-width: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 500px;
+  padding: 40px 30px;
+}
+
+/* =========================================
+   FORM ELEMENTS
+========================================= */
+
+form {
+  width: 100%;
+}
+
+input,
+button {
+  width: 100%;
+}
+
+input {
+  padding: 14px 16px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 14px;
+  font-size: 1rem;
+}
+
+.logo {
+  width: 180px;
+  max-width: 100%;
+}
+
+/* =========================================
+   ALERTS
+========================================= */
+
+.alert-msg {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* =========================================
+   MODAL
+========================================= */
+
+#forgot-modal > div,
+#signup-success-popup > div {
+  width: 90%;
+  max-width: 420px;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 992px) {
+
+  .separator {
+    flex-direction: column;
+  }
+
+  .greetings {
+    text-align: center;
+    padding: 60px 30px 30px;
+  }
+
+  .login-form {
+    padding-top: 10px;
+    padding-bottom: 60px;
+  }
+
+  .form-box {
+    max-width: 550px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .separator {
+    flex-direction: column;
+  }
+
+  .greetings {
+    padding: 40px 20px 20px;
+    text-align: center;
+  }
+
+  .greetings h1 {
+    font-size: 2rem;
+  }
+
+  .greetings p {
+    font-size: 1rem;
+  }
+
+  .login-form {
+    padding: 20px 15px 40px;
+  }
+
+  .form-box {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+
+  .form-box h2 {
+    font-size: 1.7rem;
+  }
+
+  input {
+    padding: 13px 14px;
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 13px;
+    font-size: 0.95rem;
+  }
+
+  .logo {
+    width: 140px;
+  }
+
+  .signup-text {
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  /* FORGOT PASSWORD MODAL */
+  #forgot-modal > div {
+    padding: 28px 22px 30px !important;
+  }
+
+  #forgot-modal h2 {
+    font-size: 1.4rem !important;
+  }
+
+  #forgot-modal p {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 480px) {
+
+  .greetings h1 {
+    font-size: 1.6rem;
+  }
+
+  .greetings p {
+    font-size: 0.95rem;
+  }
+
+  .form-box {
+    padding: 24px 16px;
+  }
+
+  .form-box h2 {
+    font-size: 1.5rem;
+  }
+
+  input,
+  button {
+    font-size: 0.9rem;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .signup-text {
+    font-size: 0.9rem;
+  }
+
+  #forgot-modal > div,
+  #signup-success-popup > div {
+    width: 95%;
+    padding: 24px 18px !important;
+  }
 }

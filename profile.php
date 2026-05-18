@@ -30,10 +30,12 @@ if (!$user) {
     exit;
 }
 
-// ── FETCH EXISTING DISCOUNT APPLICATION ─────────────────────
+// ── FETCH LATEST DISCOUNT APPLICATION ──────────────────────
 $appStmt = $pdo->prepare("SELECT * FROM discount_applications WHERE user_id = ? ORDER BY created_at DESC LIMIT 1");
 $appStmt->execute([$user_id]);
 $discountApp = $appStmt->fetch(PDO::FETCH_ASSOC);
+
+$discountStatus = $discountApp ? $discountApp['status'] : 'none';
 
 // ── HANDLE PROFILE UPDATE ────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'update_profile') {
@@ -116,11 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
                 $ins = $pdo->prepare("INSERT INTO discount_applications (user_id, type, id_image_path) VALUES (?, ?, ?)");
                 $ins->execute([$user_id, $type, $dest]);
 
-                $pdo->prepare("UPDATE users SET discount_status = 'pending' WHERE id = ?")->execute([$user_id]);
-                $user['discount_status'] = 'pending';
-
                 $appStmt->execute([$user_id]);
-                $discountApp = $appStmt->fetch(PDO::FETCH_ASSOC);
+                $discountApp    = $appStmt->fetch(PDO::FETCH_ASSOC);
+                $discountStatus = $discountApp ? $discountApp['status'] : 'none';
 
                 $success = 'Your discount application has been submitted and is under review!';
             } else {
@@ -129,8 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'apply
         }
     }
 }
-
-$discountStatus = $user['discount_status'] ?? 'none';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -278,6 +276,16 @@ $discountStatus = $user['discount_status'] ?? 'none';
     .badge-approved { background: #e8f5e9; color: #2e7d32; }
     .badge-rejected { background: #fce4ec; color: #c62828; }
 
+    /* ── DISCOUNT TYPE CHIP ── */
+    .discount-type-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff8e1; color: #b45309;
+      border: 1.5px solid #f5c800; border-radius: 20px;
+      padding: 4px 12px; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.3px;
+      margin-left: 8px; vertical-align: middle;
+    }
+
     /* ── FILE UPLOAD ── */
     .upload-zone {
       border: 2px dashed #e0e0e0; border-radius: 12px;
@@ -312,6 +320,78 @@ $discountStatus = $user['discount_status'] ?? 'none';
       margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
     }
     .prev-app strong { color: #222; }
+
+    /* ── APPLICATION DETAIL TABLE ── */
+    .app-detail-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 14px; margin-bottom: 20px;
+    }
+    .app-detail-table td {
+      padding: 8px 12px; border-bottom: 1px solid #f5f5f5;
+    }
+    .app-detail-table td:first-child {
+      font-weight: 700; color: #999; text-transform: uppercase;
+      font-size: 11px; letter-spacing: 0.5px; width: 130px;
+    }
+    .app-detail-table td:last-child { color: #222; }
+
+    /* ── SUBMITTED ID IMAGE ── */
+    .submitted-id-wrap {
+      margin-top: 16px;
+    }
+    .submitted-id-label {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: #bbb; display: block; margin-bottom: 10px;
+    }
+    .submitted-id-img {
+      max-width: 340px;
+      width: 100%;
+      border-radius: 12px;
+      border: 1.5px solid #e8e8e8;
+      display: block;
+      cursor: zoom-in;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .submitted-id-img:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+      transform: scale(1.01);
+    }
+    .submitted-id-hint {
+      font-size: 12px; color: #bbb;
+      margin: 6px 0 0; font-style: italic;
+    }
+
+    /* ── IMAGE ZOOM LIGHTBOX ── */
+    #imgZoomOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #imgZoomOverlay.active { display: flex; }
+    #imgZoomTarget {
+      max-width: 92vw;
+      max-height: 88vh;
+      border-radius: 14px;
+      object-fit: contain;
+      box-shadow: 0 12px 60px rgba(0,0,0,0.5);
+    }
+    .zoom-close {
+      position: absolute; top: 20px; right: 26px;
+      color: #fff; font-size: 32px; font-weight: 300;
+      cursor: pointer; line-height: 1;
+      opacity: 0.8; transition: opacity 0.15s;
+    }
+    .zoom-close:hover { opacity: 1; }
+
+    /* ── SENIOR PHONE HINT ── */
+    .field-hint {
+      font-size: 12px; color: #999; margin-top: 2px;
+    }
 
     #editFormWrap { display: none; }
 
@@ -444,25 +524,90 @@ $discountStatus = $user['discount_status'] ?? 'none';
     <p class="card-sub">Apply for a senior, PWD, or student discount on your orders.</p>
 
     <?php
-      $badgeClass = ['none'=>'badge-none','pending'=>'badge-pending','approved'=>'badge-approved','rejected'=>'badge-rejected'][$discountStatus] ?? 'badge-none';
-      $badgeLabel = ['none'=>'● No Application','pending'=>'⏳ Pending Review','approved'=>'✔ Approved','rejected'=>'✖ Rejected'][$discountStatus] ?? '● No Application';
+      $badgeClass = [
+        'none'     => 'badge-none',
+        'pending'  => 'badge-pending',
+        'approved' => 'badge-approved',
+        'rejected' => 'badge-rejected',
+      ][$discountStatus] ?? 'badge-none';
+
+      $badgeLabel = [
+        'none'     => '● No Application',
+        'pending'  => '⏳ Pending Review',
+        'approved' => '✔ Approved',
+        'rejected' => '✖ Rejected',
+      ][$discountStatus] ?? '● No Application';
     ?>
-    <div class="discount-badge <?= $badgeClass ?>"><?= $badgeLabel ?></div>
+    <div class="discount-badge <?= $badgeClass ?>">
+      <?= $badgeLabel ?>
+      <?php if ($discountApp && $discountStatus !== 'none'): ?>
+        <span class="discount-type-chip">
+          <?= htmlspecialchars($discountApp['type']) ?>
+        </span>
+      <?php endif; ?>
+    </div>
 
     <?php if ($discountStatus === 'approved'): ?>
-      <div class="alert alert-success" style="margin-bottom:0;">
+      <div class="alert alert-success" style="margin-bottom:16px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Your discount has been approved! Enjoy your discounted orders.
+        Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> discount has been approved! Enjoy your discounted orders.
       </div>
+
+      <table class="app-detail-table">
+        <tr><td>Type</td><td><?= htmlspecialchars($discountApp['type']) ?></td></tr>
+        <tr><td>Submitted</td><td><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></td></tr>
+        <tr><td>Approved</td><td><?= date('M j, Y', strtotime($discountApp['updated_at'])) ?></td></tr>
+        <?php if ($discountApp['notes']): ?>
+          <tr><td>Notes</td><td><?= htmlspecialchars($discountApp['notes']) ?></td></tr>
+        <?php endif; ?>
+      </table>
+
+      <?php if (!empty($discountApp['id_image_path'])): ?>
+        <div class="submitted-id-wrap">
+          <span class="submitted-id-label">Submitted ID / Proof</span>
+          <img
+            src="<?= htmlspecialchars($discountApp['id_image_path']) ?>"
+            alt="Submitted ID"
+            class="submitted-id-img"
+            onclick="openImgZoom(this.src)"
+          >
+          <p class="submitted-id-hint">Click image to enlarge</p>
+        </div>
+      <?php endif; ?>
+
     <?php elseif ($discountStatus === 'pending'): ?>
       <div class="prev-app">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e65c00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <div>Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> application is under review. Submitted on <strong><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></strong>.</div>
+        <div>
+          Your <strong><?= htmlspecialchars($discountApp['type']) ?></strong> application is under review.
+          Submitted on <strong><?= date('M j, Y', strtotime($discountApp['created_at'])) ?></strong>.
+          <?php if ($discountApp['notes']): ?>
+            <br><span style="color:#999; font-size:13px;">Note: <?= htmlspecialchars($discountApp['notes']) ?></span>
+          <?php endif; ?>
+        </div>
       </div>
+
+      <?php if (!empty($discountApp['id_image_path'])): ?>
+        <div class="submitted-id-wrap">
+          <span class="submitted-id-label">Submitted ID / Proof</span>
+          <img
+            src="<?= htmlspecialchars($discountApp['id_image_path']) ?>"
+            alt="Submitted ID"
+            class="submitted-id-img"
+            onclick="openImgZoom(this.src)"
+          >
+          <p class="submitted-id-hint">Click image to enlarge</p>
+        </div>
+      <?php endif; ?>
+
     <?php elseif ($discountStatus === 'rejected'): ?>
       <div class="alert alert-error" style="margin-bottom:20px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        Your previous application was not approved.<?php if (!empty($discountApp['notes'])): ?> Reason: <?= htmlspecialchars($discountApp['notes']) ?><?php endif; ?> You may re-apply below.
+        Your previous <strong><?= htmlspecialchars($discountApp['type']) ?></strong> application was not approved.
+        <?php if (!empty($discountApp['notes'])): ?>
+          Reason: <?= htmlspecialchars($discountApp['notes']) ?>
+        <?php endif; ?>
+        You may re-apply below.
       </div>
     <?php endif; ?>
 
@@ -471,24 +616,39 @@ $discountStatus = $user['discount_status'] ?? 'none';
       <form method="POST" action="profile.php" enctype="multipart/form-data">
         <input type="hidden" name="action" value="apply_discount">
         <div class="form-grid">
+
           <div class="form-group full">
             <label>Discount Type</label>
-            <select name="discount_type" required>
+            <select name="discount_type" id="discountTypeSelect" required onchange="toggleSeniorPhone(this.value)">
               <option value="" disabled selected>— Select a type —</option>
               <option value="Senior Citizen">Senior Citizen (60+)</option>
               <option value="PWD">Person with Disability (PWD)</option>
               <option value="Student">Student</option>
             </select>
           </div>
+
+          <div class="form-group full" id="seniorPhoneGroup" style="display:none;">
+            <label>Senior Citizen Phone Number</label>
+            <input
+              type="text"
+              name="senior_phone"
+              id="seniorPhone"
+              placeholder="e.g. 09xx-xxx-xxxx"
+              value="<?= htmlspecialchars($user['phone']) ?>"
+            >
+            <span class="field-hint">This number will be used to verify your senior citizen identity.</span>
+          </div>
+
           <div class="form-group full">
             <label>Upload Valid ID or Proof</label>
             <div class="upload-zone">
               <input type="file" name="id_image" accept="image/*" required onchange="showFileName(this)">
               <span class="upload-zone-icon">🪪</span>
-              <span class="upload-zone-label"><strong>Click to upload</strong> or drag & drop<br>JPG, PNG, WEBP · Max 5MB</span>
+              <span class="upload-zone-label"><strong>Click to upload</strong> or drag &amp; drop<br>JPG, PNG, WEBP · Max 5MB</span>
               <div id="fileNameDisplay"></div>
             </div>
           </div>
+
         </div>
         <button type="submit" class="btn-primary" style="margin-top:20px;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -498,6 +658,12 @@ $discountStatus = $user['discount_status'] ?? 'none';
     <?php endif; ?>
   </div>
 
+</div>
+
+<!-- ── IMAGE ZOOM LIGHTBOX ── -->
+<div id="imgZoomOverlay" onclick="closeImgZoom()">
+  <span class="zoom-close" onclick="closeImgZoom()">✕</span>
+  <img id="imgZoomTarget" src="" alt="ID enlarged">
 </div>
 
 <script>
@@ -523,6 +689,26 @@ $discountStatus = $user['discount_status'] ?? 'none';
     input.type   = showing ? 'password' : 'text';
     btn.innerHTML = showing ? eyeSVG : eyeOffSVG;
   }
+
+  function toggleSeniorPhone(val) {
+    var grp = document.getElementById('seniorPhoneGroup');
+    if (grp) grp.style.display = val === 'Senior Citizen' ? 'flex' : 'none';
+  }
+
+  function openImgZoom(src) {
+    document.getElementById('imgZoomTarget').src = src;
+    document.getElementById('imgZoomOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeImgZoom() {
+    document.getElementById('imgZoomOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeImgZoom();
+  });
 </script>
 
 </body>

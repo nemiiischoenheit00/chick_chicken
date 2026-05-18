@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if (empty($_SESSION['is_admin'])) {
+    header("Location: admin_login.php");
+    exit;
+}
+?>
 <html lang="en">
 
 <head>
@@ -90,10 +97,11 @@
         <div class="sidebar">
             <div class="logo">
                 <h1>
-                    <a href="admin.html"><img src="assets/Logo2.png" alt="ChickChicken"
+                    <a href="admin.php"><img src="assets/Logo2.png" alt="ChickChicken"
                             style="width: auto; height: 55px" /></a>
                 </h1>
             </div>
+            
             <div class="navigation--admin">
                 <nav>
                     <ul>
@@ -103,37 +111,42 @@
                                 <span>Dashboard</span>
                             </a>
                         </li>
+                        <li><a href="admin_sales_report.php" class="header_button"><ion-icon name="bar-chart-outline"></ion-icon><span>Sales Report</span></a></li>
                         <li>
-                            <a href="orders--admin.html" class="header_button">
+                            <a href="orders--admin.php" class="header_button">
                                 <ion-icon name="bag-handle-outline"></ion-icon>
                                 <span>Orders</span>
                             </a>
                         </li>
                         <li>
-                            <a href="menu--admin.html" class="header_button">
+                            <a href="menu--admin.php" class="header_button">
                                 <ion-icon name="book-outline"></ion-icon>
                                 <span>Menus</span>
                             </a>
                         </li>
                         <li>
-                            <a href="inventory.html" class="header_button">
+                            <a href="inventory.php" class="header_button">
                                 <ion-icon name="clipboard-outline"></ion-icon>
                                 <span>Inventory</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="admins-review.php" class="header_button">
-                                <ion-icon name="chatbubbles-outline"></ion-icon>
-                                <span>Reviews</span>
-                            </a>
-                        </li>
+                        <li><a href="admin-discount.php" class="header_button"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
+                                 <li>
+              <a href="admins-review.php" class="header_button">
+                  <ion-icon name="chatbubbles-outline"></ion-icon>
+                  <span>Reviews</span>
+              </a>
+          </li>
                     </ul>
                 </nav>
             </div>
-            <div class="sidebar-logout-wrap">
-                <a href="logout_process.php" class="btn-logout">
+
+            <!-- Logout -->
+            <div style="margin-top: auto; padding: 20px 0 10px;">
+                <a href="admin_logout.php" class="header_button" style="color:#c62828;"
+                   onclick="return confirm('Are you sure you want to log out?')">
                     <ion-icon name="log-out-outline"></ion-icon>
-                    <span>Logout</span>
+                    <span>Log Out</span>
                 </a>
             </div>
         </div>
@@ -319,7 +332,7 @@
             for (let i = 6; i >= 0; i--) {
                 const d = new Date();
                 d.setDate(d.getDate() - i);
-                const key = d.toISOString().split('T')[0];
+                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
                 const found = data.find(r => r.day === key);
                 days.push(d.toLocaleDateString('en-PH', { weekday: 'short', month: 'short', day: 'numeric' }));
                 revenues.push(found ? parseFloat(found.revenue) : 0);

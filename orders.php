@@ -1,6 +1,24 @@
 <?php
 session_start();
 require 'db.php';
+
+// ── Fetch all products from DB, grouped by category ──────
+$dbProducts = $pdo->query("SELECT * FROM products ORDER BY category, id")->fetchAll(PDO::FETCH_ASSOC);
+
+// Group by category
+$grouped = [];
+foreach ($dbProducts as $p) {
+    $cat = $p['category'] ?: 'Other';
+    $grouped[$cat][] = $p;
+}
+
+// Map category name → anchor ID
+$catIds = ['Mains' => 'mains', 'Combos' => 'combos', 'Sauces' => 'sauces'];
+
+// Helper: get anchor id for any category
+function getCatAnchor($catName, $catIds) {
+    return $catIds[$catName] ?? strtolower(preg_replace('/\s+/', '-', $catName));
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,18 +92,18 @@ require 'db.php';
     }
 
     /* ═══════════════════════════════════════════
-       LAYOUT — hero + sidebar locked, only main scrolls
+       LAYOUT
     ═══════════════════════════════════════════ */
     .shop-layout {
+      width: 100%;
+      max-width: 100%;
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 260px 1fr;
       overflow: hidden;
       min-height: calc(100vh - 65px - 130px);
       height: calc(100vh - 65px - 130px);
-      /* height is also refreshed by JS so it matches the viewport */
     }
 
-    /* sidebar remains fixed inside the layout while only the main column scrolls */
     .sidebar {
       background: #fff;
       border-right: 2px solid var(--border);
@@ -120,20 +138,55 @@ require 'db.php';
     }
     .sidebar a.active .dot { background: var(--red); }
 
-    /* main — ONLY this column scrolls */
     .main-content {
-      padding: 48px 52px;
+      padding: 48px 40px;
       overflow-y: auto;
       height: 100%;
       min-height: 0;
     }
 
+    /* ═══════════════════════════════════════════
+       SECTION HEADERS
+    ═══════════════════════════════════════════ */
+    .menu-section { margin-bottom: 64px; scroll-margin-top: 80px; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .section-head h2 {
+      font-family: var(--oswald);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--black);
+      white-space: nowrap;
+      position: relative;
+      padding-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .section-head h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--mustard);
+      border-radius: 2px;
+    }
+    .section-head .line {
+      flex: 1;
+      height: 1.5px;
+      background: var(--border);
+      border-radius: 1px;
+    }
 
     /* ═══════════════════════════════════════════
        MENU GRID
     ═══════════════════════════════════════════ */
-    .menu-section { margin-bottom: 64px; scroll-margin-top: 80px; }
-
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -185,6 +238,12 @@ require 'db.php';
       border:1.5px solid rgba(0,0,0,0.15);
     }
 
+    .card-no-img {
+      width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:52px;
+    }
+
     /* ═══════════════════════════════════════════
        POPUP MODAL
     ═══════════════════════════════════════════ */
@@ -216,9 +275,15 @@ require 'db.php';
     .popup-img {
       width: 300px; flex-shrink:0;
       background: var(--cream);
+      overflow:hidden;
     }
     .popup-img img {
       width:100%; height:100%; object-fit:cover; object-position:center top;
+    }
+    .popup-img-placeholder {
+      width:100%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      font-size:80px; background: var(--cream);
     }
 
     .popup-body {
@@ -320,9 +385,9 @@ require 'db.php';
       background:var(--mustard); color:var(--black);
       font-family:var(--oswald); font-size:12px; font-weight:700;
       width:22px; height:22px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      border:2px solid #fff;
       display:none;
+      align-items:center; justify-content:center;
+      border:2px solid #fff;
     }
     .fab-badge.show { display:flex; }
 
@@ -337,7 +402,8 @@ require 'db.php';
     .cart-backdrop.open { display:block; }
 
     .cart-drawer {
-      position:fixed; top:0; right:-440px; width:420px;
+      position: fixed; top: 0; right: -100vw;
+      width: 420px;
       height:100vh; background:#fff; z-index:1900;
       display:flex; flex-direction:column;
       box-shadow: -4px 0 40px rgba(0,0,0,0.18);
@@ -440,7 +506,7 @@ require 'db.php';
     @keyframes toastIn { from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)} }
 
     /* ═══════════════════════════════════════════
-       FOOTER (matching style.css)
+       FOOTER
     ═══════════════════════════════════════════ */
     .footer {
       background-color: #FFD733;
@@ -449,100 +515,32 @@ require 'db.php';
       font-size: 18px;
       width: 100%;
     }
-
     .footer-container {
-      width: 90%;
-      max-width: 1200px;
+      width: 90%; max-width: 1200px;
       margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      text-align: left;
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: flex-start;
+      gap: 40px; text-align: left;
     }
-
-    .footer-logo {
-      display: block;
-      margin-bottom: 10px;
-      margin-right: 60px;
-    }
-
-    .footer-info,
-    .footer-links,
-    .footer-section,
-    .footer-logo {
-      flex: 1 1 250px;
-      min-width: 200px;
-    }
-
-    .footer-info h4,
-    .footer-links h4,
-    .footer-section h4 {
-      font-size: 22px !important;
-      font-weight: bold;
-      margin-bottom: 14px;
-      line-height: 1.2;
+    .footer-logo { display: block; margin-bottom: 10px; margin-right: 60px; }
+    .footer-info, .footer-links, .footer-section, .footer-logo { flex: 1 1 250px; min-width: 200px; }
+    .footer-info h4, .footer-links h4, .footer-section h4 {
+      font-size: 22px !important; font-weight: bold;
+      margin-bottom: 14px; line-height: 1.2;
       font-family: "Oswald", sans-serif;
     }
-
-    .footer-logo-img {
-      display: block;
-    }
-
-    .footer-info ul,
-    .footer-links ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-family: "Alegreya Sans", sans-serif;
-    }
-
-    .footer-info ul li,
-    .footer-links ul li {
-      margin-bottom: 8px;
-    }
-
-    .footer-info ul li a,
-    .footer-links ul li a {
-      color: #000;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .footer-info ul li a:hover,
-    .footer-links ul li a:hover {
-      color: #E53935;
-    }
-
-    .footer-section p {
-      margin: 0 0 10px 0;
-      font-family: "Alegreya Sans", sans-serif;
-    }
-
-    .social-icons {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .social-icons img {
-      width: 30px;
-      height: auto;
-      transition: transform 0.3s ease;
-    }
-
-    .social-icons img:hover {
-      transform: scale(1.15);
-    }
-
+    .footer-logo-img { display: block; }
+    .footer-info ul, .footer-links ul { list-style: none; padding: 0; margin: 0; font-family: "Alegreya Sans", sans-serif; }
+    .footer-info ul li, .footer-links ul li { margin-bottom: 8px; }
+    .footer-info ul li a, .footer-links ul li a { color: #000; text-decoration: none; transition: color 0.3s ease; }
+    .footer-info ul li a:hover, .footer-links ul li a:hover { color: #E53935; }
+    .footer-section p { margin: 0 0 10px 0; font-family: "Alegreya Sans", sans-serif; }
+    .social-icons { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+    .social-icons img { width: 30px; height: auto; transition: transform 0.3s ease; }
+    .social-icons img:hover { transform: scale(1.15); }
     .footer-bottom {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 14px;
-      border-top: 1px solid rgba(0,0,0,0.2);
-      padding-top: 15px;
+      text-align: center; margin-top: 30px; font-size: 14px;
+      border-top: 1px solid rgba(0,0,0,0.2); padding-top: 15px;
       font-family: "Oswald", sans-serif;
     }
 
@@ -556,23 +554,216 @@ require 'db.php';
       .popup-modal { flex-direction:column; }
       .popup-img { width:100%; height:220px; }
       .popup-row { flex-direction:column; gap:16px; }
-      .footer-container { grid-template-columns:1fr 1fr; }
       .page-hero { padding:16px 24px; }
     }
     @media (max-width:580px) {
       .cart-drawer { width:100%; right:-100%; }
       .menu-grid { grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:14px; }
-      .footer-container { grid-template-columns:1fr; }
     }
-
-    /* ════════════════════════════════════════════════════════ NAV STYLES ════ */
-
+    .page-hero {
+  padding: 10px 32px 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+ 
+/* ── 2. SHOP LAYOUT — default (desktop) stays the same ─── */
+.shop-layout {
+  /* height is set by JS lockLayout(); keep overflow:hidden */
+}
+ 
+/* ── 3. MOBILE CATEGORY BAR (replaces hidden sidebar) ───── */
+.mobile-cat-bar {
+  display: none;
+}
+ 
+/* ── 4. POPUP MODAL ─────────────────────────────────────── */
+/* ensure the close button is always reachable */
+.popup-modal { position: relative; }
+ 
+/* ── 5. ORDER TRACKER bubble — keep away from FAB ───────── */
+/* On desktop: bottom-left. On mobile: raise it up a bit    */
+ 
+/* ═══════════════════════════════════════════════════════════
+   TABLET  (≤ 1024px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .shop-layout {
+    grid-template-columns: 1fr; /* was 180px 1fr */
+  }
+}
+ 
+/* ═══════════════════════════════════════════════════════════
+   TABLET PORTRAIT / LARGE PHONE  (≤ 900px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+ 
+  /* --- Layout --- */
+  .shop-layout {
+    grid-template-columns: 1fr;
+    height: auto !important;        /* let it expand naturally */
+    min-height: unset !important;
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+  }
+ 
+  .sidebar { display: none; }       /* hidden — replaced by pill bar */
+ 
+  /* --- Mobile category pill bar --- */
+  .mobile-cat-bar {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 65px;                      /* below navbar */
+    z-index: 850;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .mobile-cat-bar::-webkit-scrollbar { display: none; }
+ 
+  .mobile-cat-bar a {
+    flex-shrink: 0;
+    font-family: var(--oswald);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    border: 2px solid var(--border);
+    color: var(--black);
+    text-decoration: none;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+  .mobile-cat-bar a.active,
+  .mobile-cat-bar a:hover {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+  }
+ 
+  /* page-hero no longer sticky (cat bar takes over) */
+  .page-hero {
+    position: static;
+    padding: 16px 20px;
+  }
+ 
+  /* Main content scrolls normally */
+  .main-content {
+    padding: 48px 20px;  /* bottom pad for FAB */
+    overflow-y: visible;
+    height: auto;
+    width: 100%;
+  }
+ 
+  /* --- Popup --- */
+  .popup-modal {
+    flex-direction: column;
+    max-height: 92vh;
+  }
+  .popup-img {
+    width: 100%;
+    height: 200px;
+  }
+  .popup-body {
+    padding: 20px 20px 24px;
+  }
+  .popup-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .popup-close {
+    top: 12px;
+    right: 14px;
+  }
+ 
+  /* --- Cart drawer --- */
+  .cart-drawer {
+    width: 100%;
+    right: -100%;
+  }
+ 
+  /* --- Order tracker: move above FAB row --- */
+  #ot-bubble {
+    bottom: 100px;
+    left: 16px;
+  }
+  #ot-panel {
+    width: calc(100vw - 32px);
+    max-width: 360px;
+  }
+ 
+  /* --- FAB --- */
+  .fab-cart {
+    bottom: 20px;
+    right: 20px;
+  }
+  .toast-wrap {
+    bottom: 90px;
+    right: 16px;
+  }
+}
+ 
+/* ═══════════════════════════════════════════════════════════
+   SMALL PHONE  (≤ 480px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .page-hero h1 { font-size: 36px; }
+  .page-hero span { font-size: 14px; }
+ 
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .card-img { height: 140px; }
+  .card-body h3 { font-size: 14px; }
+  .card-price { font-size: 17px; }
+ 
+  /* Popup full-height sheet feel */
+  .popup-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .popup-modal {
+    border-radius: 20px 20px 0 0;
+    max-height: 94vh;
+  }
+  .popup-img { height: 180px; }
+ 
+  /* Cart drawer */
+  .cart-drawer { width: 100%; right: -100%; }
+ 
+  /* Order tracker panel full width */
+  #ot-panel {
+    width: calc(100vw - 32px);
+    left: 0;
+  }
+ 
+  /* Footer stacks cleanly */
+  .footer-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .footer-logo { margin-right: 0; }
+}
+ 
+/* ═══════════════════════════════════════════════════════════
+   VERY SMALL  (≤ 360px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .menu-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card-img { height: 120px; }
+  .mobile-cat-bar { padding: 8px 12px; }
+  .main-content { padding: 20px 12px 100px; }
+}
   </style>
 </head>
 
 <body>
 <?php include 'nav.php'; ?>
-
 
 <!-- ═══════════════════════════════════════
      PAGE HERO
@@ -581,175 +772,101 @@ require 'db.php';
   <h1>Our Menu</h1>
 </div>
 
+<nav class="mobile-cat-bar" id="mobile-cat-bar">
+  <?php $first = true; foreach (array_keys($grouped) as $catName): ?>
+  <a href="#"
+     data-target="<?= htmlspecialchars(getCatAnchor($catName, $catIds)) ?>"
+     <?= $first ? 'class="active"' : '' ?>>
+    <?= htmlspecialchars($catName) ?>
+  </a>
+  <?php $first = false; endforeach; ?>
+</nav>
+
 <!-- ═══════════════════════════════════════
      SHOP LAYOUT
 ══════════════════════════════════════════ -->
 <div class="shop-layout">
 
-  <!-- SIDEBAR -->
+  <!-- SIDEBAR — dynamically built from DB categories -->
   <aside class="sidebar">
     <div class="sidebar-label">Categories</div>
-    <a href="#mains" class="active"><span class="dot"></span>Mains</a>
-    <a href="#combos"><span class="dot"></span>Combo Tenders</a>
-    <a href="#sauces"><span class="dot"></span>Sauces</a>
+    <?php $first = true; foreach (array_keys($grouped) as $catName): ?>
+    <a href="#" data-target="<?= htmlspecialchars(getCatAnchor($catName, $catIds)) ?>" <?= $first ? 'class="active"' : '' ?>>
+      <span class="dot"></span><?= htmlspecialchars($catName) ?>
+    </a>
+    <?php $first = false; endforeach; ?>
   </aside>
 
-  <!-- MAIN -->
+  <!-- MAIN — dynamically built from DB products -->
   <main class="main-content">
 
-    <!-- MAINS -->
-    <section class="menu-section" id="mains">
+    <?php foreach ($grouped as $catName => $items):
+        $anchorId = getCatAnchor($catName, $catIds);
+    ?>
+    <section class="menu-section" id="<?= htmlspecialchars($anchorId) ?>">
       <div class="section-head">
-        <h2>Mains</h2>
+        <h2><?= htmlspecialchars($catName) ?></h2>
         <div class="line"></div>
       </div>
       <div class="menu-grid">
-
-        <div class="menu-card" data-popup="popup-1">
-          <span class="card-badge">BESTSELLER</span>
-          <div class="card-img"><img src="menuassets/Chick_Rice.png" alt="Chick Rice" loading="lazy"/></div>
+        <?php foreach ($items as $p): ?>
+        <div class="menu-card" data-popup="popup-db-<?= $p['id'] ?>">
+          <div class="card-img">
+            <?php if (!empty($p['image'])): ?>
+              <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>" loading="lazy"/>
+            <?php else: ?>
+              <div class="card-no-img">🍗</div>
+            <?php endif; ?>
+          </div>
           <div class="card-body">
-            <h3>Chick Rice</h3>
-            <div class="card-price">₱169+</div>
+            <h3><?= htmlspecialchars($p['name']) ?></h3>
+            <div class="card-price">₱<?= number_format($p['price'], 0) ?>+</div>
           </div>
         </div>
-
-        <div class="menu-card" data-popup="popup-2">
-          <div class="card-img"><img src="menuassets/Chick_Fries.png" alt="Chick Fries" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Chick Fries</h3>
-            <div class="card-price">₱169+</div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-popup="popup-3">
-          <div class="card-img"><img src="menuassets/Mac_Chick.png" alt="Mac & Chick" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Mac &amp; Chick</h3>
-            <div class="card-price">₱189+</div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-popup="popup-4">
-          <div class="card-img"><img src="menuassets/AddChickTender.png" alt="Additional Chicken Tender" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Additional Chicken Tender</h3>
-            <div class="card-price">₱289+</div>
-          </div>
-        </div>
-
+        <?php endforeach; ?>
       </div>
     </section>
+    <?php endforeach; ?>
 
-    <!-- COMBO TENDERS -->
-    <section class="menu-section" id="combos">
-      <div class="section-head">
-        <h2>Combo Tenders</h2>
-        <div class="line"></div>
-      </div>
-      <div class="menu-grid">
-
-        <div class="menu-card" data-popup="popup-5">
-          <div class="card-img"><img src="menuassets/SuperChick.png" alt="Super Chick" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Super Chick</h3>
-            <div class="card-price">₱339</div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-popup="popup-6">
-          <div class="card-img"><img src="menuassets/Chick_One.png" alt="Chick One" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Chick One</h3>
-            <div class="card-price">₱289</div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-popup="popup-7">
-          <div class="card-img"><img src="menuassets/Chick_Two.png" alt="Chick Two" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Chick Two</h3>
-            <div class="card-price">₱299</div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-popup="popup-8">
-          <div class="card-img"><img src="menuassets/Chick_Five.png" alt="Chick Five" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Chick Five</h3>
-            <div class="card-price">₱319</div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- SAUCES -->
-    <section class="menu-section" id="sauces">
-      <div class="section-head">
-        <h2>Sauces</h2>
-        <div class="line"></div>
-      </div>
-      <div class="menu-grid">
-
-        <div class="menu-card" data-popup="popup-9">
-          <div class="card-img"><img src="menuassets/Sauce2.png" alt="Extra Sauce" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Extra Sauce</h3>
-            <div class="card-price">₱40</div>
-          </div>
-        </div>
-
-        <div class="menu-card" data-popup="popup-10">
-          <div class="card-img"><img src="menuassets/Sauce16.png" alt="Jumbo Sauce" loading="lazy"/></div>
-          <div class="card-body">
-            <h3>Jumbo Sauce (16oz)</h3>
-            <div class="card-price">₱179</div>
-          </div>
-        </div>
-
-      </div>
-    </section>
+    <?php if (empty($grouped)): ?>
+    <div style="text-align:center;padding:80px 20px;color:#bbb;font-family:var(--oswald);font-size:20px;">
+      🍗 No menu items yet. Check back soon!
+    </div>
+    <?php endif; ?>
 
   </main>
 </div>
 
-<?php
-$products = [
-  ['id'=>'popup-1', 'db_id'=>1, 'name'=>'Chick Rice',               'img'=>'menuassets/Chick_Rice.png',      'price'=>169, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-2', 'db_id'=>2, 'name'=>'Chick Fries',              'img'=>'menuassets/Chick_Fries.png',     'price'=>169, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-3', 'db_id'=>3, 'name'=>'Mac & Chick',              'img'=>'menuassets/Mac_Chick.png',       'price'=>189, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-4', 'db_id'=>4, 'name'=>'Additional Chicken Tender','img'=>'menuassets/AddChickTender.png',  'price'=>289, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-5', 'db_id'=>5, 'name'=>'Super Chick',              'img'=>'menuassets/SuperChick.png',      'price'=>339, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-6', 'db_id'=>6, 'name'=>'Chick One',               'img'=>'menuassets/Chick_One.png',       'price'=>289, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-7', 'db_id'=>7, 'name'=>'Chick Two',               'img'=>'menuassets/Chick_Two.png',       'price'=>299, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-8', 'db_id'=>8, 'name'=>'Chick Five',              'img'=>'menuassets/Chick_Five.png',      'price'=>319, 'has_options'=>true,  'has_mix'=>true,  'has_extra'=>true],
-  ['id'=>'popup-9', 'db_id'=>9, 'name'=>'Extra Sauce',             'img'=>'menuassets/Sauce2.png',          'price'=>40,  'has_options'=>false, 'has_mix'=>false, 'has_extra'=>false],
-  ['id'=>'popup-10','db_id'=>10,'name'=>'Jumbo Sauce (16oz)',       'img'=>'menuassets/Sauce16.png',         'price'=>179, 'has_options'=>false, 'has_mix'=>false, 'has_extra'=>false],
-];
-
-foreach ($products as $p):
+<!-- ═══════════════════════════════════════
+     POPUPS — dynamically built from DB products
+══════════════════════════════════════════ -->
+<?php foreach ($dbProducts as $p):
+    $isSauce = ($p['category'] === 'Sauces');
 ?>
-<div class="popup-backdrop" id="<?= $p['id'] ?>" data-db-id="<?= $p['db_id'] ?>" data-base-price="<?= $p['price'] ?>">
+<div class="popup-backdrop" id="popup-db-<?= $p['id'] ?>" data-db-id="<?= $p['id'] ?>" data-base-price="<?= $p['price'] ?>">
   <div class="popup-modal">
     <div class="popup-img">
-      <img src="<?= $p['img'] ?>" alt="<?= htmlspecialchars($p['name']) ?>"/>
+      <?php if (!empty($p['image'])): ?>
+        <img src="<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>"/>
+      <?php else: ?>
+        <div class="popup-img-placeholder">🍗</div>
+      <?php endif; ?>
     </div>
     <div class="popup-body" style="position:relative;">
       <button class="popup-close" aria-label="Close">✕</button>
 
       <div>
         <div class="popup-name"><?= htmlspecialchars($p['name']) ?></div>
-        <div class="popup-price">₱<?= $p['price'] ?>+</div>
+        <div class="popup-price">₱<?= number_format($p['price'], 0) ?></div>
       </div>
       <div class="popup-divider"></div>
 
-      <?php if ($p['has_options']): ?>
+      <?php if (!$isSauce): ?>
       <div>
         <div class="opt-label">Size / Option</div>
         <div class="opt-group" data-group="option">
           <button class="opt-btn">Solo <small style="opacity:.6">(600ml)</small></button>
-          <button class="opt-btn">Double <small style="opacity:.6">(1000ml)</small></button>
+          <button class="opt-btn">Double <small style="opacity:.6">(1000ml) +₱100</small></button>
         </div>
       </div>
       <?php endif; ?>
@@ -763,7 +880,7 @@ foreach ($products as $p):
             <button class="opt-btn">Cheese Sauce</button>
           </div>
         </div>
-        <?php if ($p['has_extra']): ?>
+        <?php if (!$isSauce): ?>
         <div>
           <div class="opt-label">Extra Flavor <span style="color:var(--red);font-size:11px;">+₱20</span></div>
           <div class="opt-group" data-group="extra">
@@ -774,7 +891,7 @@ foreach ($products as $p):
         <?php endif; ?>
       </div>
 
-      <?php if ($p['has_mix']): ?>
+      <?php if (!$isSauce): ?>
       <div>
         <div class="opt-label">Sauce Preference</div>
         <div class="opt-group" data-group="mix">
@@ -792,9 +909,8 @@ foreach ($products as $p):
           <div class="qty-val">1</div>
           <button class="qty-plus">+</button>
         </div>
-        <button class="btn-add" data-db-id="<?= $p['db_id'] ?>">Add to Cart</button>
+        <button class="btn-add" data-db-id="<?= $p['id'] ?>">Add to Cart</button>
       </div>
-
     </div>
   </div>
 </div>
@@ -805,8 +921,6 @@ foreach ($products as $p):
 ══════════════════════════════════════════ -->
 <button class="fab-cart" id="fab-cart" aria-label="View Cart">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.17 5H19l-1.68 8.39a2 2 0 0 1-1.97 1.61H8.65a2 2 0 0 1-1.97-1.68L5.17 5zM3 3H1V1H3v2zm0 2l1.5 7.5"/>
-    <path d="M3 5H1" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
     <path d="M3 3h17l-1.68 8.39A2 2 0 0 1 16.35 13H8.65a2 2 0 0 1-1.97-1.68L4.82 3H3" stroke="#fff" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
     <circle cx="9" cy="20" r="1.5" fill="#fff"/>
     <circle cx="17" cy="20" r="1.5" fill="#fff"/>
@@ -839,22 +953,19 @@ foreach ($products as $p):
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <!-- ═══════════════════════════════════════
-     FOOTER (matching index.php)
+     FOOTER
 ══════════════════════════════════════════ -->
 <footer class="footer">
   <div class="footer-container">
-
     <div class="footer-logo">
       <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
     </div>
-
     <div class="footer-links">
       <h4>Quick Links</h4>
       <ul>
         <li><a href="orders.php">Menu</a></li>
       </ul>
     </div>
-
     <div class="footer-info">
       <h4>Information</h4>
       <ul>
@@ -863,7 +974,6 @@ foreach ($products as $p):
         <li><a href="branch-locator.php">Branch Locator</a></li>
       </ul>
     </div>
-
     <div class="footer-section">
       <h4>Need help?</h4>
       <p>Contact us on:</p>
@@ -873,9 +983,7 @@ foreach ($products as $p):
         <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
       </div>
     </div>
-
   </div>
-
   <div class="footer-bottom">
     © 2025 Chick Chicken. All rights reserved.
   </div>
@@ -885,40 +993,74 @@ foreach ($products as $p):
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
+  /* ─── PRICE CALCULATOR ───────────────────────
+     Recalculates and updates the displayed price
+     inside any popup based on current selections.
+  ──────────────────────────────────────────── */
+  function updatePopupPrice(popup) {
+    const basePrice = parseFloat(popup.dataset.basePrice) || 0;
+
+    // +₱100 if "Double" is selected
+    const optionBtn = popup.querySelector('[data-group="option"] .selected');
+    const isDouble  = optionBtn ? optionBtn.textContent.trim().toLowerCase().startsWith("double") : false;
+
+    // +₱20 if any extra flavor is selected
+    const hasExtra = !!popup.querySelector('[data-group="extra"] .selected');
+
+    const total   = basePrice + (isDouble ? 100 : 0) + (hasExtra ? 20 : 0);
+    const priceEl = popup.querySelector(".popup-price");
+    if (priceEl) priceEl.textContent = `₱${total.toLocaleString("en-PH")}`;
+  }
+
   /* ─── POPUP OPEN/CLOSE ──────────────────── */
   document.querySelectorAll(".menu-card").forEach(card => {
     card.addEventListener("click", () => {
-      const id = card.dataset.popup;
+      const id    = card.dataset.popup;
       const popup = document.getElementById(id);
       if (!popup) return;
-      // reset
+
+      // Reset all selections and qty
       popup.querySelectorAll(".opt-btn").forEach(b => b.classList.remove("selected"));
       popup.querySelector(".qty-val").textContent = "1";
+
+      // Reset price to base price
+      updatePopupPrice(popup);
+
       popup.classList.add("open");
       document.body.style.overflow = "hidden";
     });
   });
 
   document.querySelectorAll(".popup-backdrop").forEach(backdrop => {
-    // close on bg click
     backdrop.addEventListener("click", e => {
       if (e.target === backdrop) closePopup(backdrop);
     });
-    // close btn
     backdrop.querySelector(".popup-close").addEventListener("click", () => closePopup(backdrop));
 
-    // single-select per group
+    // ── Option group selection with toggle support ──
     backdrop.querySelectorAll("[data-group]").forEach(group => {
+      const groupName = group.dataset.group;
+
       group.querySelectorAll(".opt-btn").forEach(btn => {
         btn.addEventListener("click", () => {
+          const wasSelected = btn.classList.contains("selected");
+
+          // Deselect all in this group first
           group.querySelectorAll(".opt-btn").forEach(b => b.classList.remove("selected"));
-          btn.classList.add("selected");
+
+          // If it wasn't selected before, select it now.
+          // For "extra" group (and all others), clicking the same button again deselects it.
+          if (!wasSelected) {
+            btn.classList.add("selected");
+          }
+          // Always recalculate price after any selection change
+          updatePopupPrice(backdrop);
         });
       });
     });
 
-    // qty
-    const qtyVal  = backdrop.querySelector(".qty-val");
+    // qty buttons (don't affect unit price, but kept clean)
+    const qtyVal = backdrop.querySelector(".qty-val");
     backdrop.querySelector(".qty-minus").addEventListener("click", () => {
       const v = parseInt(qtyVal.textContent);
       if (v > 1) qtyVal.textContent = v - 1;
@@ -954,27 +1096,35 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ─── TOAST ──────────────────────────────── */
   function toast(msg, type="success") {
     const wrap = document.getElementById("toast-wrap");
-    const el = document.createElement("div");
-    el.className = `toast ${type}`;
-    el.textContent = msg;
+    const el   = document.createElement("div");
+    el.className    = `toast ${type}`;
+    el.textContent  = msg;
     wrap.appendChild(el);
     setTimeout(() => el.remove(), 3000);
   }
 
-  /* ─── ADD TO CART (fetch → PHP) ─────────── */
+  /* ─── ADD TO CART ────────────────────────── */
   async function addToCart(popup) {
-    const dbId     = parseInt(popup.dataset.dbId);
-    const qty      = parseInt(popup.querySelector(".qty-val").textContent);
-    const option   = popup.querySelector('[data-group="option"] .selected')?.textContent.trim().replace(/\s+/g,' ') || "";
-    const sauce    = popup.querySelector('[data-group="sauce"] .selected')?.textContent.trim()  || "";
-    const extra    = popup.querySelector('[data-group="extra"] .selected')?.textContent.trim()  || "";
-    const mix      = popup.querySelector('[data-group="mix"] .selected')?.textContent.trim()    || "";
+    const dbId  = parseInt(popup.dataset.dbId);
+    const qty   = parseInt(popup.querySelector(".qty-val").textContent);
+
+    const optionBtn = popup.querySelector('[data-group="option"] .selected');
+    const option    = optionBtn ? optionBtn.textContent.trim().replace(/\s+/g, ' ') : "";
+
+    const sauceBtn  = popup.querySelector('[data-group="sauce"] .selected');
+    const sauce     = sauceBtn ? sauceBtn.textContent.trim() : "";
+
+    const extraBtn  = popup.querySelector('[data-group="extra"] .selected');
+    const extra     = extraBtn ? extraBtn.textContent.trim() : "";
+
+    const mixBtn    = popup.querySelector('[data-group="mix"] .selected');
+    const mix       = mixBtn ? mixBtn.textContent.trim() : "";
 
     try {
       const res  = await fetch("add_to_cart.php", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({ product_id:dbId, quantity:qty, option, sauce, extra, mix })
+        method:  "POST",
+        headers: {"Content-Type": "application/json"},
+        body:    JSON.stringify({ product_id: dbId, quantity: qty, option, sauce, extra, mix })
       });
       const data = await res.json();
 
@@ -997,8 +1147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ─── LOAD CART ITEMS ────────────────────── */
   async function loadCart() {
-    const wrap  = document.getElementById("cart-items-wrap");
-    const empty = document.getElementById("cart-empty");
+    const wrap    = document.getElementById("cart-items-wrap");
     const totalEl = document.getElementById("cart-total");
 
     wrap.innerHTML = '<div style="padding:40px;text-align:center;color:#bbb;font-family:var(--oswald);">Loading…</div>';
@@ -1008,26 +1157,26 @@ document.addEventListener("DOMContentLoaded", () => {
       const items = await res.json();
 
       if (!items.length) {
-        wrap.innerHTML = `<div class="cart-empty"><div class="empty-icon">🛒</div><p>Your cart is empty</p></div>`;
+        wrap.innerHTML      = `<div class="cart-empty"><div class="empty-icon">🛒</div><p>Your cart is empty</p></div>`;
         totalEl.textContent = "₱0";
         updateBadge(0);
         return;
       }
 
-      let total = 0;
+      let total   = 0;
       wrap.innerHTML = "";
 
       items.forEach(item => {
-        const extraCost  = item.extra_flavor ? 20 : 0;
-        const lineTotal  = (parseFloat(item.price) + extraCost) * parseInt(item.quantity);
+        // Price stored in DB already includes size/extra upcharges (set by add_to_cart.php)
+        const lineTotal = parseFloat(item.price) * parseInt(item.quantity);
         total += lineTotal;
 
         const meta = [item.option_selected, item.sauce, item.extra_flavor, item.mix_preference]
                        .filter(Boolean).join(" · ");
 
-        const div = document.createElement("div");
-        div.className = "cart-item";
-        div.innerHTML = `
+        const div       = document.createElement("div");
+        div.className   = "cart-item";
+        div.innerHTML   = `
           <div class="cart-item-img">
             <img src="${item.image || 'menuassets/Chick_Rice.png'}" alt="${item.name}" loading="lazy"/>
           </div>
@@ -1036,7 +1185,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ${meta ? `<div class="cart-item-meta">${meta}</div>` : ""}
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-            <div class="cart-item-price">₱${lineTotal}</div>
+            <div class="cart-item-price">₱${lineTotal.toFixed(0)}</div>
             <button class="cart-item-del" data-id="${item.id}" title="Remove">✕</button>
           </div>
         `;
@@ -1045,7 +1194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       totalEl.textContent = `₱${total.toFixed(0)}`;
-      updateBadge(items.reduce((s,i) => s + parseInt(i.quantity), 0));
+      updateBadge(items.reduce((s, i) => s + parseInt(i.quantity), 0));
     } catch(e) {
       wrap.innerHTML = `<div style="padding:30px;text-align:center;color:#bbb;">Could not load cart.</div>`;
     }
@@ -1055,9 +1204,9 @@ document.addEventListener("DOMContentLoaded", () => {
   async function removeItem(cartId) {
     try {
       await fetch("remove_from_cart.php", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({cart_id: cartId})
+        method:  "POST",
+        headers: {"Content-Type": "application/json"},
+        body:    JSON.stringify({ cart_id: cartId })
       });
       loadCart();
     } catch(e) { toast("Error removing item.", "error"); }
@@ -1070,7 +1219,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         const res   = await fetch("get_cart.php");
         const items = await res.json();
-        count = items.reduce((s,i) => s + parseInt(i.quantity), 0);
+        count = items.reduce((s, i) => s + parseInt(i.quantity), 0);
       } catch(e) { return; }
     }
     badge.textContent = count;
@@ -1082,340 +1231,219 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "checkout.php";
   });
 
+  /* ─── SIDEBAR CLICK → SCROLL MAIN CONTENT ── */
+  const mainContent = document.querySelector(".main-content");
+  const sections    = document.querySelectorAll(".menu-section");
+  const sideLinks   = document.querySelectorAll(".sidebar a");
+
+  sideLinks.forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+      const targetId = link.dataset.target;
+      const section  = document.getElementById(targetId);
+      if (!section) return;
+      mainContent.scrollTo({ top: section.offsetTop - 32, behavior: "smooth" });
+      sideLinks.forEach(a => a.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+
   /* ─── SIDEBAR ACTIVE STATE ON SCROLL ──────── */
-  const sections = document.querySelectorAll(".menu-section");
-  const sideLinks = document.querySelectorAll(".sidebar a");
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         sideLinks.forEach(a => a.classList.remove("active"));
-        const link = document.querySelector(`.sidebar a[href="#${entry.target.id}"]`);
+        const link = document.querySelector(`.sidebar a[data-target="${entry.target.id}"]`);
         if (link) link.classList.add("active");
       }
     });
-  }, { rootMargin: "-40% 0px -50% 0px" });
+  }, { root: mainContent, rootMargin: "-30% 0px -60% 0px" });
   sections.forEach(s => observer.observe(s));
+
+  // ── MOBILE CATEGORY BAR ─────────────────────────────────────
+(function () {
+  const mobileBar  = document.getElementById('mobile-cat-bar');
+  if (!mobileBar) return;
+ 
+  const mobileLinks = mobileBar.querySelectorAll('a');
+ 
+  // Click → smooth scroll (page-level, since main-content is no longer
+  // a fixed-height scroll container on mobile)
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const section = document.getElementById(link.dataset.target);
+      if (!section) return;
+ 
+      // On desktop the scroll container is .main-content;
+      // on mobile the page itself scrolls.
+      const isMobile = window.innerWidth <= 900;
+      if (isMobile) {
+        // Account for sticky navbar + mobile-cat-bar height
+        const navbarH = document.querySelector('header')?.offsetHeight || 65;
+        const barH    = mobileBar.offsetHeight || 48;
+        const offset  = section.getBoundingClientRect().top
+                        + window.scrollY
+                        - navbarH - barH - 12;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      } else {
+        const mainContent = document.querySelector('.main-content');
+        mainContent?.scrollTo({ top: section.offsetTop - 32, behavior: 'smooth' });
+      }
+ 
+      mobileLinks.forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+ 
+  // Highlight active pill on page scroll (mobile)
+  const sections  = document.querySelectorAll('.menu-section');
+  function onScroll() {
+    if (window.innerWidth > 900) return;
+    const navbarH = document.querySelector('header')?.offsetHeight || 65;
+    const barH    = mobileBar.offsetHeight || 48;
+    const scrollY = window.scrollY + navbarH + barH + 20;
+ 
+    let current = null;
+    sections.forEach(sec => {
+      if (sec.offsetTop <= scrollY) current = sec.id;
+    });
+    if (current) {
+      mobileLinks.forEach(a => {
+        a.classList.toggle('active', a.dataset.target === current);
+      });
+      // Auto-scroll the active pill into view inside the bar
+      const activeLink = mobileBar.querySelector('a.active');
+      if (activeLink) {
+        activeLink.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      }
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+ 
+// ── LOCK LAYOUT: only apply fixed height on desktop ──────────
+// Replace the existing lockLayout function with this version:
+function lockLayout() {
+  const header = document.querySelector('header');
+  const hero   = document.querySelector('.page-hero');
+  const layout = document.querySelector('.shop-layout');
+  if (!layout) return;
+
+  const isMobile = window.innerWidth <= 900;
+
+  if (isMobile) {
+    layout.style.height = '';
+    layout.style.minHeight = '';
+    layout.style.width = '100%';
+    return;
+  }
+
+  const headerH = header ? header.offsetHeight : 65;
+  const heroH   = hero ? hero.offsetHeight : 0;
+  const h = window.innerHeight - headerH - heroH;
+
+  layout.style.height = h + 'px';
+  layout.style.minHeight = h + 'px';
+}
+
+lockLayout();
+window.addEventListener('resize', lockLayout);
 
   /* ─── INIT ───────────────────────────────── */
   updateBadge();
 
-  /* ─── LOCK LAYOUT HEIGHT (hero + sidebar fixed, only main scrolls) ─── */
-  function lockLayout() {
-    const header = document.querySelector('header');
-    const hero   = document.querySelector('.page-hero');
-    const layout = document.querySelector('.shop-layout');
-    if (!layout) return;
-    const headerH = header ? header.offsetHeight : 65;
-    const heroH   = hero   ? hero.offsetHeight   : 0;
-    layout.style.height = (window.innerHeight - headerH - heroH) + 'px';
-  }
+  /* ─── LOCK LAYOUT HEIGHT ─── */
+  
   lockLayout();
   window.addEventListener('resize', lockLayout);
 });
 </script>
 
 <!-- ORDER TRACKER WIDGET -->
-<!-- Drop this snippet just before </body> on any page. Zero dependencies. -->
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Alegreya+Sans:wght@400;700&display=swap');
 
 #ot-bubble {
-    position: fixed;
-    bottom: 28px;
-    left: 28px;
-    z-index: 9999;
+    position: fixed; bottom: 28px; left: 28px; z-index: 9999;
     font-family: 'Alegreya Sans', 'Segoe UI', sans-serif;
 }
-
 #ot-toggle {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #1a1a1a;
-    color: #f5c800;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 20px;
-    font-family: 'Oswald', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    background: #1a1a1a; color: #f5c800;
+    border: none; border-radius: 50px; padding: 12px 20px;
+    font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 500;
+    letter-spacing: 0.5px; cursor: pointer;
     box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    transition: transform 0.15s, box-shadow 0.15s;
-    white-space: nowrap;
+    transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap;
 }
-#ot-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.3);
-}
-
+#ot-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
 #ot-panel {
-    position: absolute;
-    bottom: 60px;
-    left: 0;
-    width: 340px;
-    background: #fff;
-    border-radius: 16px;
+    position: absolute; bottom: 60px; left: 0; width: 340px;
+    background: #fff; border-radius: 16px;
     box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    overflow: hidden;
-    display: none;
-    flex-direction: column;
-    max-height: 520px;
+    overflow: hidden; display: none; flex-direction: column; max-height: 520px;
 }
 #ot-panel.open { display: flex; }
-
 .ot-header {
-    background: #1a1a1a;
-    color: #f5c800;
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: 'Oswald', sans-serif;
-    font-size: 15px;
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
+    background: #1a1a1a; color: #f5c800;
+    padding: 14px 18px; display: flex; align-items: center;
+    justify-content: space-between; font-family: 'Oswald', sans-serif;
+    font-size: 15px; letter-spacing: 0.5px; flex-shrink: 0;
 }
-.ot-header-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+.ot-header-left { display: flex; align-items: center; gap: 8px; }
 .ot-close-btn {
-    background: none;
-    border: none;
-    color: #f5c800;
-    cursor: pointer;
-    font-size: 20px;
-    line-height: 1;
-    padding: 0;
-    opacity: 0.8;
-    transition: opacity 0.15s;
-    font-family: sans-serif;
+    background: none; border: none; color: #f5c800; cursor: pointer;
+    font-size: 20px; line-height: 1; padding: 0; opacity: 0.8;
+    transition: opacity 0.15s; font-family: sans-serif;
 }
 .ot-close-btn:hover { opacity: 1; }
-
-/* Scrollable body */
-#ot-panel-body {
-    overflow-y: auto;
-    flex: 1;
-}
-
+#ot-panel-body { overflow-y: auto; flex: 1; }
 .ot-card { padding: 16px 18px 18px; }
-
-.ot-order-id {
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    color: #aaa;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-}
-.ot-order-meta {
-    font-size: 13px;
-    color: #777;
-    margin-bottom: 14px;
-    line-height: 1.5;
-}
+.ot-order-id { font-family: 'Oswald', sans-serif; font-size: 13px; color: #aaa; letter-spacing: 0.5px; margin-bottom: 4px; }
+.ot-order-meta { font-size: 13px; color: #777; margin-bottom: 14px; line-height: 1.5; }
 .ot-order-meta strong { color: #1a1a1a; font-weight: 700; }
-
-/* Progress bar */
-.ot-progress-track {
-    position: relative;
-    padding: 8px 0 20px;
-    margin-bottom: 16px;
-}
-.ot-line {
-    position: absolute;
-    top: 18px;
-    left: 18px;
-    right: 18px;
-    height: 3px;
-    background: #eee;
-    border-radius: 2px;
-    z-index: 0;
-}
-.ot-line-fill {
-    height: 100%;
-    background: #f5c800;
-    border-radius: 2px;
-    transition: width 0.5s ease;
-}
-.ot-steps {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-}
-.ot-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    flex: 1;
-}
+.ot-progress-track { position: relative; padding: 8px 0 20px; margin-bottom: 16px; }
+.ot-line { position: absolute; top: 18px; left: 18px; right: 18px; height: 3px; background: #eee; border-radius: 2px; z-index: 0; }
+.ot-line-fill { height: 100%; background: #f5c800; border-radius: 2px; transition: width 0.5s ease; }
+.ot-steps { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-start; }
+.ot-step { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
 .ot-step-dot {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #eee;
-    border: 3px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    transition: background 0.3s, border-color 0.3s;
-    color: #bbb;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #eee; border: 3px solid #eee;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; transition: background 0.3s, border-color 0.3s; color: #bbb;
 }
-.ot-step.done .ot-step-dot {
-    background: #f5c800;
-    border-color: #f5c800;
-    color: #1a1a1a;
-}
-.ot-step.active .ot-step-dot {
-    background: #1a1a1a;
-    border-color: #f5c800;
-    color: #f5c800;
-    animation: ot-pulse 2s infinite;
-}
-.ot-step-label {
-    font-size: 10px;
-    font-family: 'Oswald', sans-serif;
-    letter-spacing: 0.3px;
-    color: #bbb;
-    text-align: center;
-    line-height: 1.2;
-    text-transform: uppercase;
-}
-.ot-step.done .ot-step-label,
-.ot-step.active .ot-step-label { color: #1a1a1a; }
-
-/* Status pill */
+.ot-step.done .ot-step-dot { background: #f5c800; border-color: #f5c800; color: #1a1a1a; }
+.ot-step.active .ot-step-dot { background: #1a1a1a; border-color: #f5c800; color: #f5c800; animation: ot-pulse 2s infinite; }
+.ot-step-label { font-size: 10px; font-family: 'Oswald', sans-serif; letter-spacing: 0.3px; color: #bbb; text-align: center; line-height: 1.2; text-transform: uppercase; }
+.ot-step.done .ot-step-label, .ot-step.active .ot-step-label { color: #1a1a1a; }
 .ot-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 11px;
-    font-weight: 800;
-    padding: 3px 10px;
-    border-radius: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.4px;
-    font-family: 'Oswald', sans-serif;
-    margin-bottom: 12px;
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    font-family: 'Oswald', sans-serif; margin-bottom: 12px;
 }
 .pill-pending    { background: #fff8e1; color: #e65c00; }
 .pill-confirmed  { background: #e8f5e9; color: #2e7d32; }
 .pill-cooking    { background: #fff3e0; color: #e65100; }
 .pill-in_transit { background: #e3f2fd; color: #1565c0; }
 .pill-cancelled  { background: #fce4ec; color: #c62828; }
-
-/* Items list */
-.ot-items-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    color: #bbb;
-    margin-bottom: 10px;
-}
-.ot-items-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 14px;
-}
-.ot-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.ot-item-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    object-fit: cover;
-    background: #f5f5f5;
-    flex-shrink: 0;
-    border: 1px solid #eee;
-}
-.ot-item-img-placeholder {
-    width: 48px;
-    height: 48px;
-    border-radius: 10px;
-    background: #f5f5f5;
-    border: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 20px;
-}
-.ot-item-info {
-    flex: 1;
-    min-width: 0;
-}
-.ot-item-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: #1a1a1a;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.ot-item-qty {
-    font-size: 12px;
-    color: #999;
-    margin-top: 2px;
-}
-.ot-item-price {
-    font-family: 'Oswald', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: #555;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-/* Divider + total */
-.ot-divider {
-    border: none;
-    border-top: 1px solid #f0f0f0;
-    margin: 12px 0;
-}
-.ot-total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: 'Oswald', sans-serif;
-}
-.ot-total-label {
-    font-size: 13px;
-    color: #888;
-    letter-spacing: 0.4px;
-}
-.ot-total-value {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1a1a1a;
-}
-
-/* Loading / empty state */
-.ot-state {
-    padding: 32px 18px;
-    text-align: center;
-    font-family: 'Alegreya Sans', sans-serif;
-    color: #aaa;
-    font-size: 14px;
-    line-height: 1.6;
-}
-.ot-state svg {
-    display: block;
-    margin: 0 auto 10px;
-}
-
+.ot-items-label { font-family: 'Oswald', sans-serif; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: #bbb; margin-bottom: 10px; }
+.ot-items-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.ot-item { display: flex; align-items: center; gap: 12px; }
+.ot-item-img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; background: #f5f5f5; flex-shrink: 0; border: 1px solid #eee; }
+.ot-item-img-placeholder { width: 48px; height: 48px; border-radius: 10px; background: #f5f5f5; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 20px; }
+.ot-item-info { flex: 1; min-width: 0; }
+.ot-item-name { font-size: 14px; font-weight: 700; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ot-item-qty { font-size: 12px; color: #999; margin-top: 2px; }
+.ot-item-price { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; color: #555; white-space: nowrap; flex-shrink: 0; }
+.ot-divider { border: none; border-top: 1px solid #f0f0f0; margin: 12px 0; }
+.ot-total-row { display: flex; justify-content: space-between; align-items: center; font-family: 'Oswald', sans-serif; }
+.ot-total-label { font-size: 13px; color: #888; letter-spacing: 0.4px; }
+.ot-total-value { font-size: 18px; font-weight: 600; color: #1a1a1a; }
+.ot-state { padding: 32px 18px; text-align: center; font-family: 'Alegreya Sans', sans-serif; color: #aaa; font-size: 14px; line-height: 1.6; }
+.ot-state svg { display: block; margin: 0 auto 10px; }
 @keyframes ot-pulse {
     0%, 100% { box-shadow: 0 0 0 4px rgba(245,200,0,0.2); }
     50%       { box-shadow: 0 0 0 8px rgba(245,200,0,0.05); }
@@ -1424,21 +1452,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <div id="ot-bubble">
     <button id="ot-toggle" style="display:none;" onclick="otTogglePanel()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
         My Order
     </button>
-
     <div id="ot-panel">
         <div class="ot-header">
             <div class="ot-header-left">
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
                 Order Tracker
             </div>
-            <button class="ot-close-btn" onclick="otTogglePanel()" aria-label="Close">&#x2715;</button>
+            <button class="ot-close-btn" onclick="otTogglePanel()">&#x2715;</button>
         </div>
         <div id="ot-panel-body">
             <div class="ot-state">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
                 Loading your order…
             </div>
         </div>
@@ -1462,30 +1489,16 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
           var res  = await fetch('order_tracker.php?action=active_orders');
           var data = await res.json();
-
           if (data.error === 'not_logged_in') {
               document.getElementById('ot-toggle').style.display = 'none';
               return;
           }
-
-          var orders = data.orders || [];
-
-          // 🔥 FILTER OUT COMPLETED ORDERS
-          orders = orders.filter(order => order.status !== 'completed');
-
+          var orders = (data.orders || []).filter(o => o.status !== 'completed');
           var toggle = document.getElementById('ot-toggle');
-
-          if (orders.length === 0) {
-              toggle.style.display = 'none';
-              return;
-          }
-
+          if (orders.length === 0) { toggle.style.display = 'none'; return; }
           toggle.style.display = 'flex';
           renderCard(orders[0]);
-
-      } catch (e) {
-          console.error('Order tracker error:', e);
-      }
+      } catch (e) { console.error('Order tracker error:', e); }
     }
 
     function renderCard(o) {
@@ -1493,57 +1506,23 @@ document.addEventListener("DOMContentLoaded", () => {
         var status  = o.status;
         var stepIdx = STEPS.findIndex(function(s) { return s.key === status; });
         var fillPct = stepIdx < 0 ? 0 : Math.round((stepIdx / (STEPS.length - 1)) * 100);
-
         var stepsHtml = STEPS.map(function(step, i) {
             var cls = i < stepIdx ? 'done' : (i === stepIdx ? 'active' : '');
-            return '<div class="ot-step ' + cls + '">'
-                + '<div class="ot-step-dot">' + step.icon + '</div>'
-                + '<div class="ot-step-label">' + step.label + '</div>'
-                + '</div>';
+            return '<div class="ot-step ' + cls + '"><div class="ot-step-dot">' + step.icon + '</div><div class="ot-step-label">' + step.label + '</div></div>';
         }).join('');
-
         var pillLabels = { pending: 'Pending', confirmed: 'Confirmed', cooking: 'Cooking', in_transit: 'In Transit' };
         var date    = new Date(o.created_at);
         var dateStr = date.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         var total   = Number(o.total).toLocaleString('en-PH', { minimumFractionDigits: 2 });
-
-        // Build items list
-        var items = o.items || [];
+        var items   = o.items || [];
         var itemsHtml = items.map(function(item) {
-            var imgHtml;
-            if (item.product_image) {
-                imgHtml = '<img class="ot-item-img" src="' + escAttr(item.product_image) + '" alt="' + escAttr(item.product_name) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
-                        + '<div class="ot-item-img-placeholder" style="display:none;">&#x1F357;</div>';
-            } else {
-                imgHtml = '<div class="ot-item-img-placeholder">&#x1F357;</div>';
-            }
+            var imgHtml = item.product_image
+                ? '<img class="ot-item-img" src="' + escAttr(item.product_image) + '" alt="' + escAttr(item.product_name) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="ot-item-img-placeholder" style="display:none;">&#x1F357;</div>'
+                : '<div class="ot-item-img-placeholder">&#x1F357;</div>';
             var subtotal = Number(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 });
-            return '<div class="ot-item">'
-                + imgHtml
-                + '<div class="ot-item-info">'
-                + '<div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div>'
-                + '<div class="ot-item-qty">x' + item.quantity + '</div>'
-                + '</div>'
-                + '<div class="ot-item-price">&#x20B1;' + subtotal + '</div>'
-                + '</div>';
+            return '<div class="ot-item">' + imgHtml + '<div class="ot-item-info"><div class="ot-item-name">' + escHtml(item.product_name || 'Item') + '</div><div class="ot-item-qty">x' + item.quantity + '</div></div><div class="ot-item-price">&#x20B1;' + subtotal + '</div></div>';
         }).join('');
-
-        body.innerHTML = '<div class="ot-card">'
-            + '<div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div>'
-            + '<span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span>'
-            + '<div class="ot-order-meta">' + dateStr + '</div>'
-            + '<div class="ot-progress-track">'
-            + '<div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div>'
-            + '<div class="ot-steps">' + stepsHtml + '</div>'
-            + '</div>'
-            + '<div class="ot-items-label">Your Items</div>'
-            + '<div class="ot-items-list">' + itemsHtml + '</div>'
-            + '<hr class="ot-divider">'
-            + '<div class="ot-total-row">'
-            + '<span class="ot-total-label">TOTAL</span>'
-            + '<span class="ot-total-value">&#x20B1;' + total + '</span>'
-            + '</div>'
-            + '</div>';
+        body.innerHTML = '<div class="ot-card"><div class="ot-order-id">ORDER #' + String(o.id).padStart(7, '0') + '</div><span class="ot-status-pill pill-' + status + '">' + (pillLabels[status] || status) + '</span><div class="ot-order-meta">' + dateStr + '</div><div class="ot-progress-track"><div class="ot-line"><div class="ot-line-fill" style="width:' + fillPct + '%;"></div></div><div class="ot-steps">' + stepsHtml + '</div></div><div class="ot-items-label">Your Items</div><div class="ot-items-list">' + itemsHtml + '</div><hr class="ot-divider"><div class="ot-total-row"><span class="ot-total-label">TOTAL</span><span class="ot-total-value">&#x20B1;' + total + '</span></div></div>';
     }
 
     function escHtml(str) {
@@ -1551,7 +1530,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
         });
     }
-
     function escAttr(str) {
         return String(str == null ? '' : str).replace(/["'<>&]/g, function(c) {
             return { '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c];

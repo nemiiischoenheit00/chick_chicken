@@ -9,23 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Branch selector ---
-  const branchSelect   = document.getElementById("branchSelect");
+  const branchSelect = document.getElementById("branchSelect");
   const branchInfoCard = document.getElementById("branchInfoCard");
-  const branchAddress  = document.getElementById("branchAddress");
-  const branchPhone    = document.getElementById("branchPhone");
-  const branchHours    = document.getElementById("branchHours");
+  const branchAddress = document.getElementById("branchAddress");
+  const branchPhone = document.getElementById("branchPhone");
+  const branchHours = document.getElementById("branchHours");
 
   if (branchSelect) {
     branchSelect.addEventListener("change", () => {
       const selected = branchSelect.options[branchSelect.selectedIndex];
-      const address  = selected.dataset.address;
-      const phone    = selected.dataset.phone;
-      const hours    = selected.dataset.hours;
+      const address = selected.dataset.address;
+      const phone = selected.dataset.phone;
+      const hours = selected.dataset.hours;
 
       if (address) {
         branchAddress.textContent = "📍 " + address;
-        branchPhone.textContent   = "📞 " + phone;
-        branchHours.textContent   = "🕐 " + hours;
+        branchPhone.textContent = "📞 " + phone;
+        branchHours.textContent = "🕐 " + hours;
         branchInfoCard.classList.add("visible");
       } else {
         branchInfoCard.classList.remove("visible");
@@ -38,32 +38,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (phoneInput) {
     phoneInput.addEventListener("input", (e) => {
-      // Strip everything except digits and leading +
       let raw = phoneInput.value.replace(/[^\d]/g, "");
 
-      // If user starts with 0 (local), convert to +63
       if (raw.startsWith("0")) {
         raw = "63" + raw.slice(1);
       }
 
-      // Remove country code prefix if present so we format just the digits
       if (raw.startsWith("63")) {
         raw = raw.slice(2);
       }
 
-      // Cap to 10 digits (after country code)
       raw = raw.substring(0, 10);
 
-      // Format: XXX XXX XXXX
       let formatted = "";
-      if (raw.length > 0) formatted  = raw.substring(0, 3);
+      if (raw.length > 0) formatted = raw.substring(0, 3);
       if (raw.length > 3) formatted += " " + raw.substring(3, 6);
       if (raw.length > 6) formatted += " " + raw.substring(6, 10);
 
       phoneInput.value = raw.length > 0 ? "+63 " + formatted : "";
     });
 
-    // Allow backspace to work cleanly — if user deletes into "+63 ", clear it
     phoneInput.addEventListener("keydown", (e) => {
       if (e.key === "Backspace" && phoneInput.value === "+63 ") {
         phoneInput.value = "";
@@ -120,33 +114,59 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Phone: strip formatting before sending, keep +63XXXXXXXXXX
+    // GCash-specific validation
+    if (payment === "gcash") {
+      const refInput = document.getElementById("gcash-ref");
+      const refVal = refInput?.value.trim() ?? "";
+      if (!refVal) {
+        alert("Please enter your GCash reference number.");
+        refInput?.focus();
+        return;
+      }
+      if (!/^\d{13}$/.test(refVal)) {
+        alert("Please enter a valid 13-digit GCash reference number.");
+        refInput?.focus();
+        return;
+      }
+      const proof = document.getElementById("gcash-proof");
+      if (!proof || proof.files.length === 0) {
+        alert("Please upload your GCash payment screenshot.");
+        proof?.focus();
+        return;
+      }
+    }
+
+    // Phone: strip formatting before sending
     const rawPhone = phoneInput?.value.replace(/\s/g, "") ?? "";
 
-// Replace the payload block and fetch call in your submit handler:
+    const formData = new FormData();
+    formData.append("name",          form.querySelector('input[name="name"]')?.value.trim());
+    formData.append("phone",         rawPhone);
+    formData.append("email",         form.querySelector('input[name="email"]')?.value.trim());
+    formData.append("address",       form.querySelector('input[name="address"]')?.value.trim());
+    formData.append("payment_method", payment);
+    formData.append("branch",        branch);
+    formData.append("discount_type", form.querySelector('input[name="discount_type"]')?.value ?? '');
+    formData.append("discount_rate", form.querySelector('input[name="discount_rate"]')?.value ?? 0);
 
-const formData = new FormData();
-formData.append("name",           form.querySelector('input[name="name"]')?.value.trim());
-formData.append("phone",          rawPhone);
-formData.append("email",          form.querySelector('input[name="email"]')?.value.trim());
-formData.append("address",        form.querySelector('input[name="address"]')?.value.trim());
-formData.append("payment_method", payment);
-formData.append("branch",         branch);
+    if (payment === "gcash") {
+      const proof = document.getElementById("gcash-proof");
+      if (proof.files.length) formData.append("gcash_proof", proof.files[0]);
 
-if (payment === "gcash") {
-  const proof = document.getElementById("gcash-proof");
-  if (proof.files.length) formData.append("gcash_proof", proof.files[0]);
-}
+      const ref = document.getElementById("gcash-ref")?.value.trim() ?? "";
+      formData.append("gcash_reference", ref);
+    }
 
-try {
-  const res  = await fetch("place-order.php", {
-    method: "POST",
-    body:   formData   // ← No Content-Type header; browser sets it with boundary automatically
-  });
-  const data = await res.json();  
+    try {
+      const res = await fetch("place-order.php", {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
 
       if (data.success) {
-        window.location.href = `feedback.html?order_id=${data.order_id}`;
+        const customerName = encodeURIComponent(form.querySelector('input[name="name"]')?.value.trim() || '');
+        window.location.href = `feedback.php?order_id=${data.order_id}&name=${customerName}`;
       } else if (data.error === "not_logged_in") {
         alert("Please sign in to place an order.");
         window.location.href = "login.php";
@@ -165,17 +185,16 @@ try {
 
 async function loadOrderSummary() {
   try {
-    const res   = await fetch("get_cart.php");
+    const res = await fetch("get_cart.php");
     const items = await res.json();
 
-        // Add this guard:
     if (!Array.isArray(items)) {
       console.error("Cart response is not an array:", items);
       return;
     }
 
     const container = document.getElementById("summary-items");
-    const heading   = document.querySelector(".order-summary h3");
+    const heading = document.querySelector(".order-summary h3");
     let subtotal = 0;
 
     if (!items.length) {
@@ -205,8 +224,11 @@ async function loadOrderSummary() {
     });
 
     document.getElementById("summary-subtotal").textContent = `₱${subtotal.toFixed(2)}`;
-    document.getElementById("summary-total").textContent    = `₱${subtotal.toFixed(2)}`;
-
+    if (typeof window.applyDiscount === 'function') {
+      window.applyDiscount();
+    } else {
+      document.getElementById("summary-total").textContent = `₱${subtotal.toFixed(2)}`;
+    }
   } catch (err) {
     console.error("Failed to load cart:", err);
   }
