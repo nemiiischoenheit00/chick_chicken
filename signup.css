@@ -170,3 +170,134 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #cc0000;
 }
+/* =========================================
+   RESPONSIVE FIXES
+========================================= */
+
+html,
+body {
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 992px) {
+
+    .login-container {
+        width: 92%;
+        padding: 35px 30px;
+    }
+
+    .login-container h2 {
+        font-size: 1.6rem;
+    }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    body {
+        align-items: flex-start;
+        padding: 20px 0;
+    }
+
+    .login-container {
+        width: 94%;
+        margin: 20px auto;
+        padding: 28px 20px;
+        border-radius: 12px;
+    }
+
+    .login-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .subtitle,
+    .terms-notice {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    /* STACK FIRST/LAST NAME */
+    .name-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .login-container label {
+        font-size: 0.9rem;
+    }
+
+    .login-container input {
+        padding: 13px 12px;
+        font-size: 0.95rem;
+    }
+
+    .country-code {
+        padding: 0 10px;
+        min-height: 46px;
+    }
+
+    .country-code span {
+        font-size: 0.85rem;
+    }
+
+    button[type="submit"] {
+        padding: 13px;
+        font-size: 0.95rem;
+    }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 480px) {
+
+    .login-container {
+        width: 96%;
+        padding: 22px 16px;
+    }
+
+    .login-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .subtitle,
+    .terms-notice {
+        font-size: 0.8rem;
+    }
+
+    .login-container label {
+        font-size: 0.85rem;
+    }
+
+    .login-container input {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+
+    .country-code {
+        gap: 4px;
+        padding: 0 8px;
+    }
+
+    .country-code span {
+        font-size: 0.8rem;
+    }
+
+    button[type="submit"] {
+        font-size: 0.9rem;
+        padding: 12px;
+    }
+}

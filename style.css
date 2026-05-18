@@ -952,3 +952,127 @@ p {
   border-top: 2px solid #e5e5e5;
   position: relative;
 }
+
+/* ================= RESPONSIVE SYSTEM ================= */
+
+/* TABLET */
+@media (max-width: 1024px) {
+
+  /* About layout stacks better */
+  .background {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .background img {
+    width: 70%;
+    max-width: 320px;
+  }
+
+  .vm-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Footer stacks */
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Welcome box */
+  .welcome-box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .logo-welcome-box {
+    padding: 30px;
+  }
+
+  .text-welcome-box {
+    padding: 20px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  /* Header navigation becomes scroll-safe */
+  nav ul {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+
+  header {
+    padding: 10px 15px;
+  }
+
+  /* About section */
+  .about h1 {
+    font-size: 26px;
+  }
+
+  .background p {
+    font-size: 1.2rem;
+  }
+
+  .vm-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .vm-container p {
+    font-size: 1.1rem;
+  }
+
+  /* Footer */
+  .footer-container {
+    gap: 20px;
+  }
+}
+
+/* SMALL PHONES */
+@media (max-width: 480px) {
+
+  /* Global text scaling */
+  .about h1 {
+    font-size: 22px;
+  }
+
+  .background {
+    gap: 10px;
+  }
+
+  .background img {
+    width: 100%;
+  }
+
+  .background p {
+    font-size: 1rem;
+  }
+
+  .vm-container h2 {
+    font-size: 1.2rem;
+  }
+
+  .vm-container p {
+    font-size: 1rem;
+  }
+
+  /* Footer tighter spacing */
+  .footer {
+    font-size: 14px;
+  }
+
+  .social-icons img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* SAFETY FIX */
+html, body {
+  overflow-x: hidden;
+}

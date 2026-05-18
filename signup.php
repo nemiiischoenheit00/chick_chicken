@@ -29,7 +29,7 @@ if (isset($_GET['error'])) {
             <p class="error-msg"><?= htmlspecialchars($error_msg) ?></p>
         <?php endif; ?>
 
-        <form action="signup_process.php" method="POST">
+        <form action="signup_process.php" method="POST" onsubmit="return validatePhone()">
 
             <div class="name-row">
                 <div class="input-group">
@@ -70,8 +70,17 @@ if (isset($_GET['error'])) {
                     </svg>
                     <span>+63</span>
                 </div>
-                <input type="tel" id="phone" name="phone" placeholder="9171234567" required>
+                <input
+                    type="text"
+                    id="phone"
+                    name="phone"
+                    placeholder="9171234567"
+                    inputmode="numeric"
+                    maxlength="10"
+                    autocomplete="tel"
+                    required>
             </div>
+            <span id="phone-error" style="display:none; color:#b00020; font-size:0.85em; margin-top:-8px; margin-bottom:8px; display:block;"></span>
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="Enter your email address" required>
@@ -96,6 +105,48 @@ if (isset($_GET['error'])) {
             <button type="submit">Sign Up</button>
         </form>
     </div>
+
+    <script>
+        const phoneInput = document.getElementById('phone');
+        const phoneError = document.getElementById('phone-error');
+
+        // Live: strip non-digits, remove leading zeros, cap at 10
+        phoneInput.addEventListener('input', function () {
+            let val = this.value.replace(/\D/g, '');   // digits only
+            val = val.replace(/^0+/, '');               // no leading zeros
+            if (val.length > 10) val = val.slice(0, 10); // max 10 digits
+            this.value = val;
+            phoneError.style.display = 'none';
+        });
+
+        // Block non-numeric key presses
+        phoneInput.addEventListener('keydown', function (e) {
+            const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'];
+            if (!allowed.includes(e.key) && !/^\d$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent paste of non-numeric / leading-zero content
+        phoneInput.addEventListener('paste', function (e) {
+            e.preventDefault();
+            let pasted = (e.clipboardData || window.clipboardData).getData('text');
+            let clean  = pasted.replace(/\D/g, '').replace(/^0+/, '').slice(0, 10);
+            this.value = clean;
+        });
+
+        // Final validation on submit
+        function validatePhone() {
+            const val = phoneInput.value;
+            if (!/^[1-9]\d{9}$/.test(val)) {
+                phoneError.textContent = 'Please enter a valid 10-digit number with no leading zero.';
+                phoneError.style.display = 'block';
+                phoneInput.focus();
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 
 </html>

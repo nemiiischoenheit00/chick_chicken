@@ -39,6 +39,247 @@ session_start();
     .faq.active .question svg {
       transform: rotate(180deg);
     }
+    /* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- WELCOME SECTION ---------- */
+.welcome-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
+}
+
+.logo-welcome-box img {
+  width: 300px;
+  max-width: 100%;
+}
+
+.text-welcome-box {
+  flex: 1;
+  min-width: 280px;
+}
+
+/* ---------- FAQ ---------- */
+.FAQS {
+  padding: 40px 20px;
+}
+
+.faq .question h2 {
+  font-size: 1.1rem;
+}
+
+/* ---------- FEEDBACK SECTION ---------- */
+.feedback-section,
+section[style*="140vh"] {
+  height: auto !important;
+  padding-bottom: 60px;
+}
+
+.container.mt-4 {
+  gap: 20px;
+}
+
+.card {
+  width: 100%;
+}
+
+/* ---------- HERO TEXT ---------- */
+.position-absolute h1 {
+  font-size: clamp(1.5rem, 5vw, 2.5rem) !important;
+}
+
+.position-absolute p {
+  font-size: clamp(1rem, 3vw, 1.5rem) !important;
+}
+
+/* ---------- FOOTER ---------- */
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  padding: 40px 20px;
+}
+
+.footer-links,
+.footer-info,
+.footer-section,
+.footer-logo {
+  flex: 1 1 200px;
+}
+
+/* ---------- ORDER TRACKER ---------- */
+#ot-bubble {
+  bottom: 15px;
+  left: 15px;
+}
+
+#ot-panel {
+  width: 90vw;
+  max-width: 340px;
+}
+
+/* =========================================
+   TABLET
+========================================= */
+@media (max-width: 992px) {
+
+  .welcome-box {
+    text-align: center;
+  }
+
+  .text-welcome-box {
+    width: 100%;
+  }
+
+  .container.mt-4 {
+    justify-content: center;
+  }
+
+  .card {
+    flex: 1 1 100% !important;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+@media (max-width: 768px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .welcomepicture img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .welcome-box {
+    flex-direction: column;
+    padding: 30px 15px;
+  }
+
+  .logo-welcome-box img {
+    width: 220px;
+  }
+
+  .text-welcome-box h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .text-welcome-box p {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .faq .question {
+    gap: 10px;
+  }
+
+  .faq .question h2 {
+    font-size: 1rem;
+  }
+
+  .faq .answer p {
+    font-size: 0.95rem;
+  }
+
+  .position-absolute img {
+    max-width: 140px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .btn.btn-primary {
+    width: 90%;
+    font-size: 1rem !important;
+    padding: 0.9rem 1rem !important;
+  }
+
+  /* FOOTER */
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+  /* ORDER TRACKER */
+  #ot-toggle {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  #ot-panel {
+    left: 0;
+    width: calc(100vw - 30px);
+    max-width: none;
+  }
+
+  .ot-item-name {
+    font-size: 13px;
+  }
+
+  .ot-total-value {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+@media (max-width: 480px) {
+
+  .text-welcome-box h1 {
+    font-size: 1.6rem;
+  }
+
+  .position-absolute h1 {
+    font-size: 1.3rem !important;
+  }
+
+  .position-absolute p {
+    font-size: 0.9rem !important;
+  }
+
+  .faq .question h2 {
+    font-size: 0.95rem;
+  }
+
+  .modal-dialog {
+    margin: 10px;
+  }
+
+  .rev-star {
+    font-size: 26px !important;
+  }
+
+  .ot-step-label {
+    font-size: 8px;
+  }
+
+  .ot-step-dot {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+}
   </style>
 </head>
 

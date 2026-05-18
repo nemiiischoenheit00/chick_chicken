@@ -95,8 +95,10 @@ function getCatAnchor($catName, $catIds) {
        LAYOUT
     ═══════════════════════════════════════════ */
     .shop-layout {
+      width: 100%;
+      max-width: 100%;
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 260px 1fr;
       overflow: hidden;
       min-height: calc(100vh - 65px - 130px);
       height: calc(100vh - 65px - 130px);
@@ -137,7 +139,7 @@ function getCatAnchor($catName, $catIds) {
     .sidebar a.active .dot { background: var(--red); }
 
     .main-content {
-      padding: 48px 52px;
+      padding: 48px 40px;
       overflow-y: auto;
       height: 100%;
       min-height: 0;
@@ -400,7 +402,8 @@ function getCatAnchor($catName, $catIds) {
     .cart-backdrop.open { display:block; }
 
     .cart-drawer {
-      position:fixed; top:0; right:-440px; width:420px;
+      position: fixed; top: 0; right: -100vw;
+      width: 420px;
       height:100vh; background:#fff; z-index:1900;
       display:flex; flex-direction:column;
       box-shadow: -4px 0 40px rgba(0,0,0,0.18);
@@ -557,6 +560,205 @@ function getCatAnchor($catName, $catIds) {
       .cart-drawer { width:100%; right:-100%; }
       .menu-grid { grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:14px; }
     }
+    .page-hero {
+  padding: 10px 32px 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+ 
+/* ── 2. SHOP LAYOUT — default (desktop) stays the same ─── */
+.shop-layout {
+  /* height is set by JS lockLayout(); keep overflow:hidden */
+}
+ 
+/* ── 3. MOBILE CATEGORY BAR (replaces hidden sidebar) ───── */
+.mobile-cat-bar {
+  display: none;
+}
+ 
+/* ── 4. POPUP MODAL ─────────────────────────────────────── */
+/* ensure the close button is always reachable */
+.popup-modal { position: relative; }
+ 
+/* ── 5. ORDER TRACKER bubble — keep away from FAB ───────── */
+/* On desktop: bottom-left. On mobile: raise it up a bit    */
+ 
+/* ═══════════════════════════════════════════════════════════
+   TABLET  (≤ 1024px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .shop-layout {
+    grid-template-columns: 1fr; /* was 180px 1fr */
+  }
+}
+ 
+/* ═══════════════════════════════════════════════════════════
+   TABLET PORTRAIT / LARGE PHONE  (≤ 900px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+ 
+  /* --- Layout --- */
+  .shop-layout {
+    grid-template-columns: 1fr;
+    height: auto !important;        /* let it expand naturally */
+    min-height: unset !important;
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+  }
+ 
+  .sidebar { display: none; }       /* hidden — replaced by pill bar */
+ 
+  /* --- Mobile category pill bar --- */
+  .mobile-cat-bar {
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 65px;                      /* below navbar */
+    z-index: 850;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .mobile-cat-bar::-webkit-scrollbar { display: none; }
+ 
+  .mobile-cat-bar a {
+    flex-shrink: 0;
+    font-family: var(--oswald);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--r-pill);
+    border: 2px solid var(--border);
+    color: var(--black);
+    text-decoration: none;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+  .mobile-cat-bar a.active,
+  .mobile-cat-bar a:hover {
+    background: var(--red);
+    color: #fff;
+    border-color: var(--red);
+  }
+ 
+  /* page-hero no longer sticky (cat bar takes over) */
+  .page-hero {
+    position: static;
+    padding: 16px 20px;
+  }
+ 
+  /* Main content scrolls normally */
+  .main-content {
+    padding: 48px 20px;  /* bottom pad for FAB */
+    overflow-y: visible;
+    height: auto;
+    width: 100%;
+  }
+ 
+  /* --- Popup --- */
+  .popup-modal {
+    flex-direction: column;
+    max-height: 92vh;
+  }
+  .popup-img {
+    width: 100%;
+    height: 200px;
+  }
+  .popup-body {
+    padding: 20px 20px 24px;
+  }
+  .popup-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .popup-close {
+    top: 12px;
+    right: 14px;
+  }
+ 
+  /* --- Cart drawer --- */
+  .cart-drawer {
+    width: 100%;
+    right: -100%;
+  }
+ 
+  /* --- Order tracker: move above FAB row --- */
+  #ot-bubble {
+    bottom: 100px;
+    left: 16px;
+  }
+  #ot-panel {
+    width: calc(100vw - 32px);
+    max-width: 360px;
+  }
+ 
+  /* --- FAB --- */
+  .fab-cart {
+    bottom: 20px;
+    right: 20px;
+  }
+  .toast-wrap {
+    bottom: 90px;
+    right: 16px;
+  }
+}
+ 
+/* ═══════════════════════════════════════════════════════════
+   SMALL PHONE  (≤ 480px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .page-hero h1 { font-size: 36px; }
+  .page-hero span { font-size: 14px; }
+ 
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .card-img { height: 140px; }
+  .card-body h3 { font-size: 14px; }
+  .card-price { font-size: 17px; }
+ 
+  /* Popup full-height sheet feel */
+  .popup-backdrop {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .popup-modal {
+    border-radius: 20px 20px 0 0;
+    max-height: 94vh;
+  }
+  .popup-img { height: 180px; }
+ 
+  /* Cart drawer */
+  .cart-drawer { width: 100%; right: -100%; }
+ 
+  /* Order tracker panel full width */
+  #ot-panel {
+    width: calc(100vw - 32px);
+    left: 0;
+  }
+ 
+  /* Footer stacks cleanly */
+  .footer-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .footer-logo { margin-right: 0; }
+}
+ 
+/* ═══════════════════════════════════════════════════════════
+   VERY SMALL  (≤ 360px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .menu-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card-img { height: 120px; }
+  .mobile-cat-bar { padding: 8px 12px; }
+  .main-content { padding: 20px 12px 100px; }
+}
   </style>
 </head>
 
@@ -569,6 +771,16 @@ function getCatAnchor($catName, $catIds) {
 <div class="page-hero">
   <h1>Our Menu</h1>
 </div>
+
+<nav class="mobile-cat-bar" id="mobile-cat-bar">
+  <?php $first = true; foreach (array_keys($grouped) as $catName): ?>
+  <a href="#"
+     data-target="<?= htmlspecialchars(getCatAnchor($catName, $catIds)) ?>"
+     <?= $first ? 'class="active"' : '' ?>>
+    <?= htmlspecialchars($catName) ?>
+  </a>
+  <?php $first = false; endforeach; ?>
+</nav>
 
 <!-- ═══════════════════════════════════════
      SHOP LAYOUT
@@ -1048,19 +1260,101 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { root: mainContent, rootMargin: "-30% 0px -60% 0px" });
   sections.forEach(s => observer.observe(s));
 
+  // ── MOBILE CATEGORY BAR ─────────────────────────────────────
+(function () {
+  const mobileBar  = document.getElementById('mobile-cat-bar');
+  if (!mobileBar) return;
+ 
+  const mobileLinks = mobileBar.querySelectorAll('a');
+ 
+  // Click → smooth scroll (page-level, since main-content is no longer
+  // a fixed-height scroll container on mobile)
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const section = document.getElementById(link.dataset.target);
+      if (!section) return;
+ 
+      // On desktop the scroll container is .main-content;
+      // on mobile the page itself scrolls.
+      const isMobile = window.innerWidth <= 900;
+      if (isMobile) {
+        // Account for sticky navbar + mobile-cat-bar height
+        const navbarH = document.querySelector('header')?.offsetHeight || 65;
+        const barH    = mobileBar.offsetHeight || 48;
+        const offset  = section.getBoundingClientRect().top
+                        + window.scrollY
+                        - navbarH - barH - 12;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      } else {
+        const mainContent = document.querySelector('.main-content');
+        mainContent?.scrollTo({ top: section.offsetTop - 32, behavior: 'smooth' });
+      }
+ 
+      mobileLinks.forEach(a => a.classList.remove('active'));
+      link.classList.add('active');
+    });
+  });
+ 
+  // Highlight active pill on page scroll (mobile)
+  const sections  = document.querySelectorAll('.menu-section');
+  function onScroll() {
+    if (window.innerWidth > 900) return;
+    const navbarH = document.querySelector('header')?.offsetHeight || 65;
+    const barH    = mobileBar.offsetHeight || 48;
+    const scrollY = window.scrollY + navbarH + barH + 20;
+ 
+    let current = null;
+    sections.forEach(sec => {
+      if (sec.offsetTop <= scrollY) current = sec.id;
+    });
+    if (current) {
+      mobileLinks.forEach(a => {
+        a.classList.toggle('active', a.dataset.target === current);
+      });
+      // Auto-scroll the active pill into view inside the bar
+      const activeLink = mobileBar.querySelector('a.active');
+      if (activeLink) {
+        activeLink.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+      }
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+ 
+// ── LOCK LAYOUT: only apply fixed height on desktop ──────────
+// Replace the existing lockLayout function with this version:
+function lockLayout() {
+  const header = document.querySelector('header');
+  const hero   = document.querySelector('.page-hero');
+  const layout = document.querySelector('.shop-layout');
+  if (!layout) return;
+
+  const isMobile = window.innerWidth <= 900;
+
+  if (isMobile) {
+    layout.style.height = '';
+    layout.style.minHeight = '';
+    layout.style.width = '100%';
+    return;
+  }
+
+  const headerH = header ? header.offsetHeight : 65;
+  const heroH   = hero ? hero.offsetHeight : 0;
+  const h = window.innerHeight - headerH - heroH;
+
+  layout.style.height = h + 'px';
+  layout.style.minHeight = h + 'px';
+}
+
+lockLayout();
+window.addEventListener('resize', lockLayout);
+
   /* ─── INIT ───────────────────────────────── */
   updateBadge();
 
   /* ─── LOCK LAYOUT HEIGHT ─── */
-  function lockLayout() {
-    const header  = document.querySelector('header');
-    const hero    = document.querySelector('.page-hero');
-    const layout  = document.querySelector('.shop-layout');
-    if (!layout) return;
-    const headerH = header ? header.offsetHeight : 65;
-    const heroH   = hero   ? hero.offsetHeight   : 0;
-    layout.style.height = (window.innerHeight - headerH - heroH) + 'px';
-  }
+  
   lockLayout();
   window.addEventListener('resize', lockLayout);
 });

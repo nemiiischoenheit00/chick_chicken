@@ -436,3 +436,104 @@ header .sign--in li a {
 }
 
 /* End of footer ngani */
+
+/* ================= RESPONSIVE FIX ================= */
+
+/* TABLET */
+@media (max-width: 1024px) {
+
+  .branch-locator-box {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 25px;
+  }
+
+  .branch-locator-text {
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .btn_branch {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .header-text-branch {
+    width: 100%;
+    font-size: 1.4rem;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  .branch-container {
+    margin: 20px;
+  }
+
+  .branch-locator-box {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .branch-locator-text h2 {
+    font-size: 1.3rem;
+  }
+
+  .branch-locator-text h3 {
+    font-size: 1rem;
+  }
+
+  .hours h3 {
+    font-size: 0.9rem;
+  }
+
+  .btn_branch {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-directions,
+  .btn-order-now {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .header-text-branch {
+    font-size: 1.2rem;
+  }
+}
+
+/* SMALL PHONES */
+@media (max-width: 480px) {
+
+  .branch-locator-box {
+    padding: 15px;
+  }
+
+  .branch-locator-text h2 {
+    font-size: 1.1rem;
+  }
+
+  .branch-locator-text h3 {
+    font-size: 0.9rem;
+  }
+
+  .btn-directions,
+  .btn-order-now {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .social-icons img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* SAFETY FIX */
+html, body {
+  overflow-x: hidden;
+}

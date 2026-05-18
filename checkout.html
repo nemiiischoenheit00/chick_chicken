@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="Image" href="assets/Logo.png"/>
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    <style>@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');</style>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,100;0,300;0,400;0,500;0,700;0,800;0,900;1,100;1,300;1,400;1,500;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');</style>
+    <title>Chick Chicken</title>
+  </head>
+
+  <header>
+    <div class="logo">
+      <h1>
+        <a href="index.html"><img src="assets/Logo2.png" alt="ChickChicken" style="width: auto; height: 45px"/></a>
+      </h1>
+    </div>
+    <nav>
+      <ul>
+          <li><a href="aboutus.html" class="header_button">About Us</a></li>
+          <li><a href="#FAQS" class="header_button">FAQs</a></li>
+          <li><a href="branchloc.html" class="header_button">Branch Locator</a></li>
+        <li><a href="orders.html" class="ordernow_button">Order Now</a></li>
+      </ul>
+    </nav>
+  </header>
+
+<body>
+      <div class="disclaimer" id="disclaimer">
+        <div class="overlay">
+            <img src="assets/Logo3.png" alt="ChickChicken Logo" class="overlay-logo">
+            <h1>Disclaimer!</h1>
+            <p>
+                The time slot you choose serves as your confirmed booking and pick-up time. Please note that deliveries 
+                are self-arranged via Lalamove, so you'll need to book your own rider accordingly. Website orders are 
+                accepted only from 10:30 AM to 7:00 PM; after 7:00 PM, only walk-in customers will be 
+                accommodated in-store. If a time slot appears as unavailable, it means that slot is already full.
+            </p>
+            <button id="closeBtn">Close</button>
+        </div>
+    </div>
+
+  
+<!-- Checkout -->
+  <main class="checkout-container">
+    <h1>CHECKOUT</h1>
+
+    <section class="branch-info">
+      <div>
+        <h3>Chosen Branch</h3>
+        <p><strong>Chick Chicken - Amang Rodriguez Pasig</strong><br>
+        224 Eulogio Amang Rodriguez Ave., Pasig, 1610 Metro Manila</p>
+      </div>
+      <div class="store-number">
+        <h4>Store Number</h4>
+        <p>+63 999 999 9999</p>
+      </div>
+    </section>
+
+    <form class="checkout-form"
+    action="feedback.html" method="get">
+      <h3>Your Details</h3>
+
+      <label>Name<span>*</span></label>
+      <input type="text" required>
+
+      <label>Phone Number<span>*</span></label>
+      <input type="tel" required>
+
+      <label>Email<span>*</span></label>
+      <input type="email" required>
+
+      <label>Home Address<span>*</span></label>
+      <input type="text" required>
+
+      <h3>Payment Method</h3>
+      <div class="payment-methods">
+        <div class="method">
+          <img src="assets/card.png" alt="Card Icon">
+          <p><strong>ONLINE PAYMENT</strong><br>Debit, Credit, E-Wallet</p>
+        </div>
+        <div class="method">
+          <img src="assets/pouch.png" alt="Pouch">
+          <p><strong>CASH ON DELIVERY</strong><br>Pay with cash upon arrival</p>
+        </div>
+      </div>
+      <label for="cardnumber">Card Number</label>
+      <input type="text" id="cardnumber" name="cardnumber" placeholder="1234 5678 9012 3456"
+      pattern="\d{13,19}"
+      inputmode="numeric"
+      required>
+      <button type="submit" class="place-order-button">Confirm Order</button>
+    </form>
+  </main>
+<!-- End of Checkout -->
+
+
+  <!-- footer ngani -->
+<footer class="footer">
+  <div class="footer-container">
+
+  <div class="footer-logo">
+      <img src="assets/Logo3.png" alt="Chick Chicken Logo" class="footer-logo-img">
+    </div>
+
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">Deals</a></li>
+        <li><a href="#">Order Now</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-info">
+      <h4>Information</h4>
+      <ul>
+                <li><a href="#about-us">About Us</a></li> 
+                <li><a href="#FAQS">FAQs</a></li>
+                <li><a href="branchloc.html">Branch Locator</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h4>Need help?</h4>
+      <p>Contact us on:</p>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/chickchickenph/"><img src="assets/facebook-icon.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/chick.chickenph/?hl=en"><img src="assets/instagram-icon.png" alt="Instagram"></a>
+        <a href="https://www.tiktok.com/@chickchickenph?lang=en"><img src="assets/tiktok-icon.png" alt="TikTok"></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2025 Chick Chicken. All rights reserved.
+  </div>
+</footer>
+<!-- end of footer ngani -->
+
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="checkout.js"></script>
+</body>
+</html>
