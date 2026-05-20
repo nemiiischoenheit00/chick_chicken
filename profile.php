@@ -198,7 +198,7 @@ if (!empty($transactions)) {
     /* ── TWO COLUMN GRID ── */
     .profile-columns {
       display: grid;
-      grid-template-columns: 420px 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       align-items: start;
     }
@@ -365,6 +365,42 @@ if (!empty($transactions)) {
     .prev-app strong { color: #222; }
 
     .field-hint { font-size: 12px; color: #999; margin-top: 2px; }
+
+    .strength-bar-wrap {
+      display: flex; gap: 5px; margin-top: 8px;
+    }
+    .strength-seg {
+      height: 4px; flex: 1; border-radius: 4px;
+      background: #e0e0e0; transition: background 0.25s;
+    }
+    .strength-label-row {
+      display: flex; justify-content: flex-end;
+      margin-top: 4px;
+    }
+    .strength-label-text {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.4px;
+    }
+    .pw-requirements {
+      list-style: none; margin: 10px 0 0; padding: 0;
+      display: none; flex-direction: column; gap: 5px;
+    }
+    .pw-requirements li {
+      font-size: 12px; color: #bbb;
+      display: flex; align-items: center; gap: 7px;
+      transition: color 0.2s;
+    }
+    .pw-requirements li.met { color: #2e7d32; }
+    .req-circle {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1.5px solid #ddd; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .pw-requirements li.met .req-circle {
+      background: #2e7d32; border-color: #2e7d32; color: #fff;
+    }
+    .req-circle svg { width: 10px; height: 10px; }
 
     /* ── TRANSACTION TABLE ── */
     .tx-table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -551,6 +587,33 @@ header {
                   <input type="password" name="new_pass" id="newPass" placeholder="Min. 8 characters" autocomplete="new-password">
                   <button type="button" class="pass-toggle" onclick="togglePass('newPass', this)" tabindex="-1"><?= eyeIcon() ?></button>
                 </div>
+                <div class="strength-bar-wrap">
+                  <div class="strength-seg" id="pSeg0"></div>
+                  <div class="strength-seg" id="pSeg1"></div>
+                  <div class="strength-seg" id="pSeg2"></div>
+                  <div class="strength-seg" id="pSeg3"></div>
+                </div>
+                <div class="strength-label-row">
+                  <span class="strength-label-text" id="pStrengthLabel" style="color:#999;"></span>
+                </div>
+                <ul class="pw-requirements" id="pPwRequirements">
+                  <li id="p-r-len">
+                    <span class="req-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    At least 8 characters
+                  </li>
+                  <li id="p-r-letter">
+                    <span class="req-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    Contains a letter
+                  </li>
+                  <li id="p-r-number">
+                    <span class="req-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    Contains a number
+                  </li>
+                  <li id="p-r-nospace">
+                    <span class="req-circle"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    No spaces
+                  </li>
+                </ul>
               </div>
               <div class="form-group">
                 <label>Confirm New Password</label>
@@ -947,6 +1010,54 @@ header {
     // Initial render
     renderTable();
   })();
+  
+(function () {
+  var input  = document.getElementById('newPass');
+  var segs   = [0,1,2,3].map(function(i){ return document.getElementById('pSeg' + i); });
+  var label  = document.getElementById('pStrengthLabel');
+  var list   = document.getElementById('pPwRequirements');
+  if (!input) return;
+
+  var SEG_COLORS = ['#e53935','#fb8c00','#fdd835','#43a047'];
+  var SEG_LABELS = ['Weak','Fair','Good','Strong'];
+
+  var rules = [
+    { id: 'p-r-len',     test: function(v){ return v.length >= 8; } },
+    { id: 'p-r-letter',  test: function(v){ return /[a-zA-Z]/.test(v); } },
+    { id: 'p-r-number',  test: function(v){ return /[0-9]/.test(v); } },
+    { id: 'p-r-nospace', test: function(v){ return v.length > 0 && !/\s/.test(v); } },
+  ];
+
+  function getStrength(pw) {
+    if (!pw) return 0;
+    var score = 0;
+    if (pw.length >= 8)                        score++;
+    if (pw.length >= 12)                       score++;
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw))                      score++;
+    if (/[^A-Za-z0-9]/.test(pw))              score++;
+    return Math.max(1, Math.min(Math.round(score * 4 / 5), 4));
+  }
+
+  input.addEventListener('focus', function(){ if (input.value) list.style.display = 'flex'; });
+  input.addEventListener('blur',  function(){ if (!input.value) list.style.display = 'none'; });
+
+  input.addEventListener('input', function(){
+    var val = this.value;
+    list.style.display = val.length > 0 ? 'flex' : 'none';
+
+    rules.forEach(function(r){
+      document.getElementById(r.id).classList.toggle('met', r.test(val));
+    });
+
+    var level = val.length === 0 ? 0 : getStrength(val);
+    segs.forEach(function(seg, i){
+      seg.style.backgroundColor = i < level ? SEG_COLORS[level - 1] : '#e0e0e0';
+    });
+    label.textContent = level > 0 ? SEG_LABELS[level - 1] : '';
+    label.style.color = level > 0 ? SEG_COLORS[level - 1] : '#999';
+  });
+})();
 </script>
 
 </body>

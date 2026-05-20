@@ -46,16 +46,7 @@ if ($stmt->fetch()) {
 }
 
 // Format phone: strip non-digits, store as +63XXXXXXXXXX
-$phone_digits = preg_replace('/\D/', '', $phone);
-if (strlen($phone_digits) === 10) {
-    // User entered local format e.g. 9171234567
-    $phone_formatted = '+63' . $phone_digits;
-} elseif (strlen($phone_digits) === 12 && str_starts_with($phone_digits, '63')) {
-    // User entered 639171234567
-    $phone_formatted = '+' . $phone_digits;
-} else {
-    $phone_formatted = $phone; // store as-is if unexpected format
-}
+$phone_formatted = preg_replace('/\D/', '', $phone); // stores 9171234567
 
 $hashed = password_hash($password, PASSWORD_DEFAULT);
 
