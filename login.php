@@ -30,6 +30,13 @@
             <p>Welcome to Chick Chicken! Sign in to be part of our growing family of chicken lovers. Whether you're here to browse, order, or just check out what's new, we're happy to have you around. Go ahead — sign in and let's make your day a little more delicious.</p>
         </div>
 
+        <!-- Back to Main Page Button -->
+        <a href="index.php" class="back-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                <path d="M19 12H5M5 12l7-7M5 12l7 7"/>
+            </svg>
+            Back to Main Page
+        </a>
         <div class="login-form">
             <div class="form-box">
                 <img src="assets/Logo2.png" alt="Chick Chicken Logo" class="logo">

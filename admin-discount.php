@@ -271,6 +271,13 @@ require_once 'db.php';
           <li><a href="inventory.php" class="header_button"><ion-icon name="clipboard-outline"></ion-icon><span>Inventory</span></a></li>
           <li><a href="admin-discount.php" class="header_button active"><ion-icon name="pricetag-outline"></ion-icon><span>Discounts</span></a></li>
           <li><a href="admins-review.php" class="header_button"><ion-icon name="chatbubbles-outline"></ion-icon><span>Reviews</span></a></li>
+          <div style="margin-top: auto; padding: 20px 0 10px;">
+              <a href="admin_logout.php" class="header_button" style="color:#c62828;"
+                  onclick="return confirm('Are you sure you want to log out?')">
+                  <ion-icon name="log-out-outline"></ion-icon>
+                  <span>Log Out</span>
+              </a>
+          </div>
         </ul>
       </nav>
     </div>

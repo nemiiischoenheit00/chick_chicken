@@ -17,7 +17,7 @@ $confirm  =      $_POST['confirm_password'] ?? '';
 // Validate email
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     header("Location: signup.php?error=invalid_email");
-    exit;
+    exi
 }
 
 // Password match

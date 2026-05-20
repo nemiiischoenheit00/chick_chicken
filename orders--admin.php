@@ -611,6 +611,13 @@
                             <span>Reviews</span>
                         </a>
                     </li>
+                    <div style="margin-top: auto; padding: 20px 0 10px;">
+                        <a href="admin_logout.php" class="header_button" style="color:#c62828;"
+                        onclick="return confirm('Are you sure you want to log out?')">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                            <span>Log Out</span>
+                        </a>
+                    </div>
                 </ul>
             </nav>
         </div>

@@ -7,19 +7,15 @@ body, html { margin: 0; padding: 0; }
 /* ── NAV ─────────────────────────────────────── */
 header {
   all: unset;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 50px;
+  display: flex;              /* already there */
+  align-items: center;        /* already there */
+  justify-content: space-between; /* already there */
+  padding: 0 50px;            /* already there */
+  width: 100%;                /* ← ADD */
+  box-sizing: border-box;     /* ← ADD */
   height: 65px;
   background-color: #FFDE59;
   position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-header, nav {
-  position: sticky; /* or fixed if you're using fixed navbar */
   top: 0;
   z-index: 999;
 }
