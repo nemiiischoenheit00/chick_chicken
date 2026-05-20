@@ -60,6 +60,7 @@ switch ($method) {
             case 'list':                getInventory($pdo);           break;
             case 'stats':               getStats($pdo);               break;
             case 'categories':          getCategories($pdo);          break;
+            case 'products':            getProducts($pdo);            break;
             // Raw ingredients
             case 'ri_list':             getRawIngredients($pdo);      break;
             case 'ri_stats':            getRawStats($pdo);            break;
@@ -346,5 +347,10 @@ function riDelete(PDO $pdo, $data) {
     if (empty($data['id'])) { echo json_encode(['error' => 'id required']); return; }
     $pdo->prepare("DELETE FROM raw_ingredients WHERE id = :id")->execute([':id' => $data['id']]);
     echo json_encode(['success' => true]);
+}
+
+function getProducts(PDO $pdo) {
+    $stmt = $pdo->query("SELECT id, name FROM products WHERE deleted_at IS NULL ORDER BY name ASC");
+    echo json_encode($stmt->fetchAll());
 }
 ?>

@@ -877,17 +877,40 @@ function renderTable() {
     document.getElementById('pagination').style.display = 'flex';
 }
 
-function openAddModal() {
+async function openAddModal() {
     document.getElementById('modalTitle').textContent = 'Add / Update Stock';
     document.getElementById('editId').value = '';
     document.getElementById('editInitial').value   = 50;
     document.getElementById('editRemaining').value = 50;
     document.getElementById('editThreshold').value = 10;
+
     const sel = document.getElementById('editProductSelect');
-    sel.innerHTML = '<option value="">— Select a product —</option>';
-    allItems.forEach(it => { const o = document.createElement('option'); o.value = it.product_id; o.textContent = it.name; sel.appendChild(o); });
+    sel.innerHTML = '<option value="">Loading products…</option>';
+    sel.disabled = true;
     document.getElementById('productSelectWrap').style.display = 'block';
     editModal.show();
+
+    try {
+        const allProducts = await apiGet(API, 'products');
+
+        // Get product IDs already tracked so we can flag them
+        const trackedIds = new Set(allItems.map(it => String(it.product_id)));
+
+        sel.innerHTML = '<option value="">— Select a product —</option>';
+        allProducts.forEach(p => {
+            const o = document.createElement('option');
+            o.value = p.id;
+            o.textContent = trackedIds.has(String(p.id))
+                ? p.name + ' (already tracked)'
+                : p.name;
+            sel.appendChild(o);
+        });
+    } catch(e) {
+        sel.innerHTML = '<option value="">— Could not load products —</option>';
+        toast('Failed to load product list.', 'error');
+    } finally {
+        sel.disabled = false;
+    }
 }
 
 function openEditModal(it) {

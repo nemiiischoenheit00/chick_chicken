@@ -15,16 +15,6 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-/* ── ADMIN SHORTCUT (plain-text, no DB row needed) ── */
-if ($email === 'admin@gmail.com' && $password === 'admin') {
-    $_SESSION['username'] = 'Admin';
-    $_SESSION['email']    = $email;
-    $_SESSION['user_id']  = 0;
-    $_SESSION['is_admin'] = true;
-    header("Location: admin.php");
-    exit;
-}
-
 /* ── NORMAL USER ── */
 $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
 $stmt->execute([$email]);
