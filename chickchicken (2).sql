@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2026 at 02:43 PM
+-- Generation Time: May 20, 2026 at 04:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `first_name`, `last_name`, `phone`, `email`, `password`, `created_at`) VALUES
-(1, 'JERWIN', 'CARMONA', 4294967295, 'jcarmona.0872@umak.edu.ph', '$2y$10$PNylw.aqTOvpcA45aLfkV.E.DnMiK.uHsqmcci6KoX.jvJWD/QbBi', '2026-05-18 12:39:49');
+(1, 'JERWIN', 'CARMONA', 4294967295, 'jcarmona.0872@umak.edu.ph', '$2y$10$PNylw.aqTOvpcA45aLfkV.E.DnMiK.uHsqmcci6KoX.jvJWD/QbBi', '2026-05-18 12:39:49'),
+(2, 'Chester', 'Ganongan', 4294967295, 'blasphemydarem@gmail.com', '$2y$10$6J1qOAtEqtoHfQo2.MhGH.x7UEBDAh56IDNUbvHCBCM0nIIl6hppW', '2026-05-18 17:03:10');
 
 -- --------------------------------------------------------
 
@@ -61,6 +62,13 @@ CREATE TABLE `cart` (
   `mix_preference` varchar(50) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart`
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `quantity`, `option_selected`, `sauce`, `extra_flavor`, `mix_preference`, `created_at`) VALUES
+(81, 11, 5, 2, 'Solo (600ml)', 'Garlic Mayo', 'Hot Buffalo', 'Mixed', '2026-05-18 22:56:16');
 
 -- --------------------------------------------------------
 
@@ -115,10 +123,10 @@ INSERT INTO `inventory` (`id`, `product_id`, `initial_stock`, `remaining`, `low_
 (2, 2, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
 (3, 3, 50, 49, 10, 'pcs', '2026-05-17 13:00:21'),
 (4, 4, 50, 50, 10, 'pcs', '2026-05-14 16:56:31'),
-(5, 5, 50, 48, 10, 'pcs', '2026-05-17 14:16:36'),
-(6, 6, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
+(5, 5, 50, 45, 10, 'pcs', '2026-05-18 17:22:46'),
+(6, 6, 50, 49, 10, 'pcs', '2026-05-18 14:36:31'),
 (7, 7, 50, 46, 10, 'pcs', '2026-05-17 14:11:20'),
-(8, 8, 50, 46, 10, 'pcs', '2026-05-18 12:22:29'),
+(8, 8, 50, 44, 10, 'pcs', '2026-05-18 17:22:46'),
 (9, 9, 50, 50, 10, 'pcs', '2026-05-08 03:16:58'),
 (10, 10, 50, 50, 10, 'pcs', '2026-05-08 03:16:58');
 
@@ -169,7 +177,9 @@ INSERT INTO `orders` (`id`, `user_id`, `name`, `phone`, `email`, `address`, `pay
 (32, 14, 'Stephanie Ganda', '+636767676767', 'stephanie@gmail.com', 'OSMAK', 'cod', NULL, NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-17 13:11:26', 'PWD', 0.20, 339.00, 67.80, 271.20),
 (33, 14, 'Stephanie Ganda', '+636767676767', 'stephanie@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/33_1779027080.png', NULL, 'Chick Chicken - Maginhawa, QC', 'cancelled', '2026-05-17 14:11:20', 'PWD', 0.20, 638.00, 127.60, 510.40),
 (34, 14, 'Stephanie Ganda', '+636767676767', 'stephanie@gmail.com', 'OSMAK', 'gcash', 'uploads/gcash/34_1779027396.png', '1234567890123', 'Chick Chicken - Marikina', 'completed', '2026-05-17 14:16:35', 'PWD', 0.20, 459.00, 91.80, 367.20),
-(35, 13, 'JERWIN CARMONA', '639999999', 'jcarmona.0872@umak.edu.ph', '1832 Guadalupe Bliss Cembo Taguig City', 'cod', NULL, NULL, 'Chick Chicken - Pasig', 'pending', '2026-05-18 12:22:29', '', 0.00, 319.00, 0.00, 319.00);
+(35, 13, 'JERWIN CARMONA', '639999999', 'jcarmona.0872@umak.edu.ph', '1832 Guadalupe Bliss Cembo Taguig City', 'cod', NULL, NULL, 'Chick Chicken - Pasig', 'pending', '2026-05-18 12:22:29', '', 0.00, 319.00, 0.00, 319.00),
+(36, 11, 'Klein Moretti', '4294967295', 'blasphemydarem@gmail.com', 'OSMAK', 'cod', NULL, NULL, 'Chick Chicken - Pasig', 'completed', '2026-05-18 14:36:31', '', 0.00, 309.00, 0.00, 309.00),
+(37, 11, 'Klein Moretti', '4294967295', 'blasphemydarem@gmail.com', 'OSMAK', 'cod', NULL, NULL, 'Chick Chicken - Maginhawa, QC', 'cancelled', '2026-05-18 17:22:46', '', 0.00, 2255.00, 0.00, 2255.00);
 
 -- --------------------------------------------------------
 
@@ -211,7 +221,10 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `option_s
 (39, 32, 8, 1, 'Solo (600ml)', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 339.00),
 (40, 33, 7, 2, 'Solo (600ml)', 'Chick Sauce', 'Hot Buffalo', 'Separate', 319.00),
 (41, 34, 5, 1, 'Double (1000ml) +₱100', 'Chick Sauce', 'Salted Egg', 'Separate', 459.00),
-(42, 35, 8, 1, '', '', '', '', 319.00);
+(42, 35, 8, 1, '', '', '', '', 319.00),
+(43, 36, 6, 1, 'Solo (600ml)', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 309.00),
+(44, 37, 5, 3, 'Double (1000ml) +₱100', 'Chick Sauce', 'Salted Egg', 'Separate', 459.00),
+(45, 37, 8, 2, 'Double (1000ml) +₱100', 'Cheese Sauce', 'Hot Buffalo', 'Separate', 439.00);
 
 -- --------------------------------------------------------
 
@@ -300,14 +313,14 @@ INSERT INTO `raw_ingredients` (`id`, `name`, `category`, `unit`, `initial_stock`
 (11, 'Chicken Wings', 'Chicken', 'kg', 100.00, 100.00, 10.00, 'Local Market', 'Keep Frozen', '2026-05-17 07:35:58', '2026-05-17 07:39:22'),
 (12, 'Drumsticks', 'Chicken', 'kg', 100.00, 100.00, 10.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-17 07:41:44'),
 (13, 'Thighs', 'Chicken', 'kg', 100.00, 100.00, 10.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-17 07:41:48'),
-(14, 'Breast Fillet', 'Chicken', 'kg', 100.00, 85.00, 10.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 12:22:29'),
-(15, 'All-Purpose Flour', 'Breading / Coating', 'pack', 100.00, 85.00, 10.00, 'Local Market', NULL, '2026-05-17 07:35:58', '2026-05-18 12:22:29'),
+(14, 'Breast Fillet', 'Chicken', 'kg', 100.00, 75.00, 10.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 17:22:46'),
+(15, 'All-Purpose Flour', 'Breading / Coating', 'pack', 100.00, 75.00, 10.00, 'Local Market', NULL, '2026-05-17 07:35:58', '2026-05-18 17:22:46'),
 (16, 'Cornstarch', 'Breading / Coating', 'pack', 500.00, 500.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-17 07:42:46'),
-(17, 'Breadcrumbs', 'Breading / Coating', 'pack', 100.00, 88.00, 20.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 12:22:29'),
+(17, 'Breadcrumbs', 'Breading / Coating', 'pack', 100.00, 80.00, 20.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 17:22:46'),
 (18, 'Baking Powder', 'Breading / Coating', 'pack', 100.00, 100.00, 20.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-17 07:37:05'),
-(19, 'Spices', 'Spices', 'g', 1000.00, 700.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 12:22:29'),
-(20, 'Eggs', 'Wet Ingredients', 'box', 500.00, 497.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 12:22:29'),
-(21, 'Milk / Buttermilk', 'Wet Ingredients', 'ml', 10000.00, 9000.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 12:22:29'),
+(19, 'Spices', 'Spices', 'g', 1000.00, 500.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 17:22:46'),
+(20, 'Eggs', 'Wet Ingredients', 'box', 500.00, 495.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 17:22:46'),
+(21, 'Milk / Buttermilk', 'Wet Ingredients', 'ml', 10000.00, 8000.00, 100.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-18 17:22:46'),
 (22, 'Water', 'Wet Ingredients', 'ml', 100000.00, 100000.00, 1000.00, NULL, NULL, '2026-05-17 07:35:58', '2026-05-17 07:40:38');
 
 -- --------------------------------------------------------
@@ -448,13 +461,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `discount_applications`
@@ -472,13 +485,13 @@ ALTER TABLE `inventory`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `products`
